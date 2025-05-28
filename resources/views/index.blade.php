@@ -227,54 +227,61 @@
     </div>
 
 <!-- Pengumuman Section -->
-<div class="py-16 bg-gray-50">
+<div class="py-16 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">PENGUMUMAN STAI MADIUN</h2>
-            <div class="w-24 h-1 bg-yellow-500 mx-auto"></div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">PENGUMUMAN</h2>
+            <div class="w-24 h-1 bg-yellow-500 mx-auto rounded-full"></div>
         </div>
 
-        <!-- Pengumuman Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            @foreach($berita as $item)
-                <!-- Pengumuman Item -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                    <div class="relative">
-                        <!-- Displaying Image -->
-                        <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
-                        <div class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-bold">
-                            <div class="text-center">
-                                <div class="text-lg">{{ \Carbon\Carbon::parse($item->publish_date)->format('d') }}</div>
-                                <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('M') }}</div>
-                                <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('Y') }}</div>
+        <div class="container">
+            <h1 class="text-3xl font-bold text-gray-900 mb-8">Pengumuman Terbaru</h1>
+
+            <!-- Pengumuman Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                @foreach($berita as $item)
+                    <!-- Pengumuman Item -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:scale-105">
+                        <div class="relative">
+                            <!-- Displaying Image -->
+                            <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover rounded-t-lg">
+                            <div class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-bold">
+                                <div class="text-center">
+                                    <div class="text-lg">{{ \Carbon\Carbon::parse($item->publish_date)->format('d') }}</div>
+                                    <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('M') }}</div>
+                                    <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('Y') }}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-lg text-gray-900 mb-2">{{ $item->title }}</h3>
-                        <p class="text-gray-600 text-sm mb-4">Pengumuman • By {{ $item->author }}</p>
-<p class="text-gray-600 text-sm mb-4">
-    <!-- Limiting the description to 100 characters while preserving HTML tags -->
-    {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 100) !!}
-</p>
+                        <div class="p-6">
+                            <h3 class="font-bold text-xl text-gray-900 mb-2">{{ $item->title }}</h3>
+                            <p class="text-gray-600 text-sm mb-4">Pengumuman • By {{ $item->author }}</p>
+                            <p class="text-gray-600 text-sm mb-4">
+                                <!-- Limiting the description to 100 characters while preserving HTML tags -->
+                                {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 100) !!}
+                            </p>
 
-                        <a href="" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm">
-                            SELENGKAPNYA <i class="fas fa-chevron-right ml-2"></i>
-                        </a>
+                            <!-- Link to show all berita -->
+                            <a href="{{ route('berita.show', $item->id) }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm mt-4">
+                                lihat Berita <i class="fas fa-chevron-right ml-2"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
 
-        <!-- Pagination -->
-        <div class="flex justify-center items-center space-x-2 mt-12">
-            <!-- Pagination buttons can be dynamically added here if using Laravel pagination -->
-            <!-- Example button -->
-            {{ $berita->links() }} <!-- Laravel's pagination links -->
+            <!-- Button to see more announcements -->
+            <div class="flex justify-center mt-6">
+                <a href="{{ route('berita.index') }}" class="bg-blue-600 text-white py-2 px-6 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-blue-700 transform hover:scale-105">
+                    Lihat Semua Pengumuman
+                </a>
+            </div>
         </div>
     </div>
 </div>
+
+
 
 
      <!-- Dosen & Staff Section -->

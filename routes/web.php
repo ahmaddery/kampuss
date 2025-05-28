@@ -44,3 +44,4 @@ Route::delete('admin/berita/{berita}', [BeritaController::class, 'destroy'])->na
 
 // Route to display berita on the homepage
 Route::get('/berita', [NewsController::class, 'index'])->name('berita.index');
+Route::get('/berita/{id}', [NewsController::class, 'show'])->name('berita.show');

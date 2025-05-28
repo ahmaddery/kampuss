@@ -14,8 +14,8 @@ class UtamaController extends Controller
         // Mengambil data banner dari database
         $banners = HomepageBanner::all();  // Mengambil semua data banner
         
-        // Mengambil data berita dari database dan menggunakan pagination
-        $berita = Berita::latest()->paginate(1); // Fetch berita with pagination (8 items per page)
+        // Mengambil 4 berita terbaru dari database
+        $berita = Berita::latest()->take(4)->get(); // Fetch 4 latest berita without pagination
 
         // Mengirim data banner dan berita ke view
         return view('index', compact('banners', 'berita'));
