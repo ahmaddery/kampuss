@@ -263,7 +263,7 @@
                             </p>
 
                             <!-- Link to show all berita -->
-                            <a href="{{ route('berita.show', $item->id) }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm mt-4">
+                            <a href="{{ route('berita.show', $item->slug) }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm mt-4">
                                 lihat Berita <i class="fas fa-chevron-right ml-2"></i>
                             </a>
                         </div>

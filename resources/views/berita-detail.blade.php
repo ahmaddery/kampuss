@@ -206,8 +206,9 @@
                         </div>
                         <div class="article-meta-item">
                             <i class="fas fa-eye text-purple-600"></i>
-                            <span class="font-medium text-gray-700">2,547 views</span>
+                            <span class="font-medium text-gray-700">{{ $berita->count_views }} views</span>
                         </div>
+
                         <div class="article-meta-item">
                             <i class="fas fa-clock text-orange-600"></i>
                             <span class="font-medium text-gray-700">5 min read</span>

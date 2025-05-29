@@ -198,7 +198,7 @@
             {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 150) }}  <!-- Menampilkan 150 karakter pertama -->
         </p>
         <div class="flex items-center justify-between">
-            <a href="{{ route('berita.show', $item->id) }}" class="read-more-btn inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold text-sm bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg transition-all duration-300">
+            <a href="{{ route('berita.show', $item->slug) }}" class="read-more-btn inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold text-sm bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg transition-all duration-300">
                 <span>SELENGKAPNYA</span>
                 <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
             </a>
@@ -242,31 +242,6 @@
                     <button class="flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 hover:bg-blue-600 hover:text-white transition-all duration-300 text-gray-600 font-medium">
                         <i class="fas fa-chevron-right text-sm"></i>
                     </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Newsletter Section -->
-        <div class="mt-20 text-center">
-            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 md:p-12 relative overflow-hidden">
-                <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
-                <div class="relative z-10">
-                    <h3 class="text-3xl font-bold text-white mb-4">
-                        <i class="fas fa-envelope mr-3"></i>
-                        Berlangganan Newsletter
-                    </h3>
-                    <p class="text-blue-100 mb-8 max-w-2xl mx-auto">
-                        Dapatkan update berita terbaru kampus langsung di email Anda setiap minggu
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                        <input type="email" 
-                               placeholder="Masukkan email Anda" 
-                               class="flex-1 px-6 py-4 rounded-xl border-0 text-gray-900 placeholder-gray-500 shadow-lg focus:ring-4 focus:ring-white/25 focus:outline-none">
-                        <button class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                            <i class="fas fa-paper-plane mr-2"></i>
-                            Berlangganan
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>

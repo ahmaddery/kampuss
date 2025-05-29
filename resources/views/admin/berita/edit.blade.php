@@ -31,6 +31,25 @@
                 <label for="author">Author</label>
                 <input type="text" name="author" class="form-control" value="{{ $berita->author }}">
             </div>
+
+            <!-- Tags Input -->
+            <div class="form-group">
+                <label for="tags">Tags (comma separated)</label>
+                <input type="text" name="tags" class="form-control" value="{{ old('tags', $berita->tags) }}" placeholder="e.g., technology, news, updates">
+            </div>
+
+            <!-- Checkbox for Random Slug -->
+            <div class="form-group">
+                <label for="random_slug">Generate Random Slug?</label>
+                <input type="checkbox" name="random_slug" id="random_slug" class="form-check-input" {{ old('random_slug', $berita->slug ? true : false) ? 'checked' : '' }}>
+            </div>
+
+            <!-- Manual Slug Input -->
+            <div class="form-group" id="slug_field">
+                <label for="slug">Slug</label>
+                <input type="text" name="slug" class="form-control" value="{{ old('slug', $berita->slug) }}">
+            </div>
+
             <button type="submit" class="btn btn-primary mt-3">Update</button>
         </form>
     </div>
@@ -43,5 +62,24 @@
             .catch(error => {
                 console.error(error);
             });
+
+        // Toggle Slug input visibility based on checkbox
+        const randomSlugCheckbox = document.getElementById('random_slug');
+        const slugField = document.getElementById('slug_field');
+
+        randomSlugCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                slugField.style.display = 'none'; // Hide slug input field
+            } else {
+                slugField.style.display = 'block'; // Show slug input field
+            }
+        });
+
+        // Initially hide or show the slug field based on checkbox status
+        if (randomSlugCheckbox.checked) {
+            slugField.style.display = 'none';
+        } else {
+            slugField.style.display = 'block';
+        }
     </script>
 @endsection

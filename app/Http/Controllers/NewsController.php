@@ -17,22 +17,26 @@ class NewsController extends Controller
         // Mengambil data berita dengan pagination
         $berita = Berita::latest()->paginate(8); // Fetch berita with pagination (8 items per page)
 
-        // Passing both banners and berita data to the view
+        // Mengirim data berita ke halaman utama
         return view('berita', compact('berita'));
     }
 
     /**
      * Show the detailed berita page.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        // Find the berita by its id
-        $berita = Berita::findOrFail($id); // Fetch the berita with the given ID
+        // Menemukan berita berdasarkan slug
+        $berita = Berita::where('slug', $slug)->firstOrFail(); // Fetch berita using the slug
 
-        // Passing berita data to the detail view
+        // Increment the view count
+        $berita->increment('count_views'); // This increments the `count_views` field by 1
+
+        // Mengirim data berita ke halaman detail
         return view('berita-detail', compact('berita'));
     }
 }
+

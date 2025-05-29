@@ -43,6 +43,8 @@ class BeritaController extends Controller
             'image_path' => 'nullable|image|max:2048',
             'publish_date' => 'required|date',
             'author' => 'nullable|max:255',
+            'slug' => 'nullable|unique:berita,slug|max:255', // Menambahkan validasi untuk slug
+            'tags' => 'nullable|string|max:255', // Menambahkan validasi untuk tags
         ]);
 
         // Handle file upload if present
@@ -51,12 +53,17 @@ class BeritaController extends Controller
             $imagePath = $request->file('image_path')->store('images', 'public');
         }
 
+        // If no slug is provided, it will be generated automatically by the model
+        $slug = $request->slug ?? ''; // If slug is provided manually, use it, otherwise empty
+
         Berita::create([
             'title' => $request->title,
             'description' => $request->description,
             'image_path' => $imagePath,
             'publish_date' => $request->publish_date,
             'author' => $request->author,
+            'slug' => $slug,  // Use the manual or automatically generated slug
+            'tags' => $request->tags,  // Menyimpan tags
         ]);
 
         return redirect()->route('admin.berita.index')->with('success', 'Berita created successfully.');
@@ -80,7 +87,7 @@ class BeritaController extends Controller
      * @param  \App\Models\Berita  $berita
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Berita $berita)
+ public function update(Request $request, Berita $berita)
     {
         $request->validate([
             'title' => 'required|max:255',
@@ -88,6 +95,8 @@ class BeritaController extends Controller
             'image_path' => 'nullable|image|max:2048',
             'publish_date' => 'required|date',
             'author' => 'nullable|max:255',
+            'slug' => 'nullable|unique:berita,slug,' . $berita->id . '|max:255', // Validasi untuk slug
+            'tags' => 'nullable|string|max:255', // Validasi untuk tags
         ]);
 
         // Handle file upload if present
@@ -100,12 +109,17 @@ class BeritaController extends Controller
             $imagePath = $request->file('image_path')->store('images', 'public');
         }
 
+        // If no slug is provided, it will be generated automatically by the model
+        $slug = $request->slug ?? ''; // If slug is provided manually, use it, otherwise empty
+
         $berita->update([
             'title' => $request->title,
             'description' => $request->description,
             'image_path' => $imagePath,
             'publish_date' => $request->publish_date,
             'author' => $request->author,
+            'slug' => $slug,  // Use the manual or automatically generated slug
+            'tags' => $request->tags,  // Menyimpan tags
         ]);
 
         return redirect()->route('admin.berita.index')->with('success', 'Berita updated successfully.');
