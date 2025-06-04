@@ -73,6 +73,14 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('admin.sambutan_rektor.index') }}">
+                                <i class="fas fa-desktop"></i>
+                                <p>sambutan rektor</p>
+                                <span class="badge badge-success"></span>
+                            </a>
+                        </li>
+
                         <li class="nav-section">
                             <span class="sidebar-mini-icon">
                                 <i class="fa fa-ellipsis-h"></i>

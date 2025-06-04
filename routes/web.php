@@ -8,6 +8,9 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SambutanRektorController;
+use App\Http\Controllers\SambutanController;
+use App\Http\Controllers\Admin\SejarahController;
 
 Route::get('/', [UtamaController::class, 'index']);
 
@@ -26,6 +29,24 @@ Route::middleware('auth')->group(function () {
     Route::put('homepage_banners/{id}', [HomepageBannerController::class, 'update'])->name('admin.homepage_banners.update');
     Route::delete('homepage_banners/{id}', [HomepageBannerController::class, 'destroy'])->name('admin.homepage_banners.destroy');
 
+
+
+
+Route::get('admin/sambutan_rektor', [SambutanRektorController::class, 'index'])->name('admin.sambutan_rektor.index');
+Route::get('admin/sambutan_rektor/create', [SambutanRektorController::class, 'create'])->name('admin.sambutan_rektor.create');
+Route::post('admin/sambutan_rektor', [SambutanRektorController::class, 'store'])->name('admin.sambutan_rektor.store');
+Route::get('admin/sambutan_rektor/{id}/edit', [SambutanRektorController::class, 'edit'])->name('admin.sambutan_rektor.edit');
+Route::put('admin/sambutan_rektor/{id}', [SambutanRektorController::class, 'update'])->name('admin.sambutan_rektor.update');
+
+
+
+
+Route::get('admin/sejarah', [SejarahController::class, 'index'])->name('admin.sejarah.index');
+Route::get('admin/sejarah/create', [SejarahController::class, 'create'])->name('admin.sejarah.create');
+Route::post('admin/sejarah', [SejarahController::class, 'store'])->name('admin.sejarah.store');
+Route::get('admin/sejarah/{id}/edit', [SejarahController::class, 'edit'])->name('admin.sejarah.edit');
+Route::put('admin/sejarah/{id}', [SejarahController::class, 'update'])->name('admin.sejarah.update');
+Route::delete('admin/sejarah/{id}', [SejarahController::class, 'destroy'])->name('admin.sejarah.destroy');
 
 
 
@@ -75,6 +96,11 @@ Route::get('admin/jurusan/{id}', [JurusanController::class, 'show'])->name('admi
 // Route to display berita on the homepage
 Route::get('/berita', [NewsController::class, 'index'])->name('berita.index');
 Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('berita.show');
+
+
+// Route untuk halaman index (menampilkan view sambutan-rektor)
+Route::get('/sambutan-rektor', [SambutanController::class, 'index'])->name('sambutan-rektor.index');
+Route::get('/sejarah', [SambutanController::class, 'sejarah'])->name('sejarah.index');
 
 
 //Route::get('/berita/{id}', [NewsController::class, 'show'])->name('berita.show');

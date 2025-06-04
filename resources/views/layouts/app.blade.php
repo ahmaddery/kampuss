@@ -93,7 +93,8 @@
                             </a>
                             <div class="dropdown-menu absolute z-10 mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <div class="py-1">
-                                    <a href="sejarah.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sejarah</a>
+                                     <a href="{{ route('sambutan-rektor.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sambutan Rektor</a>
+                                    <a href="{{ route('sejarah.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sejarah</a>
                                     <a href="visi-misi.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Visi & Misi</a>
                                     <a href="struktur-organisasi.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Struktur Organisasi</a>
                                 </div>
@@ -203,7 +204,8 @@
                     <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div class="hidden pl-4 py-2 space-y-1">
-                    <a href="sejarah.html" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sejarah</a>
+                    <a href="{{ route('sambutan-rektor.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sambutan Rektor</a>
+                    <a href="{{ route('sejarah.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sejarah</a>
                     <a href="visi-misi.html" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Visi & Misi</a>
                     <a href="struktur-organisasi.html" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Struktur Organisasi</a>
                 </div>
