@@ -43,188 +43,70 @@
     </div>
 </div>
 
-
-    <!-- Program Studi Section -->
-    <div class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Section Header -->
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Program Studi Unggulan</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Pilih program studi yang sesuai dengan passion dan kariermu. Kami menyediakan berbagai fakultas dengan program studi berkualitas.</p>
-            </div>
-
-            <!-- Program Studi Slider -->
-            <div class="relative w-full overflow-hidden">
-                <!-- Slider Container -->
-                <div id="prodiSlider" class="flex transition-transform duration-500 ease-in-out">
-                    <!-- Slide 1 - Fakultas Ekonomi -->
-                    <div class="min-w-full">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-blue-600 to-blue-800 flex items-center justify-center">
-                                    <i class="fas fa-chart-line text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Manajemen</h3>
-                                    <p class="text-gray-600 mb-4">Program studi yang mempersiapkan pemimpin masa depan dengan kemampuan manajerial yang handal.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S1 & S2</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-green-600 to-green-800 flex items-center justify-center">
-                                    <i class="fas fa-calculator text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Akuntansi</h3>
-                                    <p class="text-gray-600 mb-4">Menghasilkan akuntan profesional yang mampu mengelola keuangan perusahaan dengan baik.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S1 & S2</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-purple-600 to-purple-800 flex items-center justify-center">
-                                    <i class="fas fa-briefcase text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Ekonomi Pembangunan</h3>
-                                    <p class="text-gray-600 mb-4">Fokus pada pembangunan ekonomi berkelanjutan dan kebijakan publik yang efektif.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S1</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 2 - Fakultas Teknik -->
-                    <div class="min-w-full">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-red-600 to-red-800 flex items-center justify-center">
-                                    <i class="fas fa-laptop-code text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Teknik Informatika</h3>
-                                    <p class="text-gray-600 mb-4">Program unggulan yang menghasilkan software engineer dan IT professional terbaik.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S1</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-orange-600 to-orange-800 flex items-center justify-center">
-                                    <i class="fas fa-cogs text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Teknik Mesin</h3>
-                                    <p class="text-gray-600 mb-4">Mempersiapkan insinyur mesin yang handal dalam bidang manufaktur dan otomotif.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S1</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-yellow-600 to-yellow-800 flex items-center justify-center">
-                                    <i class="fas fa-hard-hat text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Teknik Sipil</h3>
-                                    <p class="text-gray-600 mb-4">Menghasilkan insinyur sipil yang ahli dalam konstruksi dan infrastruktur.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S1</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3 - Fakultas Lainnya -->
-                    <div class="min-w-full">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-pink-600 to-pink-800 flex items-center justify-center">
-                                    <i class="fas fa-brain text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Psikologi</h3>
-                                    <p class="text-gray-600 mb-4">Memahami perilaku manusia dan memberikan solusi psikologis yang tepat.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S1 & S2</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-teal-600 to-teal-800 flex items-center justify-center">
-                                    <i class="fas fa-seedling text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Agroindustri</h3>
-                                    <p class="text-gray-600 mb-4">Mengoptimalkan hasil pertanian melalui teknologi industri modern.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S1</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                                <div class="h-48 bg-gradient-to-r from-indigo-600 to-indigo-800 flex items-center justify-center">
-                                    <i class="fas fa-user-graduate text-6xl text-white"></i>
-                                </div>
-                                <div class="p-6">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Program Pascasarjana</h3>
-                                    <p class="text-gray-600 mb-4">Program magister untuk pengembangan karier dan penelitian lanjutan.</p>
-                                    <div class="flex items-center text-blue-600">
-                                        <i class="fas fa-graduation-cap mr-2"></i>
-                                        <span class="text-sm font-medium">S2 & S3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<!-- Academic Programs Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900">Program Akademik Unggulan</h2>
+            <div class="mt-2 w-20 h-1 bg-blue-700 mx-auto"></div>
+            <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Pilih program studi terbaik sesuai dengan minat dan bakat untuk masa depan karir yang cemerlang</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            @foreach($jurusans as $jurusan)
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-xl">
+                    <div class="bg-blue-700 h-2"></div>
+                    <img src="{{ asset('storage/' . $jurusan->icon) }}" alt="{{ $jurusan->jurusan }}" class="w-full h-48 object-cover object-center">
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl text-gray-900 mb-2">{{ $jurusan->jurusan }}</h3>
+                        <p class="text-gray-600 mb-4">{{ $jurusan->deskripsi }}</p>
+                        <a href="" class="text-blue-700 hover:text-blue-900 font-medium inline-flex items-center transition-all">
+                            Selengkapnya <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
                     </div>
                 </div>
-
-                <!-- Navigation Buttons -->
-                <button id="prodiPrevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-gray-50 text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                    <i class="fas fa-chevron-left text-lg"></i>
-                </button>
-                
-                <button id="prodiNextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-gray-50 text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10">
-                    <i class="fas fa-chevron-right text-lg"></i>
-                </button>
-
-                <!-- Dots Indicator -->
-                <div class="flex justify-center mt-8 space-x-3">
-                    <button class="prodi-dot w-3 h-3 rounded-full bg-gray-400 hover:bg-blue-500 transition-colors duration-300" data-slide="0"></button>
-                    <button class="prodi-dot w-3 h-3 rounded-full bg-gray-400 hover:bg-blue-500 transition-colors duration-300" data-slide="1"></button>
-                    <button class="prodi-dot w-3 h-3 rounded-full bg-gray-400 hover:bg-blue-500 transition-colors duration-300" data-slide="2"></button>
-                </div>
-            </div>
-
-            <!-- Call to Action -->
-            <div class="text-center mt-12">
-                <a href="#" class="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:scale-105">
-                    <i class="fas fa-info-circle mr-3"></i>
-                    Lihat Semua Program Studi
-                </a>
-            </div>
+            @endforeach
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="" class="btn-primary text-white font-medium px-8 py-3 rounded-full inline-flex items-center">
+                Lihat Semua Program <i class="fas fa-arrow-right ml-2"></i>
+            </a>
         </div>
     </div>
+</section>
+
+
+  <!-- Menampilkan section jika is_active bernilai true -->
+    @if($setting && $setting->is_active)
+        <section class="py-20 bg-gradient-to-r from-blue-900 to-blue-800 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="md:w-2/3 text-center md:text-left mb-8 md:mb-0">
+                        <h2 class="text-3xl font-bold">Pendaftaran Mahasiswa Baru 2025/2026</h2>
+                        <p class="mt-4 text-blue-200 text-lg">Daftarkan diri Anda sekarang dan jadilah bagian dari keluarga besar Universitas Mercu Buana Yogyakarta!</p>
+                    </div>
+                    <div>
+                        <a href="#" class="bg-white text-blue-800 hover:bg-blue-50 font-bold px-8 py-4 rounded-full inline-flex items-center text-lg transition-all shadow-lg">
+                            <i class="fas fa-user-plus mr-2"></i> Daftar Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @else
+        <!-- Menampilkan pesan jika section PMB tidak aktif -->
+        <section class="py-20 bg-gray-500 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="md:w-2/3 text-center md:text-left mb-8 md:mb-0">
+                        <h2 class="text-3xl font-bold">Pendaftaran Mahasiswa Baru 2025/2026</h2>
+                        <p class="mt-4 text-blue-200 text-lg">Saat ini, pendaftaran mahasiswa baru tidak tersedia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
 
 <!-- Pengumuman Section -->
 <div class="py-16 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200">

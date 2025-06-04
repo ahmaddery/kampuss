@@ -7,6 +7,7 @@
 
     <!-- Font Awesome CDN -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
@@ -59,6 +60,15 @@
                             <a href="{{ route('admin.berita.index') }}">
                                 <i class="fas fa-desktop"></i>
                                 <p>Berita</p>
+                                <span class="badge badge-success"></span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.jurusan.index') }}">
+                                <i class="fas fa-desktop"></i>
+                                <p>jurusan</p>
                                 <span class="badge badge-success"></span>
                             </a>
                         </li>
@@ -441,48 +451,49 @@
                             </li>
 
                             <li class="nav-item topbar-user dropdown hidden-caret">
-                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
-                                    <div class="avatar-sm">
-                                        <img src="assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
-                                    </div>
-                                    <span class="profile-username">
-                                        <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">Hizrian</span>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                    <div class="dropdown-user-scroll scrollbar-outer">
-                                        <li>
-                                            <div class="user-box">
-                                                <div class="avatar-lg">
-                                                    <img src="assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
-                                                </div>
-                                                <div class="u-text">
-                                                    <h4>Hizrian</h4>
-                                                    <p class="text-muted">hello@example.com</p>
-                                                    <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">My Profile</a>
-                                            <a class="dropdown-item" href="#">My Balance</a>
-                                            <a class="dropdown-item" href="#">Inbox</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Account Setting</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger">Logout</button>
-                                            </form>
+    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+        <div class="avatar-sm">
+            <!-- Menampilkan gambar profil admin yang sedang login -->
+            <img src="{{ asset('storage/' . (Auth::user()->profile_picture ?? 'default-profile.jpg')) }}" alt="Profile Picture" class="avatar-img rounded-circle" />
+        </div>
+        <span class="profile-username">
+            <span class="op-7">Hi,</span>
+            <span class="fw-bold">{{ Auth::user()->name }}</span> <!-- Menampilkan nama pengguna -->
+        </span>
+    </a>
+    <ul class="dropdown-menu dropdown-user animated fadeIn">
+        <div class="dropdown-user-scroll scrollbar-outer">
+            <li>
+                <div class="user-box">
+                    <div class="avatar-lg">
+                        <!-- Menampilkan gambar profil admin yang sedang login -->
+                        <img src="{{ asset('storage/' . (Auth::user()->profile_picture ?? 'default-profile.jpg')) }}" alt="Profile Picture" class="avatar-img rounded" />
+                    </div>
+                    <div class="u-text">
+                        <h4>{{ Auth::user()->name }}</h4> <!-- Menampilkan nama pengguna -->
+                        <p class="text-muted">{{ Auth::user()->email }}</p> <!-- Menampilkan email pengguna -->
+                        <a href="{{ route('admin.profile') }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a> <!-- Link ke halaman profil admin -->
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ route('admin.profile') }}">My Profile</a> <!-- Link ke halaman profil admin -->
+                <a class="dropdown-item" href="{{ route('admin.users') }}">manage Admin</a>
+                <a class="dropdown-item" href="{{ route('admin.settings.pmb') }}">pengaturan</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Account Setting</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            </li>
+        </div>
+    </ul>
+</li>
 
-
-                                        </li>
-                                    </div>
-                                </ul>
-                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -496,7 +507,12 @@
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>                                                       
+    <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>                
+    
+    
+    <!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@stack('scripts')
 </body>
 </html>
 
