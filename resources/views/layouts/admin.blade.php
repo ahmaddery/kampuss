@@ -21,8 +21,8 @@
             <div class="sidebar-logo">
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
-                    <a href="index.html" class="logo">
-                        <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+                    <a href="{{ route('home') }}" class="logo">
+                        <span class="navbar-brand">Admin</span>
                     </a>
                     <div class="nav-toggle">
                         <button class="btn btn-toggle toggle-sidebar">
@@ -77,6 +77,14 @@
                             <a href="{{ route('admin.sambutan_rektor.index') }}">
                                 <i class="fas fa-desktop"></i>
                                 <p>sambutan rektor</p>
+                                <span class="badge badge-success"></span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.sejarah.index') }}">
+                                <i class="fas fa-desktop"></i>
+                                <p>sejarah</p>
                                 <span class="badge badge-success"></span>
                             </a>
                         </li>
@@ -521,6 +529,9 @@
     <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @stack('scripts')
+
+
+
 </body>
 </html>
 

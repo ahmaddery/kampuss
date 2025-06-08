@@ -17,15 +17,11 @@ class JurusanController extends Controller
     }
 
     // Menampilkan detail jurusan
-public function show($id)
-{
-    // Mencari jurusan berdasarkan id
-    $jurusan = Jurusan::findOrFail($id);
-
-    // Menampilkan view dengan data jurusan
-    return view('admin.jurusan.show', compact('jurusan'));
-}
-
+    public function show($id)
+    {
+        $jurusan = Jurusan::findOrFail($id);
+        return view('admin.jurusan.show', compact('jurusan'));
+    }
 
     // Menampilkan form untuk membuat jurusan baru
     public function create()
@@ -38,14 +34,14 @@ public function show($id)
     {
         // Validasi input
         $request->validate([
-            'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi file gambar
+            'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'jurusan' => 'required|string|max:255',
             'deskripsi' => 'required|string',
         ]);
 
         // Upload gambar ke storage dan simpan path-nya
         if ($request->hasFile('icon')) {
-            $imagePath = $request->file('icon')->store('images/jurusan', 'public'); // Menyimpan di storage/app/public/images/jurusan
+            $imagePath = $request->file('icon')->store('images/jurusan', 'public');
         }
 
         // Simpan data jurusan dengan path gambar
@@ -55,7 +51,7 @@ public function show($id)
             'deskripsi' => $request->deskripsi,
         ]);
 
-        return redirect()->route('admin.jurusan.index')->with('success', 'Jurusan berhasil dibuat!');
+        return redirect()->route('admin.jurusan.index')->with('toast_success', 'Jurusan berhasil dibuat!');
     }
 
     // Menampilkan form untuk mengedit jurusan
@@ -70,7 +66,7 @@ public function show($id)
     {
         // Validasi input
         $request->validate([
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi file gambar
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'jurusan' => 'required|string|max:255',
             'deskripsi' => 'required|string',
         ]);
@@ -84,7 +80,6 @@ public function show($id)
                 Storage::disk('public')->delete($jurusan->icon);
             }
 
-            // Upload gambar baru
             $imagePath = $request->file('icon')->store('images/jurusan', 'public');
             $jurusan->icon = $imagePath; // Simpan path gambar baru
         }
@@ -95,7 +90,7 @@ public function show($id)
             'deskripsi' => $request->deskripsi,
         ]);
 
-        return redirect()->route('admin.jurusan.index')->with('success', 'Jurusan berhasil diperbarui!');
+        return redirect()->route('admin.jurusan.index')->with('toast_success', 'Jurusan berhasil diperbarui!');
     }
 
     // Menghapus jurusan
@@ -111,6 +106,6 @@ public function show($id)
         // Hapus data jurusan
         $jurusan->delete();
 
-        return redirect()->route('admin.jurusan.index')->with('success', 'Jurusan berhasil dihapus!');
+        return redirect()->route('admin.jurusan.index')->with('toast_success', 'Jurusan berhasil dihapus!');
     }
 }

@@ -6,7 +6,9 @@
         <h1 class="text-3xl font-bold mb-6">Daftar Jurusan</h1>
 
         <!-- Tombol untuk menambah jurusan baru -->
-        <a href="{{ route('admin.jurusan.create') }}" class="btn btn-primary mb-4">Tambah Jurusan</a>
+        <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#addJurusanModal">
+            <i class="fas fa-plus-circle"></i> Tambah Jurusan
+        </button>
 
         <!-- Tabel Jurusan -->
         <div class="overflow-x-auto">
@@ -21,30 +23,460 @@
                 <tbody>
                     @foreach($jurusans as $jurusan)
                         <tr class="border-b">
-                            <!-- <td class="text-center px-4 py-2">
-                                <img src="" alt="Icon" class="w-[10px] h-[10px] object-contain rounded-full">
-                            </td>   -->
                             <td class="px-4 py-2">{{ $jurusan->jurusan }}</td>
                             <td class="px-4 py-2">{{ $jurusan->deskripsi }}</td>
                             <td class="text-center px-4 py-2">
-                                <!-- Tautan untuk melihat detail jurusan -->
-                                <a href="{{ route('admin.jurusan.show', $jurusan->id) }}" class="btn btn-info btn-sm">Lihat</a>
+                                <!-- Lihat Modal -->
+                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#showJurusanModal{{ $jurusan->id }}">
+                                    <i class="fas fa-eye"></i> Lihat
+                                </button>
 
-                                <!-- Tautan untuk mengedit -->
-                                <a href="{{ route('admin.jurusan.edit', $jurusan->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <!-- Edit Modal -->
+                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editJurusanModal{{ $jurusan->id }}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
 
-                                <!-- Formulir untuk menghapus jurusan -->
-                                <form action="{{ route('admin.jurusan.destroy', $jurusan->id) }}" method="POST" style="display:inline;">
+                                <!-- Hapus Button -->
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $jurusan->id }}, '{{ $jurusan->jurusan }}')">
+                                    <i class="fas fa-trash-alt"></i> Hapus
+                                </button>
+                                
+                                <!-- Hidden form for delete -->
+                                <form id="delete-form-{{ $jurusan->id }}" action="{{ route('admin.jurusan.destroy', $jurusan->id) }}" method="POST" style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus jurusan ini?')">Hapus</button>
                                 </form>
                             </td>
                         </tr>
+
+                        <!-- Modal Show Jurusan -->
+                        <div class="modal fade" id="showJurusanModal{{ $jurusan->id }}" tabindex="-1" role="dialog" aria-labelledby="showJurusanModalLabel{{ $jurusan->id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="showJurusanModalLabel{{ $jurusan->id }}">Detail Jurusan: {{ $jurusan->jurusan }}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3 class="text-xl font-semibold">Nama Jurusan:</h3>
+                                        <p>{{ $jurusan->jurusan }}</p>
+
+                                        <h3 class="text-xl font-semibold mt-2">Deskripsi:</h3>
+                                        <p>{{ $jurusan->deskripsi }}</p>
+
+                                        <h3 class="text-xl font-semibold mt-2">Icon:</h3>
+                                        @if($jurusan->icon)
+                                            <img src="{{ Storage::url($jurusan->icon) }}" alt="Icon" class="w-[100px] h-[100px] object-contain rounded-full mt-2">
+                                        @else
+                                            <p class="text-gray-500">Tidak ada icon</p>
+                                        @endif
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Edit Jurusan -->
+                        <div class="modal fade" id="editJurusanModal{{ $jurusan->id }}" tabindex="-1" role="dialog" aria-labelledby="editJurusanModalLabel{{ $jurusan->id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editJurusanModalLabel{{ $jurusan->id }}">Edit Jurusan</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="editJurusanForm{{ $jurusan->id }}" action="{{ route('admin.jurusan.update', $jurusan->id) }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <!-- Input untuk Icon (Upload Gambar) -->
+                                            <div class="form-group">
+                                                <label for="edit_icon{{ $jurusan->id }}">Icon (Upload Gambar)</label>
+                                                <input type="file" name="icon" id="edit_icon{{ $jurusan->id }}" class="form-control" accept="image/*" onchange="previewEditImage({{ $jurusan->id }}, this)">
+                                                
+                                                <!-- Menampilkan gambar lama jika ada -->
+                                                @if($jurusan->icon)
+                                                    <p class="mt-2">Gambar Saat Ini:</p>
+                                                    <img id="current_image{{ $jurusan->id }}" src="{{ asset('storage/' . $jurusan->icon) }}" alt="Icon" width="100" class="mt-2">
+                                                @endif
+                                                
+                                                <!-- Preview gambar baru -->
+                                                <div id="edit_imagePreview{{ $jurusan->id }}" style="display: none;" class="mt-2">
+                                                    <p>Preview Gambar Baru:</p>
+                                                    <img id="edit_previewImg{{ $jurusan->id }}" src="" alt="Preview" width="100">
+                                                </div>
+                                            </div>
+
+                                            <!-- Input untuk Nama Jurusan -->
+                                            <div class="form-group">
+                                                <label for="edit_jurusan{{ $jurusan->id }}">Nama Jurusan</label>
+                                                <input type="text" name="jurusan" id="edit_jurusan{{ $jurusan->id }}" class="form-control" value="{{ old('jurusan', $jurusan->jurusan) }}" required>
+                                            </div>
+
+                                            <!-- Input untuk Deskripsi -->
+                                            <div class="form-group">
+                                                <label for="edit_deskripsi{{ $jurusan->id }}">Deskripsi</label>
+                                                <textarea name="deskripsi" id="edit_deskripsi{{ $jurusan->id }}" class="form-control" required>{{ old('deskripsi', $jurusan->deskripsi) }}</textarea>
+                                            </div>
+
+                                            <button type="button" class="btn btn-primary mt-3" onclick="confirmUpdate({{ $jurusan->id }})">
+                                                <i class="fas fa-save"></i> Perbarui
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Modal Tambah Jurusan -->
+    <div class="modal fade" id="addJurusanModal" tabindex="-1" role="dialog" aria-labelledby="addJurusanModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addJurusanModalLabel"><i class="fas fa-plus-circle"></i> Tambah Jurusan Baru</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addJurusanForm" action="{{ route('admin.jurusan.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <!-- Input untuk Icon (Upload Gambar) -->
+                        <div class="form-group">
+                            <label for="add_icon">Icon (Upload Gambar)</label>
+                            <input type="file" name="icon" id="add_icon" class="form-control" accept="image/*" onchange="previewAddImage(this)" required>
+                            
+                            <!-- Preview gambar -->
+                            <div id="add_imagePreview" style="display: none;" class="mt-2">
+                                <p>Preview:</p>
+                                <img id="add_previewImg" src="" alt="Preview" width="100">
+                            </div>
+                        </div>
+
+                        <!-- Input untuk Nama Jurusan -->
+                        <div class="form-group">
+                            <label for="add_jurusan">Nama Jurusan</label>
+                            <input type="text" name="jurusan" id="add_jurusan" class="form-control" value="{{ old('jurusan') }}" required>
+                        </div>
+
+                        <!-- Input untuk Deskripsi -->
+                        <div class="form-group">
+                            <label for="add_deskripsi">Deskripsi</label>
+                            <textarea name="deskripsi" id="add_deskripsi" class="form-control" required>{{ old('deskripsi') }}</textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-success mt-3" onclick="confirmStore()">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pastikan sudah ada script berikut di bagian footer -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+@push('scripts')
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        // Show success toast
+        @if(session('toast_success'))
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('toast_success') }}'
+            });
+        @endif
+
+        // Show error toast
+        @if(session('toast_error'))
+            Toast.fire({
+                icon: 'error',
+                title: '{{ session('toast_error') }}'
+            });
+        @endif
+
+        // Show validation error toast
+        @if($errors->any())
+            let errorMessages = '';
+            @foreach($errors->all() as $error)
+                errorMessages += '{{ $error }}\n';
+            @endforeach
+            
+            Toast.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                html: errorMessages.replace(/\n/g, '<br>')
+            });
+        @endif
+    });
+
+    // Confirm store function
+    function confirmStore() {
+        // Validate form first
+        const form = document.getElementById('addJurusanForm');
+        const icon = document.getElementById('add_icon').files[0];
+        const jurusan = document.getElementById('add_jurusan').value.trim();
+        const deskripsi = document.getElementById('add_deskripsi').value.trim();
+
+        if (!icon || !jurusan || !deskripsi) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Semua field harus diisi!'
+            });
+            return;
+        }
+
+        // Validate file size (2MB)
+        if (icon.size > 2048 * 1024) {
+            Swal.fire({
+                icon: 'error',
+                title: 'File terlalu besar!',
+                text: 'Maksimal ukuran file 2MB.'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Simpan Jurusan Baru?',
+            text: "Apakah Anda yakin ingin menyimpan jurusan ini?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, simpan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Menyimpan...',
+                    text: 'Mohon tunggu sementara data disimpan.',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                form.submit();
+            }
+        });
+    }
+
+    // Confirm update function
+    function confirmUpdate(id) {
+        const form = document.getElementById('editJurusanForm' + id);
+        const jurusan = document.getElementById('edit_jurusan' + id).value.trim();
+        const deskripsi = document.getElementById('edit_deskripsi' + id).value.trim();
+
+        if (!jurusan || !deskripsi) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Nama jurusan dan deskripsi harus diisi!'
+            });
+            return;
+        }
+
+        // Validate file size if file is selected
+        const iconInput = document.getElementById('edit_icon' + id);
+        if (iconInput.files[0] && iconInput.files[0].size > 2048 * 1024) {
+            Swal.fire({
+                icon: 'error',
+                title: 'File terlalu besar!',
+                text: 'Maksimal ukuran file 2MB.'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Perbarui Jurusan?',
+            text: "Apakah Anda yakin ingin memperbarui data jurusan ini?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, perbarui!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Memperbarui...',
+                    text: 'Mohon tunggu sementara data diperbarui.',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                form.submit();
+            }
+        });
+    }
+
+    // Confirm delete function
+    function confirmDelete(id, namaJurusan) {
+        Swal.fire({
+            title: 'Hapus Jurusan?',
+            text: "Apakah Anda yakin ingin menghapus jurusan '" + namaJurusan + "'? Data yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Menghapus...',
+                    text: 'Mohon tunggu sementara data dihapus.',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+
+    // Preview image for add form
+    function previewAddImage(input) {
+        const file = input.files[0];
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        if (file) {
+            // Validate file size (2MB)
+            if (file.size > 2048 * 1024) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'File terlalu besar! Maksimal 2MB.'
+                });
+                input.value = '';
+                document.getElementById('add_imagePreview').style.display = 'none';
+                return;
+            }
+
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+            if (!allowedTypes.includes(file.type)) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Tipe file tidak valid! Hanya JPEG, PNG, JPG, GIF, SVG yang diizinkan.'
+                });
+                input.value = '';
+                document.getElementById('add_imagePreview').style.display = 'none';
+                return;
+            }
+
+            // Preview image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('add_previewImg').src = e.target.result;
+                document.getElementById('add_imagePreview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Gambar berhasil dipilih!'
+            });
+        } else {
+            document.getElementById('add_imagePreview').style.display = 'none';
+        }
+    }
+
+    // Preview image for edit form
+    function previewEditImage(id, input) {
+        const file = input.files[0];
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        if (file) {
+            // Validate file size (2MB)
+            if (file.size > 2048 * 1024) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'File terlalu besar! Maksimal 2MB.'
+                });
+                input.value = '';
+                document.getElementById('edit_imagePreview' + id).style.display = 'none';
+                return;
+            }
+
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+            if (!allowedTypes.includes(file.type)) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Tipe file tidak valid! Hanya JPEG, PNG, JPG, GIF, SVG yang diizinkan.'
+                });
+                input.value = '';
+                document.getElementById('edit_imagePreview' + id).style.display = 'none';
+                return;
+            }
+
+            // Preview image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('edit_previewImg' + id).src = e.target.result;
+                document.getElementById('edit_imagePreview' + id).style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Gambar berhasil dipilih!'
+            });
+        } else {
+            document.getElementById('edit_imagePreview' + id).style.display = 'none';
+        }
+    }
+    </script>
+    @endpush
 
 @endsection

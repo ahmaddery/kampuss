@@ -11,8 +11,7 @@ class SambutanRektorController extends Controller
 {
     public function index()
     {
-        // Ambil data sambutan rektor
-        $sambutan = SambutanRektor::all();
+        $sambutan = SambutanRektor::orderBy('created_at', 'desc')->get();
         return view('admin.sambutan_rektor.index', compact('sambutan'));
     }
 
@@ -25,22 +24,40 @@ class SambutanRektorController extends Controller
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'deskripsi' => 'required',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'deskripsi' => 'required|string',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'judul.required' => 'Judul harus diisi.',
+            'judul.max' => 'Judul maksimal 255 karakter.',
+            'deskripsi.required' => 'Deskripsi harus diisi.',
+            'foto.required' => 'Foto harus diupload.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus: jpeg, png, jpg, atau gif.',
+            'foto.max' => 'Ukuran foto maksimal 2MB.',
         ]);
 
-        $foto = null;
-        if ($request->hasFile('foto')) {
-            $foto = $request->file('foto')->store('sambutanrektor', 'public');
+        try {
+            $foto = $request->file('foto')->store('sambutan-rektor', 'public');
+
+            SambutanRektor::create([
+                'judul' => $request->judul,
+                'deskripsi' => $request->deskripsi,
+                'foto' => $foto,
+            ]);
+
+            return redirect()->route('admin.sambutan_rektor.index')
+                           ->with('success', 'Sambutan Rektor berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Terjadi kesalahan saat menyimpan data.')
+                           ->withInput();
         }
+    }
 
-        SambutanRektor::create([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'foto' => $foto,
-        ]);
-
-        return redirect()->route('admin.sambutan_rektor.index')->with('success', 'Sambutan Rektor berhasil ditambahkan');
+    public function show($id)
+    {
+        $sambutan = SambutanRektor::findOrFail($id);
+        return view('admin.sambutan_rektor.show', compact('sambutan'));
     }
 
     public function edit($id)
@@ -53,41 +70,58 @@ class SambutanRektorController extends Controller
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'deskripsi' => 'required',
+            'deskripsi' => 'required|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'judul.required' => 'Judul harus diisi.',
+            'judul.max' => 'Judul maksimal 255 karakter.',
+            'deskripsi.required' => 'Deskripsi harus diisi.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus: jpeg, png, jpg, atau gif.',
+            'foto.max' => 'Ukuran foto maksimal 2MB.',
         ]);
 
-        $sambutan = SambutanRektor::findOrFail($id);
-
-        if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
-            if ($sambutan->foto && Storage::exists('public/sambutanrektor/' . $sambutan->foto)) {
-                Storage::delete('public/sambutanrektor/' . $sambutan->foto);
+        try {
+            $sambutan = SambutanRektor::findOrFail($id);
+            
+            if ($request->hasFile('foto')) {
+                if ($sambutan->foto && Storage::disk('public')->exists($sambutan->foto)) {
+                    Storage::disk('public')->delete($sambutan->foto);
+                }
+                $sambutan->foto = $request->file('foto')->store('sambutan-rektor', 'public');
             }
 
-            $foto = $request->file('foto')->store('sambutanrektor', 'public');
-            $sambutan->foto = $foto;
+            $sambutan->update([
+                'judul' => $request->judul,
+                'deskripsi' => $request->deskripsi,
+                'foto' => $sambutan->foto,
+            ]);
+
+            return redirect()->route('admin.sambutan_rektor.index')
+                           ->with('success', 'Sambutan Rektor berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Terjadi kesalahan saat memperbarui data.')
+                           ->withInput();
         }
-
-        $sambutan->update([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-        ]);
-
-        return redirect()->route('admin.sambutan_rektor.index')->with('success', 'Sambutan Rektor berhasil diperbarui');
     }
 
     public function destroy($id)
     {
-        $sambutan = SambutanRektor::findOrFail($id);
+        try {
+            $sambutan = SambutanRektor::findOrFail($id);
 
-        // Hapus foto jika ada
-        if ($sambutan->foto && Storage::exists('public/sambutanrektor/' . $sambutan->foto)) {
-            Storage::delete('public/sambutanrektor/' . $sambutan->foto);
+            if ($sambutan->foto && Storage::disk('public')->exists($sambutan->foto)) {
+                Storage::disk('public')->delete($sambutan->foto);
+            }
+
+            $sambutan->delete();
+
+            return redirect()->route('admin.sambutan_rektor.index')
+                           ->with('success', 'Sambutan Rektor berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Terjadi kesalahan saat menghapus data.');
         }
-
-        $sambutan->delete();
-
-        return redirect()->route('admin.sambutan_rektor.index')->with('success', 'Sambutan Rektor berhasil dihapus');
     }
 }
