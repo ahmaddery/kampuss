@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SambutanRektorController;
 use App\Http\Controllers\SambutanController;
 use App\Http\Controllers\Admin\SejarahController;
+use App\Http\Controllers\Admin\PengumumanController;
+use App\Http\Controllers\AnnouncementController;
 
 Route::get('/', [UtamaController::class, 'index']);
 
@@ -76,6 +78,13 @@ Route::put('admin/berita/{berita}', [BeritaController::class, 'update'])->name('
 Route::delete('admin/berita/{berita}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
 
 
+Route::get('admin/pengumuman', [PengumumanController::class, 'index'])->name('admin.pengumuman.index');
+Route::get('admin/pengumuman/create', [PengumumanController::class, 'create'])->name('admin.pengumuman.create');
+Route::post('admin/pengumuman', [PengumumanController::class, 'store'])->name('admin.pengumuman.store');
+Route::get('admin/pengumuman/{pengumuman}/edit', [PengumumanController::class, 'edit'])->name('admin.pengumuman.edit');
+Route::put('admin/pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('admin.pengumuman.update');
+Route::delete('admin/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])->name('admin.pengumuman.destroy');
+
 
 // Menampilkan daftar jurusan
 Route::get('admin/jurusan', [JurusanController::class, 'index'])->name('admin.jurusan.index');
@@ -96,6 +105,9 @@ Route::get('admin/jurusan/{id}', [JurusanController::class, 'show'])->name('admi
 // Route to display berita on the homepage
 Route::get('/berita', [NewsController::class, 'index'])->name('berita.index');
 Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('berita.show');
+
+Route::get('/pengumuman', [AnnouncementController::class, 'index'])->name('pengumuman.index');
+Route::get('/pengumuman/{slug}', [AnnouncementController::class, 'show'])->name('pengumuman.show');
 
 
 // Route untuk halaman index (menampilkan view sambutan-rektor)
