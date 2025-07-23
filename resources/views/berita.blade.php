@@ -15,50 +15,7 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        
-        .news-card {
-            background: linear-gradient(145deg, #ffffff, #f8fafc);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .news-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            border-color: rgba(59, 130, 246, 0.3);
-        }
-        
-        .image-container {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .image-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1;
-        }
-        
-        .news-card:hover .image-container::before {
-            opacity: 1;
-        }
-        
-        .news-image {
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .news-card:hover .news-image {
-            transform: scale(1.1);
-        }
-        
+
         .gradient-text {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -66,293 +23,271 @@
             background-clip: text;
         }
         
-        .read-more-btn {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
+        /* Animasi fade-in */
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-in-out forwards;
+            opacity: 0;
         }
         
-        .read-more-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
-            transition: left 0.5s ease;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .read-more-btn:hover::before {
-            left: 100%;
-        }
-        
-        .search-container {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .search-input {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .search-input:focus {
-            border-color: rgba(59, 130, 246, 0.6);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-            background: rgba(255, 255, 255, 1);
-        }
-        
-        .search-btn {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            transition: all 0.3s ease;
-        }
-        
-        .search-btn:hover {
-            background: linear-gradient(135deg, #1d4ed8, #1e40af);
-            transform: translateY(-1px);
-            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        /* Efek pulse untuk badge */
+        .pulse-badge {
+            animation: pulse 2s infinite;
         }
         
         @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: .8;
-            }
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
         
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+        /* Efek shimmer untuk highlight */
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -100% 0; }
+            100% { background-position: 100% 0; }
+        }
+        
+        /* Efek untuk card berita */
+        .berita-card {
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+        .berita-card-shadow {
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+        .berita-card-image {
+        }
+        .berita-image-wrapper {
+            position: relative;
             overflow: hidden;
-            pointer-events: none;
         }
-        
-        .floating-elements::before,
-        .floating-elements::after {
+        .berita-image-wrapper::before {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-            border-radius: 50%;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+            pointer-events: none;
+            z-index: 20;
+        }
+        .berita-image-wrapper:hover::before {
+            left: 120%;
+            transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+        }
         }
         
-        .floating-elements::before {
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
+        /* Efek hover untuk tombol */
+        .btn-hover-effect {
+            position: relative;
+            overflow: hidden;
         }
         
-        .floating-elements::after {
-            top: 60%;
-            right: 10%;
-            animation-delay: 3s;
+        .btn-hover-effect:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease-out;
+            z-index: 0;
         }
         
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-            margin: 2rem 0;
-        }
-        
-        .no-results {
-            background: linear-gradient(145deg, #ffffff, #f8fafc);
-            border: 2px dashed rgba(156, 163, 175, 0.3);
+        .btn-hover-effect:hover:after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
-    <div class="container mx-auto px-4 py-8 relative">
-        <div class="floating-elements"></div>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+    <!-- Elemen dekoratif di background -->
+    <div class="fixed top-0 right-0 w-1/3 h-screen bg-blue-50 opacity-30 -z-10 transform -skew-x-12"></div>
+    <div class="fixed bottom-0 left-0 w-1/4 h-screen bg-purple-50 opacity-30 -z-10 transform skew-x-12"></div>
+    
+    <div class="container mx-auto px-4 py-12 relative z-10">
         
-        <!-- Header Section -->
-        <div class="text-center mb-12 relative">
-            <div class="inline-block">
-                <h1 class="text-5xl font-bold gradient-text mb-4 relative">
-                    <span class="relative z-10">Berita Kampus</span>
-                    <div class="absolute -inset-2 bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg opacity-20 blur-lg"></div>
-                </h1>
+        <!-- Header Section dengan tampilan modern -->
+        <div class="text-center mb-16 relative">
+            <div class="inline-block mb-3 bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm font-semibold tracking-wide relative overflow-hidden">
+                <span class="absolute inset-0 bg-gradient-to-r from-blue-50/0 via-blue-50/80 to-blue-50/0 -translate-x-full animate-[shimmer_2s_infinite]"></span>
+                <i class="fas fa-newspaper mr-2"></i> PORTAL BERITA KAMPUS
             </div>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
-                Ikuti perkembangan terbaru dan informasi penting seputar kehidupan kampus
+            <h1 class="text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
+                <span class="text-gray-900">Berita & </span>
+                <span class="gradient-text">Informasi</span>
+            </h1>
+            <p class="text-xl text-gray-600 mt-4 max-w-3xl mx-auto leading-relaxed">
+                Tetap terinformasi dengan berita dan pengumuman terbaru dari kami. 
+                <span class="text-blue-600 font-medium">Jangan lewatkan update penting!</span>
             </p>
-            
-            <!-- Search Form -->
-            <div class="search-container mb-8">
-                <form method="GET" action="{{ route('berita.index') }}" class="flex gap-2">
-                    <div class="flex-1 relative">
-                        <input 
-                            type="text" 
-                            name="search" 
-                            value="{{ $search ?? '' }}"
-                            placeholder="Cari berita berdasarkan judul, konten, author, atau tags..." 
-                            class="search-input w-full px-6 py-4 rounded-2xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 text-lg"
-                        >
-                        <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-gray-400"></i>
-                        </div>
-                    </div>
-                    <button 
-                        type="submit" 
-                        class="search-btn px-8 py-4 rounded-2xl text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                        <i class="fas fa-search mr-2"></i>
-                        CARI
-                    </button>
-                </form>
-                
-                @if($search)
-                <div class="mt-4 flex items-center justify-between">
-                    <p class="text-gray-600">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        Menampilkan hasil pencarian untuk: <strong>"{{ $search }}"</strong>
-                    </p>
-                    <a href="{{ route('berita.index') }}" class="text-blue-600 hover:text-blue-700 font-medium">
-                        <i class="fas fa-times mr-1"></i>
-                        Hapus Filter
-                    </a>
-                </div>
-                @endif
+            <div class="mt-6 flex justify-center space-x-4">
+                <a href="#berita-terbaru" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg flex items-center relative btn-hover-effect">
+                    <i class="fas fa-newspaper mr-2 relative z-10"></i> <span class="relative z-10">Berita Terbaru</span>
+                </a>
+                <a href="#" class="px-6 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-all duration-300 shadow-md hover:shadow-lg border border-blue-100 flex items-center relative overflow-hidden">
+                    <i class="fas fa-bell mr-2"></i> Berlangganan
+                    <span class="absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white to-transparent"></span>
+                </a>
             </div>
-            
-            <div class="section-divider"></div>
         </div>
 
-        @if($berita->count() > 0)
-            <!-- News Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mb-16">
-                @foreach($berita as $item)
-                <article class="news-card rounded-2xl overflow-hidden group">
-                    <div class="image-container relative">
-                        <img src="{{ asset('storage/' . $item->image_path) }}" 
-                             alt="{{ $item->title }}" 
-                             class="news-image w-full h-56 object-cover">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
-                                <i class="fas fa-graduation-cap mr-1"></i>
-                                {{ $item->category ?? 'Akademik' }}
-                            </span>
+        <!-- Search Bar dengan efek lebih menarik -->
+        <div class="mb-12 max-w-3xl mx-auto relative">
+            <form action="{{ route('berita.index') }}" method="GET">
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+                    <div class="relative">
+                        <input type="text" name="search" placeholder="Cari berita berdasarkan judul atau tag..." 
+                               class="w-full py-4 pl-12 pr-12 text-lg text-gray-700 bg-white rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" 
+                               value="{{ request('search') }}">
+                        <div class="absolute top-0 left-0 mt-4 ml-4 text-blue-500">
+                            <i class="fas fa-search fa-lg"></i>
                         </div>
-                        <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 text-xs text-gray-700 font-medium">
-                            <i class="fas fa-calendar-alt mr-1"></i>
-                            {{ \Carbon\Carbon::parse($item->publish_date)->format('d M Y') }}
-                        </div>
+                        <button type="submit" class="absolute top-0 right-0 mt-2 mr-2 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-all duration-300 shadow-md">
+                            <i class="fas fa-arrow-right fa-lg px-1"></i>
+                        </button>
                     </div>
-                    <div class="p-7">
-                        <h3 class="font-bold text-xl text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-700 transition-colors duration-300">
-                            {{ $item->title }}
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-5 leading-relaxed line-clamp-3">
-                            {{ \Illuminate\Support\Str::limit(strip_tags($item->description), 150) }}
-                        </p>
-                        <div class="flex items-center justify-between">
-                            <a href="{{ route('berita.show', $item->slug) }}" class="read-more-btn inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold text-sm bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg transition-all duration-300">
-                                <span>SELENGKAPNYA</span>
-                                <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
-                            </a>
-                            <div class="flex items-center space-x-3 text-gray-400">
-                                <button class="hover:text-red-500 transition-colors duration-300">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                                <button class="hover:text-blue-500 transition-colors duration-300">
-                                    <i class="far fa-share-alt"></i>
-                                </button>
+                </div>
+                <div class="mt-3 flex justify-center flex-wrap gap-2 text-sm text-gray-600">
+                    <span class="bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 cursor-pointer transition-colors duration-300 border border-blue-100/50 hover:border-blue-200">#Akademik</span>
+                    <span class="bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 cursor-pointer transition-colors duration-300 border border-blue-100/50 hover:border-blue-200">#Beasiswa</span>
+                    <span class="bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 cursor-pointer transition-colors duration-300 border border-blue-100/50 hover:border-blue-200">#Kegiatan</span>
+                    <span class="bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 cursor-pointer transition-colors duration-300 border border-blue-100/50 hover:border-blue-200">#Prestasi</span>
+                    <span class="bg-purple-50 px-3 py-1 rounded-full hover:bg-purple-100 cursor-pointer transition-colors duration-300 border border-purple-100/50 hover:border-purple-200">#Terbaru</span>
+                </div>
+            </form>
+        </div>
+
+        <!-- News Grid dengan tampilan modern -->
+        <div id="berita-terbaru" class="scroll-mt-16"></div>
+        @if($beritas->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                @foreach($beritas as $berita)
+                    <div class="berita-card bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col border border-gray-100 relative berita-card-shadow group" style="cursor:pointer;">
+                        <a href="{{ route('berita.show', $berita->slug) }}" class="absolute inset-0 z-10" aria-label="Baca detail {{ $berita->title }}" tabindex="0" style="display:block;"></a>
+                        <!-- Ribbon untuk berita terbaru jika publish date < 7 hari -->
+                        @if(\Carbon\Carbon::parse($berita->publish_date)->diffInDays(now()) < 7)
+                            <div class="absolute top-0 right-0 z-10 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 text-xs font-bold shadow-lg">
+                                <i class="fas fa-bolt mr-1"></i> BARU
+                            </div>
+                        @endif
+                        
+                        <div class="relative overflow-hidden berita-image-wrapper">
+                            <img src="{{ asset('storage/' . $berita->image_path) }}" 
+                                 alt="{{ $berita->title }}" 
+                                 class="w-full h-56 object-cover berita-card-image">
+                            <!-- Overlay gradient pada gambar -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-80"></div>
+                            <div class="absolute top-4 left-4 bg-blue-500 text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-md backdrop-blur-sm bg-opacity-90">
+                                <i class="fas fa-bullhorn mr-1"></i> Pengumuman
+                            </div>
+                            <!-- Tanggal di atas gambar -->
+                            <div class="absolute bottom-4 left-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white flex items-center">
+                                <i class="fas fa-calendar-alt mr-1"></i>
+                                <span>{{ \Carbon\Carbon::parse($berita->publish_date)->isoFormat('D MMMM YYYY') }}</span>
+                            </div>
+                            <!-- Views counter -->
+                            <div class="absolute bottom-4 right-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white flex items-center">
+                                <i class="fas fa-eye mr-1"></i>
+                                <span>{{ $berita->count_views ?? 0 }} views</span>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-3 leading-tight hover:text-blue-600 transition-colors duration-300 line-clamp-2">{{ $berita->title }}</h2>
+                            
+                            <!-- Tags -->
+                            @if(!empty($berita->tags))
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    @foreach(explode(',', $berita->tags) as $tag)
+                                        @if(!empty(trim($tag)))
+                                            <span class="bg-blue-50 text-blue-700 px-2 py-1 rounded-md text-xs font-medium">#{{ trim($tag) }}</span>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                            
+                            <p class="text-gray-700 flex-grow leading-relaxed line-clamp-3">{{ Str::limit(strip_tags($berita->description), 130) }}</p>
+                            
+                            <div class="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center bg-gradient-to-b from-white/0 to-gray-50/50 -mx-6 px-6">
+                                <div class="text-sm text-gray-500 flex items-center">
+                                    <i class="fas fa-clock mr-1 text-blue-500"></i>
+                                    <span>{{ ceil(str_word_count(strip_tags($berita->description)) / 200) }} min read</span>
+                                </div>
+                                <a href="{{ route('berita.show', $berita->slug) }}" class="font-semibold text-blue-600 hover:text-blue-800 inline-flex items-center group bg-blue-50 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-blue-100 relative btn-hover-effect">
+                                    <span class="relative z-10">Baca Selengkapnya</span>
+                                    <i class="fas fa-arrow-right ml-2 transition-transform duration-300 group-hover:translate-x-1 relative z-10"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                </article>
                 @endforeach
             </div>
 
-            <!-- Enhanced Pagination -->
-            @if($berita->hasPages())
-            <div class="flex justify-center items-center space-x-3 mt-16">
-                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-200/50">
-                    <div class="flex items-center space-x-2">
-                        @if ($berita->onFirstPage())
-                            <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 text-gray-400 font-medium cursor-not-allowed">
-                                <i class="fas fa-chevron-left text-sm"></i>
-                            </span>
-                        @else
-                            <a href="{{ $berita->previousPageUrl() }}" class="flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 hover:bg-blue-600 hover:text-white transition-all duration-300 text-gray-600 font-medium">
-                                <i class="fas fa-chevron-left text-sm"></i>
-                            </a>
-                        @endif
-                        
-                        @foreach ($berita->getUrlRange(1, $berita->lastPage()) as $page => $url)
-                            @if ($page == $berita->currentPage())
-                                <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 text-white font-semibold shadow-lg">
-                                    {{ $page }}
-                                </span>
-                            @else
-                                <a href="{{ $url }}" class="flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 hover:bg-blue-600 hover:text-white transition-all duration-300 text-gray-600 font-medium">
-                                    {{ $page }}
-                                </a>
-                            @endif
-                        @endforeach
-                        
-                        @if ($berita->hasMorePages())
-                            <a href="{{ $berita->nextPageUrl() }}" class="flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 hover:bg-blue-600 hover:text-white transition-all duration-300 text-gray-600 font-medium">
-                                <i class="fas fa-chevron-right text-sm"></i>
-                            </a>
-                        @else
-                            <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 text-gray-400 font-medium cursor-not-allowed">
-                                <i class="fas fa-chevron-right text-sm"></i>
-                            </span>
-                        @endif
-                    </div>
+            <!-- Pagination dengan styling yang lebih menarik -->
+            <div class="mt-16">
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
+                    {{ $beritas->links('vendor.pagination.tailwind') }}
+                </div>
+                <div class="text-center mt-4 text-sm text-gray-500">
+                    Menampilkan {{ $beritas->firstItem() ?? 0 }} - {{ $beritas->lastItem() ?? 0 }} dari {{ $beritas->total() ?? 0 }} berita
                 </div>
             </div>
-            @endif
         @else
-            <!-- No Results Found -->
-            <div class="no-results rounded-2xl p-16 text-center">
-                <div class="max-w-md mx-auto">
-                    <div class="mb-6">
-                        <i class="fas fa-search text-6xl text-gray-300"></i>
+            <div class="mt-8">
+                <div class="bg-white rounded-2xl shadow-md p-10 text-center max-w-2xl mx-auto border border-gray-100 card-shadow">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-newspaper text-blue-500 text-3xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">
-                        Tidak Ada Berita Ditemukan
-                    </h3>
-                    <p class="text-gray-600 mb-8 leading-relaxed">
-                        @if($search)
-                            Maaf, tidak ada berita yang cocok dengan pencarian "<strong>{{ $search }}</strong>". 
-                            Coba gunakan kata kunci yang berbeda atau hapus filter pencarian.
-                        @else
-                            Belum ada berita yang tersedia saat ini. Silakan kembali lagi nanti.
-                        @endif
-                    </p>
-                    @if($search)
-                    <a href="{{ route('berita.index') }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold bg-blue-50 hover:bg-blue-100 px-6 py-3 rounded-lg transition-all duration-300">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Lihat Semua Berita
-                    </a>
-                    @endif
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">Tidak ada berita yang ditemukan</h3>
+                    <p class="text-gray-600 mb-6">Maaf, kami tidak dapat menemukan berita yang sesuai dengan kriteria pencarian Anda.</p>
+                    <div class="space-y-4">
+                        <a href="{{ route('berita.index') }}" class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg transition-all duration-300">
+                            <i class="fas fa-home mr-2"></i> Kembali ke Halaman Utama
+                        </a>
+                        <div class="text-sm text-gray-500">atau coba kata kunci pencarian lainnya</div>
+                        <div class="flex flex-wrap justify-center gap-2 mt-2">
+                            <a href="{{ route('berita.index', ['search' => 'terbaru']) }}" class="px-4 py-2 bg-gray-100 rounded-full text-gray-700 text-sm">#terbaru</a>
+                            <a href="{{ route('berita.index', ['search' => 'kampus']) }}" class="px-4 py-2 bg-gray-100 rounded-full text-gray-700 text-sm">#kampus</a>
+                            <a href="{{ route('berita.index', ['search' => 'mahasiswa']) }}" class="px-4 py-2 bg-gray-100 rounded-full text-gray-700 text-sm">#mahasiswa</a>
+                            <a href="{{ route('berita.index', ['search' => 'kegiatan']) }}" class="px-4 py-2 bg-gray-100 rounded-full text-gray-700 text-sm">#kegiatan</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dekoratif elemen untuk halaman kosong -->
+                <div class="relative mt-16 max-w-4xl mx-auto">
+                    <div class="absolute -top-10 -left-10 w-20 h-20 bg-blue-100 rounded-full opacity-50"></div>
+                    <div class="absolute -bottom-10 -right-10 w-20 h-20 bg-purple-100 rounded-full opacity-50"></div>
+                    <div class="bg-white rounded-2xl shadow-md p-6 text-center border border-gray-100 card-shadow">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Berita Akan Datang</h3>
+                        <p class="text-gray-600 mb-4">Kami sedang menyiapkan berita-berita menarik untuk Anda. Kunjungi kembali halaman ini dalam beberapa hari.</p>
+                        <div class="flex justify-center space-x-4">
+                            <div class="w-16 h-16 bg-gray-200 rounded-lg"></div>
+                            <div class="w-16 h-16 bg-blue-100 rounded-lg"></div>
+                            <div class="w-16 h-16 bg-purple-100 rounded-lg"></div>
+                            <div class="w-16 h-16 bg-gray-200 rounded-lg"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         @endif
+
     </div>
 </body>
 </html>

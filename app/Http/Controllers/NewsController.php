@@ -37,11 +37,11 @@ class NewsController extends Controller
         }
 
         // Get berita with pagination, exclude soft deleted records
-        $berita = $query->latest('publish_date')
-                       ->paginate(12)
-                       ->appends($request->query()); // Maintain search parameters in pagination links
+        $beritas = $query->latest('publish_date')
+                        ->paginate(12)
+                        ->appends($request->query()); // Maintain search parameters in pagination links
 
-        return view('berita', compact('berita', 'search'));
+        return view('berita', compact('beritas', 'search'));
     }
 
     /**
@@ -52,13 +52,26 @@ class NewsController extends Controller
      */
     public function show($slug)
     {
-        // Menemukan berita berdasarkan slug
+        // Find news by slug
         $berita = Berita::where('slug', $slug)->firstOrFail();
 
-        // Increment the view count
+        // Increment view count
         $berita->increment('count_views');
 
-        // Mengirim data berita ke halaman detail
-        return view('berita-detail', compact('berita'));
+        // Get recent posts
+        $recentPosts = Berita::where('id', '!=', $berita->id)
+                             ->latest('publish_date')
+                             ->take(5)
+                             ->get();
+
+        // Get all tags
+        $allTags = Berita::whereNotNull('tags')->pluck('tags')->flatMap(function ($tags) {
+            return explode(',', $tags);
+        })->map(function ($tag) {
+            return trim($tag);
+        })->unique();
+
+        // Pass data to the detail page
+        return view('berita-detail', compact('berita', 'recentPosts', 'allTags'));
     }
 }
