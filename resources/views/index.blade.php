@@ -54,9 +54,11 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($jurusans as $jurusan)
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-xl">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all">
                     <div class="bg-blue-700 h-2"></div>
-                    <img src="{{ asset('storage/' . $jurusan->icon) }}" alt="{{ $jurusan->jurusan }}" class="w-full h-48 object-cover object-center">
+                    <div class="relative shine-image-wrapper">
+                        <img src="{{ asset('storage/' . $jurusan->icon) }}" alt="{{ $jurusan->jurusan }}" class="w-full h-48 object-cover object-center">
+                    </div>
                     <div class="p-6">
                         <h3 class="font-bold text-xl text-gray-900 mb-2">{{ $jurusan->jurusan }}</h3>
                         <p class="text-gray-600 mb-4">{{ $jurusan->deskripsi }}</p>
@@ -65,6 +67,54 @@
                         </a>
                     </div>
                 </div>
+    <style>
+    /* Shine/Sweep hover effect for academic program images */
+    .shine-image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+    .shine-image-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+        transform: skewX(-25deg);
+        transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+        pointer-events: none;
+        z-index: 20;
+    }
+    .shine-image-wrapper:hover::before {
+        left: 120%;
+        transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    </style>
+    <style>
+    /* Shine/Sweep hover effect for academic program images */
+    .shine-image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+    .shine-image-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+        transform: skewX(-25deg);
+        transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+        pointer-events: none;
+        z-index: 20;
+    }
+    .shine-image-wrapper:hover::before {
+        left: 120%;
+        transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    </style>
             @endforeach
         </div>
         
@@ -124,8 +174,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 @foreach($berita as $item)
                     <!-- Pengumuman Item -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:scale-105">
-                        <div class="relative">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow duration-300">
+                        <div class="relative shine-image-wrapper">
                             <!-- Displaying Image -->
                             <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover rounded-t-lg">
                             <div class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-bold">
@@ -150,6 +200,31 @@
                             </a>
                         </div>
                     </div>
+
+    <style>
+    /* Shine/Sweep hover effect for announcement images */
+    .shine-image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+    .shine-image-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+        transform: skewX(-25deg);
+        transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+        pointer-events: none;
+        z-index: 20;
+    }
+    .shine-image-wrapper:hover::before {
+        left: 120%;
+        transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    </style>
                 @endforeach
             </div>
 

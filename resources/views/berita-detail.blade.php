@@ -393,7 +393,7 @@
                     </form>
                 </div>
                 
-                <!-- Statistik artikel -->
+                <!-- Statistik artikel 
                 <div class="bg-white rounded-2xl shadow-lg p-6">
                     <h3 class="text-xl font-bold mb-4 text-gray-800 flex items-center">
                         <i class="fas fa-chart-bar text-blue-500 mr-2"></i> Statistik Artikel
@@ -416,7 +416,43 @@
                             <span class="font-medium text-gray-800">{{ ceil(str_word_count(strip_tags($berita->description)) / 200) }} menit</span>
                         </div>
                     </div>
+                </div>   -->
+
+                  <!-- Menampilkan section jika is_active bernilai true -->
+    @if($setting && $setting->is_active)
+        <section class="py-20 bg-gradient-to-r from-blue-900 to-blue-800 text-white w-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col items-center justify-center text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Pendaftaran Mahasiswa Baru 2025/2026</h2>
+                    <p class="mt-4 text-blue-200 text-lg max-w-3xl mx-auto mb-8">Daftarkan diri Anda sekarang dan jadilah bagian dari keluarga besar Universitas Mercu Buana Yogyakarta!</p>
+                    <div class="mt-6">
+                        <a href="#" class="bg-white text-blue-800 hover:bg-blue-50 font-bold px-10 py-4 rounded-full inline-flex items-center text-lg transition-all shadow-lg transform hover:scale-105">
+                            <i class="fas fa-user-plus mr-2"></i> Daftar Sekarang
+                        </a>
+                    </div>
                 </div>
+            </div>
+        </section>
+    @else
+        <!-- Menampilkan pesan jika section PMB tidak aktif -->
+        <section class="py-20 bg-gray-500 text-white w-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col items-center justify-center text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Pendaftaran Mahasiswa Baru 2025/2026</h2>
+                    <p class="mt-4 text-blue-200 text-lg max-w-3xl mx-auto">Saat ini, pendaftaran mahasiswa baru tidak tersedia.</p>
+                </div>
+            </div>
+        </section>
+    @endif
+
+
+
+
+
+
+
+
+
             </div>
         </aside>
     </div>

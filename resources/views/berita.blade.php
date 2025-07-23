@@ -136,15 +136,6 @@
                 Tetap terinformasi dengan berita dan pengumuman terbaru dari kami. 
                 <span class="text-blue-600 font-medium">Jangan lewatkan update penting!</span>
             </p>
-            <div class="mt-6 flex justify-center space-x-4">
-                <a href="#berita-terbaru" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg flex items-center relative btn-hover-effect">
-                    <i class="fas fa-newspaper mr-2 relative z-10"></i> <span class="relative z-10">Berita Terbaru</span>
-                </a>
-                <a href="#" class="px-6 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-all duration-300 shadow-md hover:shadow-lg border border-blue-100 flex items-center relative overflow-hidden">
-                    <i class="fas fa-bell mr-2"></i> Berlangganan
-                    <span class="absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white to-transparent"></span>
-                </a>
-            </div>
         </div>
 
         <!-- Search Bar dengan efek lebih menarik -->
@@ -194,8 +185,12 @@
                                  class="w-full h-56 object-cover berita-card-image">
                             <!-- Overlay gradient pada gambar -->
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-80"></div>
-                            <div class="absolute top-4 left-4 bg-blue-500 text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-md backdrop-blur-sm bg-opacity-90">
-                                <i class="fas fa-bullhorn mr-1"></i> Pengumuman
+                            <div class="absolute top-4 left-4 bg-blue-500 text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-md backdrop-blur-sm bg-opacity-90 capitalize">
+                                @if(!empty($berita->tags))
+                                    <i class="fas fa-tag mr-1"></i> {{ trim(explode(',', $berita->tags)[0]) }}
+                                @else
+                                    <i class="fas fa-bullhorn mr-1"></i> Pengumuman
+                                @endif
                             </div>
                             <!-- Tanggal di atas gambar -->
                             <div class="absolute bottom-4 left-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white flex items-center">

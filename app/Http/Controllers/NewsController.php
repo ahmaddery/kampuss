@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use App\Models\Setting; // Add the Setting model
 
 class NewsController extends Controller
 {
@@ -71,7 +72,10 @@ class NewsController extends Controller
             return trim($tag);
         })->unique();
 
+                // Mengambil pengaturan status aktif/non-aktif dari tabel settings
+        $setting = Setting::first(); // Mengambil pengaturan pertama
+
         // Pass data to the detail page
-        return view('berita-detail', compact('berita', 'recentPosts', 'allTags'));
+        return view('berita-detail', compact('berita', 'recentPosts', 'allTags', 'setting'));
     }
 }
