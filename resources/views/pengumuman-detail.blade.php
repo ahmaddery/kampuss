@@ -377,9 +377,21 @@
                         <i class="fas fa-envelope-open-text mr-2"></i> Berlangganan Newsletter
                     </h3>
                     <p class="text-white/80 mb-4 text-sm">Dapatkan update pengumuman terbaru langsung ke email Anda. Kami tidak akan mengirimkan spam.</p>
-                    <form action="#" method="post" class="space-y-3">
+                    @if(session('newsletter_success'))
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                            <span class="block sm:inline">{{ session('newsletter_success') }}</span>
+                        </div>
+                    @endif
+                    @if(session('newsletter_error'))
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                            <span class="block sm:inline">{{ session('newsletter_error') }}</span>
+                        </div>
+                    @endif
+                    <form action="{{ route('newsletter.subscribe') }}" method="post" class="space-y-3">
+                        @csrf
+                        <input type="hidden" name="type" value="pengumuman">
                         <div>
-                            <input type="email" placeholder="Email Anda" class="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300">
+                            <input type="email" name="email" placeholder="Email Anda" class="w-full px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300" required>
                         </div>
                         <button type="submit" class="w-full py-3 bg-white text-blue-600 font-medium rounded-lg transition-colors duration-300 flex items-center justify-center">
                             <i class="fas fa-paper-plane mr-2"></i> Berlangganan

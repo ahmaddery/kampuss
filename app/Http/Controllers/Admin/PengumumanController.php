@@ -4,11 +4,37 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pengumuman;
+use App\Models\NewsletterSubscription;
+use App\Mail\NewsletterMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PengumumanController extends Controller
 {
+    /**
+     * Send newsletter to subscribers
+     *
+     * @param  \App\Models\Pengumuman  $pengumuman
+     * @return void
+     */
+    private function sendNewsletterToSubscribers(Pengumuman $pengumuman)
+    {
+        // Get all active subscribers for pengumuman type
+        $subscribers = NewsletterSubscription::active()
+            ->ofType('pengumuman')
+            ->get();
+            
+        foreach ($subscribers as $subscriber) {
+            // Send email to each subscriber
+            Mail::to($subscriber->email)
+                ->queue(new NewsletterMail($pengumuman, 'pengumuman', $subscriber->email));
+                
+            // Update last_sent_at timestamp
+            $subscriber->update(['last_sent_at' => now()]);
+        }
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -70,6 +96,9 @@ class PengumumanController extends Controller
                 'slug' => $slug,
                 'tags' => $request->tags,
             ]);
+            
+            // Send newsletter to subscribers
+            $this->sendNewsletterToSubscribers($pengumuman);
 
             // Return JSON response for AJAX requests
             if ($request->ajax()) {

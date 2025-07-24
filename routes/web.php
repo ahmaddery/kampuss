@@ -13,8 +13,14 @@ use App\Http\Controllers\SambutanController;
 use App\Http\Controllers\Admin\SejarahController;
 use App\Http\Controllers\Admin\PengumumanController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 
 Route::get('/', [UtamaController::class, 'index']);
+
+// Newsletter Routes
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::get('/newsletter/unsubscribe/{email}/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
 
 Auth::routes();
@@ -30,6 +36,15 @@ Route::middleware('auth')->group(function () {
     Route::get('homepage_banners/{id}/edit', [HomepageBannerController::class, 'edit'])->name('admin.homepage_banners.edit');
     Route::put('homepage_banners/{id}', [HomepageBannerController::class, 'update'])->name('admin.homepage_banners.update');
     Route::delete('homepage_banners/{id}', [HomepageBannerController::class, 'destroy'])->name('admin.homepage_banners.destroy');
+    
+    // Newsletter Routes
+    Route::get('admin/newsletter', [AdminNewsletterController::class, 'index'])->name('admin.newsletter.index');
+    Route::get('admin/newsletter/create', [AdminNewsletterController::class, 'create'])->name('admin.newsletter.create');
+    Route::post('admin/newsletter', [AdminNewsletterController::class, 'store'])->name('admin.newsletter.store');
+    Route::get('admin/newsletter/{id}/edit', [AdminNewsletterController::class, 'edit'])->name('admin.newsletter.edit');
+    Route::put('admin/newsletter/{id}', [AdminNewsletterController::class, 'update'])->name('admin.newsletter.update');
+    Route::delete('admin/newsletter/{id}', [AdminNewsletterController::class, 'destroy'])->name('admin.newsletter.destroy');
+    Route::patch('admin/newsletter/{id}/toggle-active', [AdminNewsletterController::class, 'toggleActive'])->name('admin.newsletter.toggle-active');
 
 
 

@@ -4,11 +4,37 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
+use App\Models\NewsletterSubscription;
+use App\Mail\NewsletterMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
+    /**
+     * Send newsletter to subscribers
+     *
+     * @param  \App\Models\Berita  $berita
+     * @return void
+     */
+    private function sendNewsletterToSubscribers(Berita $berita)
+    {
+        // Get all active subscribers for berita type
+        $subscribers = NewsletterSubscription::active()
+            ->ofType('berita')
+            ->get();
+            
+        foreach ($subscribers as $subscriber) {
+            // Send email to each subscriber
+            Mail::to($subscriber->email)
+                ->queue(new NewsletterMail($berita, 'berita', $subscriber->email));
+                
+            // Update last_sent_at timestamp
+            $subscriber->update(['last_sent_at' => now()]);
+        }
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -70,6 +96,9 @@ class BeritaController extends Controller
                 'slug' => $slug,
                 'tags' => $request->tags,
             ]);
+            
+            // Send newsletter to subscribers
+            $this->sendNewsletterToSubscribers($berita);
 
             // Return JSON response for AJAX requests
             if ($request->ajax()) {

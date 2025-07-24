@@ -1,49 +1,103 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Homepage Banners</h1>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createBannerModal">
-            <i class="fas fa-plus"></i> Create New Banner
+<style>
+    .banner-card {
+        transition: opacity 0.5s ease;
+        border-radius: 10px;
+        overflow: hidden;
+        opacity: 0;
+    }
+
+    .banner-card.lazy-loaded {
+        opacity: 1;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 123, 255, 0.05);
+    }
+
+    .modal-content {
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn {
+        transition: all 0.2s ease;
+        border-radius: 8px;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .image-preview {
+        background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+        border: 2px dashed #ced4da;
+        border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .table-responsive {
+            border-radius: 8px;
+        }
+
+        .btn-group .btn {
+            padding: 8px 12px;
+        }
+
+        .modal-dialog {
+            margin: 1rem;
+        }
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
+        <h1 class="h3 mb-0 text-dark fw-bold">Homepage Banners</h1>
+        <button type="button" class="btn btn-primary btn-lg shadow-sm mt-3" data-bs-toggle="modal" data-bs-target="#createBannerModal">
+            <i class="fas fa-plus me-2"></i>Create New Banner
         </button>
     </div>
 
     <!-- Banner Table -->
-    <div class="card">
-        <div class="card-body">
+    <div class="card banner-card shadow-sm border-0" data-lazy-load>
+        <div class="card-body p-4">
             <div class="table-responsive">
-                <table class="table table-striped table-hover" id="bannersTable">
-                    <thead class="table-dark">
+                <table class="table table-striped table-hover align-middle" id="bannersTable">
+                    <thead class="table-dark bg-gradient">
                         <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Actions</th>
+                            <th scope="col" class="ps-4">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col" class="text-end pe-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($banners as $banner)
                             <tr>
-                                <td>{{ Str::limit($banner->title, 30) }}</td>
+                                <td class="ps-4">{{ Str::limit($banner->title, 30) }}</td>
                                 <td>{{ Str::limit($banner->description, 40) }}</td>
-                                <td>
-                                    <div class="btn-group" role="group">
+                                <td class="text-end pe-4">
+                                    <div class="btn-group" role="group" aria-label="Banner actions">
                                         <button type="button" 
-                                                class="btn btn-sm btn-info" 
+                                                class="btn btn-sm btn-info me-1 rounded" 
                                                 onclick="viewBanner({{ $banner->id }})"
-                                                title="View Details">
+                                                title="View Details"
+                                                aria-label="View banner details">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                         <button type="button" 
-                                                class="btn btn-sm btn-warning" 
+                                                class="btn btn-sm btn-warning me-1 rounded" 
                                                 onclick="editBanner({{ $banner->id }})"
-                                                title="Edit">
+                                                title="Edit"
+                                                aria-label="Edit banner">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <button type="button" 
-                                                class="btn btn-sm btn-danger" 
+                                                class="btn btn-sm btn-danger rounded" 
                                                 onclick="deleteBanner({{ $banner->id }}, '{{ $banner->title }}')"
-                                                title="Delete">
+                                                title="Delete"
+                                                aria-label="Delete banner">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -51,10 +105,10 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4">
+                                <td colspan="3" class="text-center py-5">
                                     <div class="text-muted">
-                                        <i class="fas fa-image fa-3x mb-3"></i>
-                                        <p>No banners found. Create your first banner to get started!</p>
+                                        <i class="fas fa-image fa-3x mb-3 opacity-75"></i>
+                                        <p class="mb-0">No banners found. Create your first banner to get started!</p>
                                     </div>
                                 </td>
                             </tr>
@@ -78,46 +132,46 @@
             </div>
             <form id="createBannerForm" action="{{ route('admin.homepage_banners.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-body">
-                    <div class="row">
+                <div class="modal-body p-4">
+                    <div class="row g-4">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="create_title" class="form-label">Title <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="title" id="create_title" required>
+                                <label for="create_title" class="form-label fw-medium">Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control rounded" name="title" id="create_title" required aria-describedby="create_title_help">
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="create_description" class="form-label">Description <span class="text-danger">*</span></label>
-                                <textarea class="form-control" name="description" id="create_description" rows="4" required></textarea>
+                                <label for="create_description" class="form-label fw-medium">Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control rounded" name="description" id="create_description" rows="4" required aria-describedby="create_description_help"></textarea>
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="create_image" class="form-label">Image <span class="text-danger">*</span></label>
-                                <input type="file" class="form-control" name="image" id="create_image" accept="image/*" required>
+                                <label for="create_image" class="form-label fw-medium">Image <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control rounded" name="image" id="create_image" accept="image/*" required aria-describedby="create_image_help">
                                 <div class="form-text">Max file size: 2MB. Allowed formats: JPG, JPEG, PNG, GIF, SVG</div>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Image Preview</label>
-                                <div id="createImagePreview" class="border rounded p-3 text-center" style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                                <label class="form-label fw-medium">Image Preview</label>
+                                <div id="createImagePreview" class="image-preview p-3 text-center" style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
                                     <div class="text-muted">
-                                        <i class="fas fa-image fa-3x mb-2"></i>
-                                        <p>No image selected</p>
+                                        <i class="fas fa-image fa-3x mb-2 opacity-75"></i>
+                                        <p class="mb-0">No image selected</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary shadow-sm" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i>Cancel
                     </button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary shadow-sm">
                         <i class="fas fa-save me-1"></i>Create Banner
                     </button>
                 </div>
@@ -139,43 +193,43 @@
             <form id="editBannerForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="modal-body">
-                    <div class="row">
+                <div class="modal-body p-4">
+                    <div class="row g-4">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="edit_title" class="form-label">Title <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="title" id="edit_title" required>
+                                <label for="edit_title" class="form-label fw-medium">Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control rounded" name="title" id="edit_title" required aria-describedby="edit_title_help">
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="edit_description" class="form-label">Description <span class="text-danger">*</span></label>
-                                <textarea class="form-control" name="description" id="edit_description" rows="4" required></textarea>
+                                <label for="edit_description" class="form-label fw-medium">Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control rounded" name="description" id="edit_description" rows="4" required aria-describedby="edit_description_help"></textarea>
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="edit_image" class="form-label">Image</label>
-                                <input type="file" class="form-control" name="image" id="edit_image" accept="image/*">
+                                <label for="edit_image" class="form-label fw-medium">Image</label>
+                                <input type="file" class="form-control rounded" name="image" id="edit_image" accept="image/*" aria-describedby="edit_image_help">
                                 <div class="form-text">Leave blank to keep current image. Max file size: 2MB.</div>
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Image Preview</label>
-                                <div id="editImagePreview" class="border rounded p-3 text-center" style="min-height: 200px;">
+                                <label class="form-label fw-medium">Image Preview</label>
+                                <div id="editImagePreview" class="image-preview p-3 text-center" style="min-height: 200px;">
                                     <!-- Current image will be loaded here -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary shadow-sm" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i>Cancel
                     </button>
-                    <button type="submit" class="btn btn-warning">
+                    <button type="submit" class="btn btn-warning shadow-sm">
                         <i class="fas fa-save me-1"></i>Update Banner
                     </button>
                 </div>
@@ -194,31 +248,31 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="row">
+            <div class="modal-body p-4">
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <h6><strong>Title:</strong></h6>
+                        <h6 class="fw-medium"><strong>Title:</strong></h6>
                         <p id="view_title" class="mb-3"></p>
                         
-                        <h6><strong>Description:</strong></h6>
+                        <h6 class="fw-medium"><strong>Description:</strong></h6>
                         <p id="view_description" class="mb-3"></p>
                         
-                        <h6><strong>Created:</strong></h6>
+                        <h6 class="fw-medium"><strong>Created:</strong></h6>
                         <p id="view_created" class="mb-3"></p>
                         
-                        <h6><strong>Last Updated:</strong></h6>
+                        <h6 class="fw-medium"><strong>Last Updated:</strong></h6>
                         <p id="view_updated" class="mb-3"></p>
                     </div>
                     <div class="col-md-6">
-                        <h6><strong>Image:</strong></h6>
-                        <div id="viewImageContainer" class="text-center">
+                        <h6 class="fw-medium"><strong>Image:</strong></h6>
+                        <div id="viewImageContainer" class="image-preview p-3 text-center">
                             <!-- Image will be loaded here -->
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary shadow-sm" data-bs-dismiss="modal">
                     <i class="fas fa-times me-1"></i>Close
                 </button>
             </div>
@@ -229,6 +283,20 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Lazy loading animation
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('lazy-loaded');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('[data-lazy-load]').forEach(element => {
+        observer.observe(element);
+    });
+
     // Toast configuration
     const Toast = Swal.mixin({
         toast: true,
@@ -315,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 previewContainer.innerHTML = `
                     <img src="${e.target.result}" 
                          alt="Preview" 
-                         class="img-fluid rounded" 
+                         class="img-fluid rounded shadow-sm" 
                          style="max-height: 200px; object-fit: contain;">
                     <p class="mt-2 text-success">
                         <i class="fas fa-check-circle"></i> Image selected: ${file.name}
@@ -338,8 +406,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (formType === 'create') {
             previewContainer.innerHTML = `
                 <div class="text-muted">
-                    <i class="fas fa-image fa-3x mb-2"></i>
-                    <p>No image selected</p>
+                    <i class="fas fa-image fa-3x mb-2 opacity-75"></i>
+                    <p class="mb-0">No image selected</p>
                 </div>
             `;
         }
@@ -355,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
             confirmButtonText: 'Yes, create it!',
             cancelButtonText: 'Cancel'
         }).then((result) => {
@@ -385,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
             confirmButtonText: 'Yes, update it!',
             cancelButtonText: 'Cancel'
         }).then((result) => {
@@ -442,7 +510,7 @@ function viewBanner(id) {
         document.getElementById('viewImageContainer').innerHTML = `
             <img src="${banner.image_url || '{{ Storage::url('') }}' + banner.image_path}" 
                  alt="${banner.title}" 
-                 class="img-fluid rounded shadow" 
+                 class="img-fluid rounded shadow-sm" 
                  style="max-height: 300px; object-fit: contain;">
         `;
         
@@ -467,7 +535,7 @@ function editBanner(id) {
         document.getElementById('editImagePreview').innerHTML = `
             <img src="${banner.image_url || '{{ Storage::url('') }}' + banner.image_path}" 
                  alt="${banner.title}" 
-                 class="img-fluid rounded" 
+                 class="img-fluid rounded shadow-sm" 
                  style="max-height: 200px; object-fit: contain;">
             <p class="mt-2 text-info">
                 <i class="fas fa-info-circle"></i> Current image
@@ -486,7 +554,7 @@ function deleteBanner(id, title) {
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        cancelButtonColor: '#6c757d',
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel'
     }).then((result) => {
