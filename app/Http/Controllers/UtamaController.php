@@ -22,10 +22,13 @@ class UtamaController extends Controller
         // Mengambil semua data jurusan
         $jurusans = Jurusan::all();  // Fetch all jurusan data
 
+        // Mengambil 4 pengumuman terbaru dari database
+        $pengumuman = \App\Models\Pengumuman::latest('publish_date')->take(4)->get();
+
         // Mengambil pengaturan status aktif/non-aktif dari tabel settings
         $setting = Setting::first(); // Mengambil pengaturan pertama
 
-        // Mengirim data banner, berita, jurusan, dan setting ke view
-        return view('index', compact('banners', 'berita', 'jurusans', 'setting'));
+        // Mengirim data banner, berita, jurusan, pengumuman, dan setting ke view
+        return view('index', compact('banners', 'berita', 'jurusans', 'pengumuman', 'setting'));
     }
 }

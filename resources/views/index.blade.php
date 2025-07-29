@@ -158,17 +158,17 @@
         </section>
     @endif
 
-<!-- Pengumuman Section -->
+<!-- Berita Section -->
 <div class="py-16 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">PENGUMUMAN</h2>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Berita</h2>
             <div class="w-24 h-1 bg-yellow-500 mx-auto rounded-full"></div>
         </div>
 
         <div class="container">
-            <h1 class="text-3xl font-bold text-gray-900 mb-8">Pengumuman Terbaru</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-8">Berita Terbaru</h1>
 
             <!-- Pengumuman Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -188,7 +188,7 @@
                         </div>
                         <div class="p-6">
                             <h3 class="font-bold text-xl text-gray-900 mb-2">{{ $item->title }}</h3>
-                            <p class="text-gray-600 text-sm mb-4">Pengumuman • By {{ $item->author }}</p>
+                            <p class="text-gray-600 text-sm mb-4">Berita • By {{ $item->author }}</p>
                             <p class="text-gray-600 text-sm mb-4">
                                 <!-- Limiting the description to 100 characters while preserving HTML tags -->
                                 {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 100) !!}
@@ -231,14 +231,57 @@
             <!-- Button to see more announcements -->
             <div class="flex justify-center mt-6">
                 <a href="{{ route('berita.index') }}" class="bg-blue-600 text-white py-2 px-6 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-blue-700 transform hover:scale-105">
-                    Lihat Semua Pengumuman
+                    Lihat Semua Berita
                 </a>
             </div>
         </div>
     </div>
 </div>
 
-
+    <!-- Pengumuman Section -->
+    <div class="py-16 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-blue-900 mb-4">Pengumuman</h2>
+                <div class="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
+            </div>
+            <div class="container">
+                <h1 class="text-3xl font-bold text-blue-900 mb-8">Pengumuman Terbaru</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    @foreach($pengumuman as $item)
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow duration-300">
+                            <div class="relative shine-image-wrapper">
+                                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover rounded-t-lg">
+                                <div class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-bold">
+                                    <div class="text-center">
+                                        <div class="text-lg">{{ \Carbon\Carbon::parse($item->publish_date)->format('d') }}</div>
+                                        <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('M') }}</div>
+                                        <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('Y') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-xl text-blue-900 mb-2">{{ $item->title }}</h3>
+                                <p class="text-blue-600 text-sm mb-4">Pengumuman • By {{ $item->author }}</p>
+                                <p class="text-gray-600 text-sm mb-4">
+                                    {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 100) !!}
+                                </p>
+                                <a href="{{ route('pengumuman.show', $item->slug) }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm mt-4">
+                                    Lihat Pengumuman <i class="fas fa-chevron-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="flex justify-center mt-6">
+                    <a href="{{ route('pengumuman.index') }}" class="bg-blue-600 text-white py-2 px-6 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-blue-700 transform hover:scale-105">
+                        Lihat Semua Pengumuman
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
      <!-- Dosen & Staff Section -->
