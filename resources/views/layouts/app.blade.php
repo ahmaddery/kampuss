@@ -96,7 +96,7 @@
                                      <a href="{{ route('sambutan-rektor.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sambutan Rektor</a>
                                     <a href="{{ route('sejarah.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sejarah</a>
                                     <a href="{{ route('visi-misi.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Visi & Misi</a>
-                                    <a href="struktur-organisasi.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Struktur Organisasi</a>
+                                    <a href="{{ route('organization-structure.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Struktur Organisasi</a>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +207,7 @@
                     <a href="{{ route('sambutan-rektor.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sambutan Rektor</a>
                     <a href="{{ route('sejarah.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sejarah</a>
                     <a href="{{ route('visi-misi.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Visi & Misi</a>
-                    <a href="struktur-organisasi.html" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Struktur Organisasi</a>
+                    <a href="{{ route('organization-structure.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Struktur Organisasi</a>
                 </div>
             </div>
             <div class="mobile-dropdown">

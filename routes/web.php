@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\VisiMisiController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
+use App\Http\Controllers\OrganizationStructureController;
+use App\Http\Controllers\Admin\OrganizationStructureController as AdminOrganizationStructureController;
 
 Route::get('/', [UtamaController::class, 'index']);
 
@@ -124,6 +126,16 @@ Route::put('admin/jurusan/{id}', [JurusanController::class, 'update'])->name('ad
 Route::delete('admin/jurusan/{id}', [JurusanController::class, 'destroy'])->name('admin.jurusan.destroy');
 Route::get('admin/jurusan/{id}', [JurusanController::class, 'show'])->name('admin.jurusan.show');
 
+// Organization Structure Admin Routes
+Route::get('admin/organization-structure', [AdminOrganizationStructureController::class, 'index'])->name('admin.organization-structure.index');
+Route::get('admin/organization-structure/create', [AdminOrganizationStructureController::class, 'create'])->name('admin.organization-structure.create');
+Route::post('admin/organization-structure', [AdminOrganizationStructureController::class, 'store'])->name('admin.organization-structure.store');
+Route::get('admin/organization-structure/{organizationStructure}/edit', [AdminOrganizationStructureController::class, 'edit'])->name('admin.organization-structure.edit');
+Route::put('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'update'])->name('admin.organization-structure.update');
+Route::delete('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'destroy'])->name('admin.organization-structure.destroy');
+Route::get('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'show'])->name('admin.organization-structure.show');
+Route::post('admin/organization-structure/update-order', [AdminOrganizationStructureController::class, 'updateOrder'])->name('admin.organization-structure.update-order');
+
 
 
 
@@ -143,6 +155,11 @@ Route::get('/pengumuman/{slug}', [AnnouncementController::class, 'show'])->name(
 Route::get('/sambutan-rektor', [SambutanController::class, 'index'])->name('sambutan-rektor.index');
 Route::get('/sejarah', [SambutanController::class, 'sejarah'])->name('sejarah.index');
 Route::get('/visi-misi', [App\Http\Controllers\VisiMisiController::class, 'index'])->name('visi-misi.index');
+
+// Organization Structure Public Routes
+Route::get('/struktur-organisasi', [OrganizationStructureController::class, 'index'])->name('organization-structure.index');
+Route::get('/struktur-organisasi/{id}', [OrganizationStructureController::class, 'show'])->name('organization-structure.show');
+Route::get('/struktur-organisasi/tree/data', [OrganizationStructureController::class, 'tree'])->name('organization-structure.tree');
 
 
 //Route::get('/berita/{id}', [NewsController::class, 'show'])->name('berita.show');
