@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SambutanRektorController;
 use App\Http\Controllers\SambutanController;
 use App\Http\Controllers\Admin\SejarahController;
 use App\Http\Controllers\Admin\PengumumanController;
+use App\Http\Controllers\Admin\VisiMisiController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
@@ -65,6 +66,17 @@ Route::post('admin/sejarah', [SejarahController::class, 'store'])->name('admin.s
 Route::get('admin/sejarah/{id}/edit', [SejarahController::class, 'edit'])->name('admin.sejarah.edit');
 Route::put('admin/sejarah/{id}', [SejarahController::class, 'update'])->name('admin.sejarah.update');
 Route::delete('admin/sejarah/{id}', [SejarahController::class, 'destroy'])->name('admin.sejarah.destroy');
+
+// Visi Misi Routes
+Route::get('admin/visi-misi', [VisiMisiController::class, 'index'])->name('admin.visi-misi.index');
+Route::get('admin/visi-misi/create', [VisiMisiController::class, 'create'])->name('admin.visi-misi.create');
+Route::post('admin/visi-misi', [VisiMisiController::class, 'store'])->name('admin.visi-misi.store');
+Route::get('admin/visi-misi/{visionMission}/edit', [VisiMisiController::class, 'edit'])->name('admin.visi-misi.edit');
+Route::put('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'update'])->name('admin.visi-misi.update');
+Route::delete('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'destroy'])->name('admin.visi-misi.destroy');
+Route::get('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'show'])->name('admin.visi-misi.show');
+Route::get('admin/visi-misi/type/{type}', [VisiMisiController::class, 'getByType'])->name('admin.visi-misi.by-type');
+Route::post('admin/visi-misi/reorder-missions', [VisiMisiController::class, 'reorderMissions'])->name('admin.visi-misi.reorder-missions');
 
 
 
@@ -130,6 +142,7 @@ Route::get('/pengumuman/{slug}', [AnnouncementController::class, 'show'])->name(
 // Route untuk halaman index (menampilkan view sambutan-rektor)
 Route::get('/sambutan-rektor', [SambutanController::class, 'index'])->name('sambutan-rektor.index');
 Route::get('/sejarah', [SambutanController::class, 'sejarah'])->name('sejarah.index');
+Route::get('/visi-misi', [App\Http\Controllers\VisiMisiController::class, 'index'])->name('visi-misi.index');
 
 
 //Route::get('/berita/{id}', [NewsController::class, 'show'])->name('berita.show');
