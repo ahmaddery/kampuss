@@ -17,6 +17,7 @@ class User extends Authenticatable
         'password',
         'profile_picture',
         'role',
+        'last_login_at',
     ];
 
     protected $hidden = [
@@ -27,5 +28,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'last_login_at' => 'datetime',
     ];
+
+    /**
+     * Get the last login time in a human readable format
+     */
+    public function getLastLoginFormatted()
+    {
+        if (!$this->last_login_at) {
+            return 'Belum pernah login';
+        }
+        
+        return $this->last_login_at->setTimezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB';
+    }
+
+    /**
+     * Get the last login time relative to now
+     */
+    public function getLastLoginRelative()
+    {
+        if (!$this->last_login_at) {
+            return 'Belum pernah login';
+        }
+        
+        return $this->last_login_at->setTimezone('Asia/Jakarta')->diffForHumans();
+    }
 }

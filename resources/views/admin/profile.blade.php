@@ -137,7 +137,37 @@
                                         </div>
                                         <div>
                                             <label class="form-label text-muted mb-0 small">Account Dibuat</label>
-                                            <p class="mb-0 fw-semibold">{{ $user->created_at->format('F d, Y') }}</p>
+                                            <p class="mb-0 fw-semibold">{{ $user->created_at->setTimezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="info-item p-3 bg-light rounded-3 h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="icon-circle bg-secondary text-white me-3">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div>
+                                            <label class="form-label text-muted mb-0 small">Login Terakhir</label>
+                                            <p class="mb-0 fw-semibold">{{ $user->getLastLoginFormatted() }}</p>
+                                            <small class="text-muted">{{ $user->getLastLoginRelative() }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="info-item p-3 bg-light rounded-3 h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="icon-circle bg-purple text-white me-3">
+                                            <i class="fas fa-calendar-check"></i>
+                                        </div>
+                                        <div>
+                                            <label class="form-label text-muted mb-0 small">Akun Terakhir Diupdate</label>
+                                            <p class="mb-0 fw-semibold">{{ $user->updated_at->setTimezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</p>
+                                            <small class="text-muted">{{ $user->updated_at->diffForHumans() }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -281,6 +311,10 @@
         align-items: center;
         justify-content: center;
         font-size: 16px;
+    }
+    
+    .bg-purple {
+        background-color: #6f42c1 !important;
     }
     
     .info-item {
