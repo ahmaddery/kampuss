@@ -39,7 +39,7 @@ class NewsController extends Controller
 
         // Get berita with pagination, exclude soft deleted records
         $beritas = $query->latest('publish_date')
-                        ->paginate(12)
+                        ->paginate(6)
                         ->appends($request->query()); // Maintain search parameters in pagination links
 
         return view('berita', compact('beritas', 'search'));

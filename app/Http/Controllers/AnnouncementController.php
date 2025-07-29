@@ -39,7 +39,7 @@ class AnnouncementController extends Controller
 
         // Get pengumuman with pagination, exclude soft deleted records
         $pengumumans = $query->latest('publish_date')
-                            ->paginate(12)
+                            ->paginate(6)
                             ->appends($request->query()); // Maintain search parameters in pagination links
 
         return view('pengumuman', compact('pengumumans', 'search'));
