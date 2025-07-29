@@ -1,0 +1,271 @@
+/* Dashboard Admin Professional Styles */
+
+/* Animasi untuk cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.5s ease-out;
+    transition: all 0.3s ease;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+}
+
+/* Statistics Cards Enhanced */
+.border-left-primary {
+    border-left: 4px solid #4e73df !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+}
+
+.border-left-success {
+    border-left: 4px solid #1cc88a !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fcf7 100%);
+}
+
+.border-left-info {
+    border-left: 4px solid #36b9cc !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fcff 100%);
+}
+
+.border-left-warning {
+    border-left: 4px solid #f6c23e !important;
+    background: linear-gradient(135deg, #ffffff 0%, #fffbf0 100%);
+}
+
+/* Text Enhancements */
+.text-gray-800 {
+    color: #2c3e50 !important;
+    font-weight: 600;
+}
+
+.text-gray-300 {
+    color: #bdc3c7 !important;
+}
+
+/* Card Header Styling */
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.card-header h6 {
+    color: white !important;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Quick Action Buttons */
+.btn {
+    transition: all 0.3s ease;
+    border-radius: 8px !important;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn-sm {
+    padding: 1rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Recent Activity Styling */
+.border-bottom {
+    border-bottom: 1px solid #eee !important;
+}
+
+.border-bottom:last-child {
+    border-bottom: none !important;
+}
+
+.border-bottom:hover {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin: 0 -0.5rem;
+    padding: 0.5rem;
+}
+
+/* Badge Enhancements */
+.badge {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #1cc88a 0%, #17a673 100%);
+    color: white;
+}
+
+/* Chart Containers */
+.chart-area, .chart-pie {
+    position: relative;
+    padding: 1rem;
+}
+
+/* Container Enhancements */
+.container-fluid {
+    background-color: #f8f9fc;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+/* Header Styling */
+.h3 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn-sm {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.7rem;
+    }
+    
+    .h5 {
+        font-size: 1.1rem;
+    }
+    
+    .text-xs {
+        font-size: 0.7rem;
+    }
+}
+
+/* Loading Animation */
+.chart-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #6c757d;
+}
+
+/* Icon Enhancements */
+.fas {
+    transition: all 0.3s ease;
+}
+
+.card:hover .fas {
+    transform: scale(1.1);
+}
+
+/* Success/Status Indicators */
+.text-success {
+    color: #1cc88a !important;
+}
+
+.text-success .fas {
+    margin-right: 0.5rem;
+}
+
+/* Quick Actions Grid */
+.quick-actions .btn {
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.quick-actions .btn i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Data Tables in Recent Activity */
+.list-group-item {
+    border: none;
+    padding: 0.75rem 0;
+}
+
+.list-group-item:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+    border-radius: 4px;
+}
+
+/* Scrollbar Styling */
+.scrollbar-custom::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Custom Spacing */
+.mb-4 {
+    margin-bottom: 2rem !important;
+}
+
+/* Statistics Number Styling */
+.h5.font-weight-bold {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* Date Display */
+.text-muted {
+    color: #6c757d !important;
+    font-size: 0.9rem;
+}
+
+/* Animation Delays for Staggered Effect */
+.col-xl-3:nth-child(1) .card { animation-delay: 0.1s; }
+.col-xl-3:nth-child(2) .card { animation-delay: 0.2s; }
+.col-xl-3:nth-child(3) .card { animation-delay: 0.3s; }
+.col-xl-3:nth-child(4) .card { animation-delay: 0.4s; }
+
+/* Dark Mode Compatibility */
+@media (prefers-color-scheme: dark) {
+    .container-fluid {
+        background-color: #1a1a1a;
+    }
+    
+    .card {
+        background-color: #2d2d2d;
+        color: #ffffff;
+    }
+    
+    .text-gray-800 {
+        color: #ffffff !important;
+    }
+}

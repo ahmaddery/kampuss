@@ -69,6 +69,7 @@ Route::delete('admin/sejarah/{id}', [SejarahController::class, 'destroy'])->name
 
 Route::get('/admin/settings/pmb', [SettingController::class, 'showPMBSettings'])->name('admin.settings.pmb')->middleware('auth');
 Route::post('/admin/settings/toggle-pmb-status', [SettingController::class, 'togglePMBStatus'])->name('admin.settings.toggle.pmb.status')->middleware('auth');
+Route::get('/admin/settings', [SettingController::class, 'index'])->name('admin.settings.index')->middleware('auth');
 
 Route::get('/admin', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
 Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile')->middleware('auth');

@@ -10,6 +10,17 @@ use Illuminate\Http\Request;
 class SettingController extends Controller
 {
     /**
+     * Display a listing of the settings.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index()
+    {
+        $settings = Setting::all();
+        return view('admin.settings.index', compact('settings'));
+    }
+
+    /**
      * Menampilkan pengaturan PMB.
      *
      * @return \Illuminate\View\View
