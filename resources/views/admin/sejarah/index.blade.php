@@ -1,49 +1,86 @@
 @extends('layouts.admin')
 
 @section('content')
-    <h1>Daftar Sejarah</h1>
-    <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createSejarahModal">
-        Tambah Sejarah
-    </button>
+<div class="container py-4">
+    <div class="page-inner">
+        <!-- Page Header -->
+        <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+            <h3 class="page-title mb-0 fw-bold text-dark"><i class="fas fa-history me-2"></i> Manajemen Sejarah</h3>
+            <button class="btn btn-primary btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#createSejarahModal">
+                <i class="fas fa-plus-circle me-1"></i> Tambah Sejarah
+            </button>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Judul</th>
-                <th>Deskripsi</th>
-                <th>Foto</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($sejarah as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->judul }}</td>
-                    <td>{!! Str::limit($item->deskripsi, 50) !!}</td>
-                    <td>
-                        @if($item->foto)
-                            <img src="{{ asset('storage/' . $item->foto) }}" width="100" alt="Foto Sejarah">
-                        @else
-                            Tidak ada foto
-                        @endif
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editSejarahModal" 
-                            onclick="openEditModal({{ $item->id }}, '{{ $item->judul }}', '{{ $item->deskripsi }}', '{{ $item->foto ? asset('storage/' . $item->foto) : '' }}')">
-                            Edit
-                        </button>
-                        <form action="{{ route('admin.sejarah.destroy', $item->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        <!-- Main Card -->
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <!-- Alerts -->
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle table-borderless">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="ps-4">#</th>
+                                <th scope="col">Judul</th>
+                                <th scope="col">Deskripsi</th>
+                                <th scope="col">Foto</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($sejarah as $index => $item)
+                                <tr class="align-middle">
+                                    <td class="ps-4">{{ $index + 1 }}</td>
+                                    <td class="fw-medium">{{ $item->judul }}</td>
+                                    <td class="text-muted">{!! Str::limit($item->deskripsi, 50) !!}</td>
+                                    <td>
+                                        @if($item->foto)
+                                            <img src="{{ asset('storage/' . $item->foto) }}" width="60" height="60" class="rounded-3 shadow-sm object-cover" alt="Foto Sejarah">
+                                        @else
+                                            <span class="badge bg-secondary text-white fw-normal px-2 py-1">Tidak ada foto</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editSejarahModal" 
+                                                onclick="openEditModal({{ $item->id }}, '{{ $item->judul }}', `{{ $item->deskripsi }}`, '{{ $item->foto ? asset('storage/' . $item->foto) : '' }}')">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form action="{{ route('admin.sejarah.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-outline-danger" title="Hapus">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data sejarah.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Create Sejarah Modal -->
     <div class="modal fade" id="createSejarahModal" tabindex="-1" role="dialog" aria-labelledby="createSejarahModalLabel" aria-hidden="true">
@@ -51,7 +88,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createSejarahModalLabel">Tambah Sejarah</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -72,7 +109,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
@@ -86,7 +123,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editSejarahModalLabel">Edit Sejarah</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -109,7 +146,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Perbarui</button>
                     </div>
                 </form>
@@ -118,9 +155,9 @@
     </div>
 
         <!-- Pastikan sudah ada script berikut di bagian footer -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
     <!-- Include CKEditor CDN -->
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
     <script>

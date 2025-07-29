@@ -54,6 +54,7 @@ Route::get('admin/sambutan_rektor/create', [SambutanRektorController::class, 'cr
 Route::post('admin/sambutan_rektor', [SambutanRektorController::class, 'store'])->name('admin.sambutan_rektor.store');
 Route::get('admin/sambutan_rektor/{id}/edit', [SambutanRektorController::class, 'edit'])->name('admin.sambutan_rektor.edit');
 Route::put('admin/sambutan_rektor/{id}', [SambutanRektorController::class, 'update'])->name('admin.sambutan_rektor.update');
+Route::delete('admin/sambutan_rektor/{id}', [SambutanRektorController::class, 'destroy'])->name('admin.sambutan_rektor.destroy');
 
 
 

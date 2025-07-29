@@ -1,93 +1,81 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container-fluid mt-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="card shadow-sm border-0 rounded">
-<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top">
-    <h4 class="mb-0">
-        <i class="fas fa-microphone-alt me-2"></i>
-        Sambutan Rektor
-    </h4>
-    <button type="button" class="btn btn-light btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#createModal">
-        <i class="fas fa-plus me-1"></i>
-        Tambah Sambutan
-    </button>
-</div>
+<div class="container py-4">
+    <div class="page-inner">
+        <!-- Page Header -->
+        <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+            <h3 class="page-title mb-0 fw-bold text-dark"><i class="fas fa-microphone-alt me-2"></i> Manajemen Sambutan Rektor</h3>
+            <button class="btn btn-primary btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#createModal">
+                <i class="fas fa-plus-circle me-1"></i> Tambah Sambutan
+            </button>
+        </div>
 
-                    <div class="card-body">
-                        @if($sambutan->count() > 0)
-                            <div class="table-responsive">
-                                <table class="table table-hover table-bordered mb-0">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th scope="col" class="col-3">Judul</th>
-                                            <th scope="col" class="col-5">Deskripsi</th>
-                                            <th scope="col" class="col-2 text-center">Foto</th>
-                                            <th scope="col" class="col-2 text-center">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($sambutan as $item)
-                                            <tr>
-                                                <td>
-                                                    <strong>{{ $item->judul }}</strong>
-                                                </td>
-                                                <td>
-                                                    <div class="text-muted">
-                                                        {!! Str::limit(strip_tags($item->deskripsi), 150) !!}
-                                                    </div>
-                                                </td>
-                                                <td class="text-center">
-                                                    @if($item->foto)
-                                                        <img src="{{ Storage::url($item->foto) }}" 
-                                                             class="img-thumbnail rounded" 
-                                                             width="80" 
-                                                             height="80" 
-                                                             style="object-fit: cover;"
-                                                             alt="Foto Sambutan">
-                                                    @else
-                                                        <div class="bg-light p-2 rounded text-muted">
-                                                            <i class="fas fa-image fa-2x"></i>
-                                                            <br><small>No Image</small>
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="btn-group" role="group">
-                                                        <button type="button" 
-                                                                class="btn btn-warning btn-sm" 
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#editModal{{ $item->id }}">
-                                                            <i class="fas fa-edit me-1"></i>
-                                                            Edit
-                                                        </button>
-                                                        <button type="button" 
-                                                                class="btn btn-danger btn-sm" 
-                                                                onclick="confirmDelete('{{ $item->id }}', '{{ $item->judul }}')">
-                                                            <i class="fas fa-trash me-1"></i>
-                                                            Hapus
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @else
-                            <div class="text-center py-5">
-                                <i class="fas fa-microphone-alt fa-3x text-muted mb-3"></i>
-                                <h5 class="text-muted">Belum ada sambutan rektor</h5>
-                                <p class="text-muted">Klik tombol "Tambah Sambutan" untuk menambah sambutan baru.</p>
-                            </div>
-                        @endif
+        <!-- Main Card -->
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <!-- Alerts -->
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle table-borderless">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="ps-4">#</th>
+                                <th scope="col">Judul</th>
+                                <th scope="col">Deskripsi</th>
+                                <th scope="col">Foto</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($sambutan as $index => $item)
+                                <tr class="align-middle">
+                                    <td class="ps-4">{{ $index + 1 }}</td>
+                                    <td class="fw-medium">{{ $item->judul }}</td>
+                                    <td class="text-muted">{!! Str::limit(strip_tags($item->deskripsi), 50) !!}</td>
+                                    <td>
+                                        @if($item->foto)
+                                            <img src="{{ Storage::url($item->foto) }}" width="60" height="60" class="rounded-3 shadow-sm object-cover" alt="Foto Sambutan">
+                                        @else
+                                            <span class="badge bg-secondary text-white fw-normal px-2 py-1">Tidak ada foto</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger" onclick="confirmDelete('{{ $item->id }}', '{{ $item->judul }}')" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data sambutan rektor.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Create Modal -->
     <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
@@ -623,7 +611,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const form = document.getElementById('deleteForm');
-                        form.action = '{{ route("admin.sambutan_rektor.index") }}/' + id;
+                        form.action = '{{ route("admin.sambutan_rektor.destroy", "") }}/' + id;
                         Swal.fire({
                             title: 'Menghapus...',
                             text: 'Mohon tunggu sebentar.',

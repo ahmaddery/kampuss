@@ -1,53 +1,78 @@
 @extends('layouts.admin')
 
 @section('content')
+<div class="container py-4">
+    <div class="page-inner">
+        <!-- Page Header -->
+        <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+            <h3 class="page-title mb-0 fw-bold text-dark"><i class="fas fa-graduation-cap me-2"></i> Manajemen Jurusan</h3>
+            <button class="btn btn-primary btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#addJurusanModal">
+                <i class="fas fa-plus-circle me-1"></i> Tambah Jurusan
+            </button>
+        </div>
 
-    <div class="container mt-4">
-        <h1 class="text-3xl font-bold mb-6">Daftar Jurusan</h1>
+        <!-- Main Card -->
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <!-- Alerts -->
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
-        <!-- Tombol untuk menambah jurusan baru -->
-        <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#addJurusanModal">
-            <i class="fas fa-plus-circle"></i> Tambah Jurusan
-        </button>
-
-        <!-- Tabel Jurusan -->
-        <div class="overflow-x-auto">
-            <table class="table table-striped table-bordered shadow-md rounded-lg">
-                <thead>
-                    <tr class="bg-blue-600 text-white">
-                        <th class="px-4 py-2">Jurusan</th>
-                        <th class="px-4 py-2">Deskripsi</th>
-                        <th class="px-4 py-2 text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($jurusans as $jurusan)
-                        <tr class="border-b">
-                            <td class="px-4 py-2">{{ $jurusan->jurusan }}</td>
-                            <td class="px-4 py-2">{{ $jurusan->deskripsi }}</td>
-                            <td class="text-center px-4 py-2">
-                                <!-- Lihat Modal -->
-                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#showJurusanModal{{ $jurusan->id }}">
-                                    <i class="fas fa-eye"></i> Lihat
-                                </button>
-
-                                <!-- Edit Modal -->
-                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editJurusanModal{{ $jurusan->id }}">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-
-                                <!-- Hapus Button -->
-                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $jurusan->id }}, '{{ $jurusan->jurusan }}')">
-                                    <i class="fas fa-trash-alt"></i> Hapus
-                                </button>
-                                
-                                <!-- Hidden form for delete -->
-                                <form id="delete-form-{{ $jurusan->id }}" action="{{ route('admin.jurusan.destroy', $jurusan->id) }}" method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </td>
-                        </tr>
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle table-borderless">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="ps-4">#</th>
+                                <th scope="col">Jurusan</th>
+                                <th scope="col">Deskripsi</th>
+                                <th scope="col">Icon</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($jurusans as $index => $jurusan)
+                                <tr class="align-middle">
+                                    <td class="ps-4">{{ $index + 1 }}</td>
+                                    <td class="fw-medium">{{ $jurusan->jurusan }}</td>
+                                    <td class="text-muted">{!! Str::limit($jurusan->deskripsi, 50) !!}</td>
+                                    <td>
+                                        @if($jurusan->icon)
+                                            <img src="{{ Storage::url($jurusan->icon) }}" width="60" height="60" class="rounded-3 shadow-sm object-cover" alt="Icon Jurusan">
+                                        @else
+                                            <span class="badge bg-secondary text-white fw-normal px-2 py-1">Tidak ada icon</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#showJurusanModal{{ $jurusan->id }}" title="Lihat">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editJurusanModal{{ $jurusan->id }}" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger" onclick="confirmDelete({{ $jurusan->id }}, '{{ $jurusan->jurusan }}')" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Hidden form for delete -->
+                                        <form id="delete-form-{{ $jurusan->id }}" action="{{ route('admin.jurusan.destroy', $jurusan->id) }}" method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </td>
+                                </tr>
 
                         <!-- Modal Show Jurusan -->
                         <div class="modal fade" id="showJurusanModal{{ $jurusan->id }}" tabindex="-1" role="dialog" aria-labelledby="showJurusanModalLabel{{ $jurusan->id }}" aria-hidden="true">
@@ -55,7 +80,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="showJurusanModalLabel{{ $jurusan->id }}">Detail Jurusan: {{ $jurusan->jurusan }}</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -74,7 +99,7 @@
                                         @endif
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +111,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editJurusanModalLabel{{ $jurusan->id }}">Edit Jurusan</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -134,11 +159,18 @@
                             </div>
                         </div>
 
-                    @endforeach
-                </tbody>
-            </table>
+                                                @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data jurusan.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
     <!-- Modal Tambah Jurusan -->
     <div class="modal fade" id="addJurusanModal" tabindex="-1" role="dialog" aria-labelledby="addJurusanModalLabel" aria-hidden="true">
@@ -146,7 +178,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addJurusanModalLabel"><i class="fas fa-plus-circle"></i> Tambah Jurusan Baru</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -187,9 +219,9 @@
     </div>
 
     <!-- Pastikan sudah ada script berikut di bagian footer -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
 @push('scripts')
     <!-- SweetAlert2 -->
