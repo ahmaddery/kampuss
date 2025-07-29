@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
+    <!-- Custom Styles -->
+    @stack('styles')
 </head>
 <body class="bg-gray-50">
     <!-- Top bar with email and social media -->
@@ -277,3 +280,57 @@
     <footer>
         @include('layouts.footer') <!-- Menyertakan footer -->
     </footer>
+
+    <!-- Scripts -->
+    @stack('scripts')
+    
+    <!-- Basic dropdown functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle mobile menu toggle
+            const mobileMenuButton = document.querySelector('[data-mobile-menu-toggle]');
+            const mobileMenu = document.querySelector('[data-mobile-menu]');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Handle dropdown menus (if any specific dropdown scripts are needed)
+            const dropdowns = document.querySelectorAll('.dropdown, .mobile-dropdown');
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                const menu = dropdown.querySelector('.dropdown-menu, div.hidden');
+                
+                if (button && menu) {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        // Close other dropdowns
+                        dropdowns.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown) {
+                                const otherMenu = otherDropdown.querySelector('.dropdown-menu, div.hidden');
+                                if (otherMenu) {
+                                    otherMenu.classList.add('hidden');
+                                }
+                            }
+                        });
+                        // Toggle current dropdown
+                        menu.classList.toggle('hidden');
+                    });
+                }
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function() {
+                dropdowns.forEach(dropdown => {
+                    const menu = dropdown.querySelector('.dropdown-menu, div.hidden');
+                    if (menu && !menu.classList.contains('hidden')) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
