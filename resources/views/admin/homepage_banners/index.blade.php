@@ -53,68 +53,79 @@
 </style>
 
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
-        <h1 class="h3 mb-0 text-dark fw-bold">Homepage Banners</h1>
-        <button type="button" class="btn btn-primary btn-lg shadow-sm mt-3" data-bs-toggle="modal" data-bs-target="#createBannerModal">
-            <i class="fas fa-plus me-2"></i>Create New Banner
-        </button>
-    </div>
+    <div class="page-inner">
+        <!-- Page Header -->
+        <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+            <h3 class="page-title mb-0 fw-bold text-dark"><i class="fas fa-images me-2"></i> Manajemen Banner Homepage</h3>
+            <button class="btn btn-primary btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#createBannerModal">
+                <i class="fas fa-plus-circle me-1"></i> Tambah Banner
+            </button>
+        </div>
 
-    <!-- Banner Table -->
-    <div class="card banner-card shadow-sm border-0" data-lazy-load>
-        <div class="card-body p-4">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover align-middle" id="bannersTable">
-                    <thead class="table-dark bg-gradient">
-                        <tr>
-                            <th scope="col" class="ps-4">Title</th>
-                            <th scope="col">Description</th>
-                            <th scope="col" class="text-end pe-4">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($banners as $banner)
+        <!-- Main Card -->
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <!-- Alerts -->
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle table-borderless">
+                        <thead class="table-light">
                             <tr>
-                                <td class="ps-4">{{ Str::limit($banner->title, 30) }}</td>
-                                <td>{{ Str::limit($banner->description, 40) }}</td>
-                                <td class="text-end pe-4">
-                                    <div class="btn-group" role="group" aria-label="Banner actions">
-                                        <button type="button" 
-                                                class="btn btn-sm btn-info me-1 rounded" 
-                                                onclick="viewBanner({{ $banner->id }})"
-                                                title="View Details"
-                                                aria-label="View banner details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button type="button" 
-                                                class="btn btn-sm btn-warning me-1 rounded" 
-                                                onclick="editBanner({{ $banner->id }})"
-                                                title="Edit"
-                                                aria-label="Edit banner">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button type="button" 
-                                                class="btn btn-sm btn-danger rounded" 
-                                                onclick="deleteBanner({{ $banner->id }}, '{{ $banner->title }}')"
-                                                title="Delete"
-                                                aria-label="Delete banner">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                <th scope="col" class="ps-4">#</th>
+                                <th scope="col">Judul</th>
+                                <th scope="col">Deskripsi</th>
+                                <th scope="col">Gambar</th>
+                                <th scope="col">Aksi</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="text-center py-5">
-                                    <div class="text-muted">
-                                        <i class="fas fa-image fa-3x mb-3 opacity-75"></i>
-                                        <p class="mb-0">No banners found. Create your first banner to get started!</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse ($banners as $index => $banner)
+                                <tr class="align-middle">
+                                    <td class="ps-4">{{ $index + 1 }}</td>
+                                    <td class="fw-medium">{{ Str::limit($banner->title, 30) }}</td>
+                                    <td class="text-muted">{{ Str::limit($banner->description, 40) }}</td>
+                                    <td>
+                                        @if($banner->image_path)
+                                            <img src="{{ Storage::url($banner->image_path) }}" width="60" height="60" class="rounded-3 shadow-sm object-cover" alt="Gambar Banner">
+                                        @else
+                                            <span class="badge bg-secondary text-white fw-normal px-2 py-1">Tidak ada gambar</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-info" onclick="viewBanner({{ $banner->id }})" title="Lihat Detail">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-warning" onclick="editBanner({{ $banner->id }})" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger" onclick="deleteBanner({{ $banner->id }}, '{{ $banner->title }}')" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data banner.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

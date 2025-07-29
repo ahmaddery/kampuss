@@ -1,12 +1,282 @@
 @extends('layouts.admin')
 
 @section('content')
+<style>
+    /* Professional Dashboard Styles */
+    .dashboard-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        color: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--card-color), var(--card-color-light));
+    }
+
+    .stat-card.primary::before { --card-color: #4e73df; --card-color-light: #6f86e8; }
+    .stat-card.success::before { --card-color: #1cc88a; --card-color-light: #36e9a6; }
+    .stat-card.info::before { --card-color: #36b9cc; --card-color-light: #5ccfd6; }
+    .stat-card.warning::before { --card-color: #f6c23e; --card-color-light: #f8d674; }
+    .stat-card.danger::before { --card-color: #e74a3b; --card-color-light: #ea6b5f; }
+    .stat-card.dark::before { --card-color: #5a5c69; --card-color-light: #6c6e7d; }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        background: linear-gradient(135deg, var(--card-color), var(--card-color-light));
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .stat-change {
+        font-size: 0.75rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .stat-change.positive { color: #38a169; }
+    .stat-change.negative { color: #e53e3e; }
+
+    .chart-card {
+        background: white;
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .chart-header {
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        padding: 1.5rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .activity-card {
+        background: white;
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .activity-item {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f7fafc;
+        transition: background-color 0.2s ease;
+    }
+
+    .activity-item:hover {
+        background-color: #f7fafc;
+    }
+
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+
+    .activity-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        color: white;
+    }
+
+    .quick-action-btn {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #4a5568;
+        display: block;
+        height: 100%;
+    }
+
+    .quick-action-btn:hover {
+        border-color: var(--btn-color);
+        background: linear-gradient(135deg, var(--btn-color), var(--btn-color-light));
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        text-decoration: none;
+    }
+
+    .quick-action-btn.primary { --btn-color: #4e73df; --btn-color-light: #6f86e8; }
+    .quick-action-btn.success { --btn-color: #1cc88a; --btn-color-light: #36e9a6; }
+    .quick-action-btn.info { --btn-color: #36b9cc; --btn-color-light: #5ccfd6; }
+    .quick-action-btn.warning { --btn-color: #f6c23e; --btn-color-light: #f8d674; }
+    .quick-action-btn.secondary { --btn-color: #858796; --btn-color-light: #9ca3af; }
+    .quick-action-btn.dark { --btn-color: #5a5c69; --btn-color-light: #6c6e7d; }
+
+    .system-info-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 15px;
+        color: white;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+    }
+
+    .info-value {
+        background: rgba(255,255,255,0.2);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .welcome-animation {
+        animation: slideInUp 0.6s ease-out;
+    }
+
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .pulse-animation {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-header {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            margin-bottom: 1rem;
+        }
+        
+        .quick-action-btn {
+            padding: 1rem 0.5rem;
+        }
+    }
+</style>
+
 <div class="container-fluid">
-    <!-- Header -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard Admin</h1>
-        <div class="d-none d-sm-inline-block">
-            <span class="text-muted">{{ now()->format('l, d F Y') }}</span>
+    <!-- Professional Header -->
+    <div class="dashboard-header welcome-animation">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="h2 mb-2 fw-bold">
+                    <i class="fas fa-tachometer-alt me-3"></i>
+                    Admin Dashboard
+                </h1>
+                <p class="mb-0 opacity-75">
+                    Selamat datang kembali! Berikut adalah ringkasan aktivitas sistem Anda.
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="d-flex align-items-center justify-content-lg-end">
+                    <div class="me-3">
+                        <div class="text-sm opacity-75">Waktu Server</div>
+                        <div class="fw-bold" id="server-time">{{ now()->format('H:i:s') }}</div>
+                    </div>
+                    <div class="bg-white bg-opacity-20 p-2 rounded-circle">
+                        <i class="fas fa-clock fa-lg"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -14,16 +284,19 @@
     <div class="row mb-4">
         <!-- Total Users Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Users</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalUsers) }}</div>
+            <div class="stat-card primary h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Total Users</div>
+                            <div class="stat-number" data-value="{{ $totalUsers }}">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+12% dari bulan lalu</span>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
                         </div>
                     </div>
                 </div>
@@ -32,16 +305,19 @@
 
         <!-- Total Berita Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Total Berita</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalBerita) }}</div>
+            <div class="stat-card success h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Total Berita</div>
+                            <div class="stat-number" data-value="{{ $totalBerita }}">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+8% dari minggu lalu</span>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-newspaper fa-2x text-gray-300"></i>
+                        <div class="stat-icon">
+                            <i class="fas fa-newspaper"></i>
                         </div>
                     </div>
                 </div>
@@ -50,16 +326,19 @@
 
         <!-- Total Pengumuman Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Total Pengumuman</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalPengumuman) }}</div>
+            <div class="stat-card info h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Total Pengumuman</div>
+                            <div class="stat-number" data-value="{{ $totalPengumuman }}">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+15% dari bulan lalu</span>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-bullhorn fa-2x text-gray-300"></i>
+                        <div class="stat-icon">
+                            <i class="fas fa-bullhorn"></i>
                         </div>
                     </div>
                 </div>
@@ -68,16 +347,19 @@
 
         <!-- Newsletter Subscribers Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Newsletter Subscribers</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalNewsletterSubscribers) }}</div>
+            <div class="stat-card warning h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Newsletter Subscribers</div>
+                            <div class="stat-number" data-value="{{ $totalNewsletterSubscribers }}">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+5% dari minggu lalu</span>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-envelope fa-2x text-gray-300"></i>
+                        <div class="stat-icon">
+                            <i class="fas fa-envelope"></i>
                         </div>
                     </div>
                 </div>
@@ -89,16 +371,19 @@
     <div class="row mb-4">
         <!-- Total Jurusan Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Total Jurusan</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalJurusan) }}</div>
+            <div class="stat-card success h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Total Jurusan</div>
+                            <div class="stat-number" data-value="{{ $totalJurusan }}">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+3% dari bulan lalu</span>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-graduation-cap fa-2x text-gray-300"></i>
+                        <div class="stat-icon">
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
                     </div>
                 </div>
@@ -107,16 +392,19 @@
 
         <!-- Total Banners Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Homepage Banners</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalBanners) }}</div>
+            <div class="stat-card info h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Homepage Banners</div>
+                            <div class="stat-number" data-value="{{ $totalBanners }}">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+2% dari minggu lalu</span>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-images fa-2x text-gray-300"></i>
+                        <div class="stat-icon">
+                            <i class="fas fa-images"></i>
                         </div>
                     </div>
                 </div>
@@ -125,16 +413,19 @@
 
         <!-- Total Views Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Total Berita Views</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalBerita > 0 ? \App\Models\Berita::sum('count_views') : 0) }}</div>
+            <div class="stat-card warning h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">Total Berita Views</div>
+                            <div class="stat-number" data-value="{{ number_format($totalBerita > 0 ? \App\Models\Berita::sum('count_views') : 0) }}">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+25% dari bulan lalu</span>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-eye fa-2x text-gray-300"></i>
+                        <div class="stat-icon">
+                            <i class="fas fa-eye"></i>
                         </div>
                     </div>
                 </div>
@@ -143,18 +434,24 @@
 
         <!-- System Status Card -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                System Status</div>
-                            <div class="h5 mb-0 font-weight-bold text-success">
-                                <i class="fas fa-check-circle"></i> Online
+            <div class="stat-card primary h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <div class="stat-label">System Status</div>
+                            <div class="d-flex align-items-center">
+                                <div class="stat-number text-success me-2">
+                                    <i class="fas fa-check-circle pulse-animation"></i>
+                                </div>
+                                <span class="fw-bold text-success">Online</span>
+                            </div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-circle"></i>
+                                <span>Uptime: 99.9%</span>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-server fa-2x text-gray-300"></i>
+                        <div class="stat-icon">
+                            <i class="fas fa-server"></i>
                         </div>
                     </div>
                 </div>
@@ -166,12 +463,24 @@
     <div class="row mb-4">
         <!-- Content Activity Chart -->
         <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Content Activity (Last 6 Months)</h6>
+            <div class="chart-card mb-4">
+                <div class="chart-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="m-0 fw-bold text-primary">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Content Activity (Last 6 Months)
+                            </h6>
+                            <small class="text-muted">Analisis aktivitas konten dalam 6 bulan terakhir</small>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <span class="badge bg-primary">Berita</span>
+                            <span class="badge bg-info">Pengumuman</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="chart-area">
+                <div class="card-body p-4">
+                    <div class="chart-area" style="height: 300px;">
                         <canvas id="contentChart"></canvas>
                     </div>
                 </div>
@@ -180,12 +489,20 @@
 
         <!-- User Roles Pie Chart -->
         <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">User Roles Distribution</h6>
+            <div class="chart-card mb-4">
+                <div class="chart-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="m-0 fw-bold text-primary">
+                                <i class="fas fa-users me-2"></i>
+                                User Roles Distribution
+                            </h6>
+                            <small class="text-muted">Distribusi peran pengguna dalam sistem</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
+                <div class="card-body p-4">
+                    <div class="chart-pie" style="height: 300px;">
                         <canvas id="rolesChart"></canvas>
                     </div>
                 </div>
@@ -197,31 +514,59 @@
     <div class="row">
         <!-- Recent Berita -->
         <div class="col-lg-4 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Berita</h6>
+            <div class="activity-card">
+                <div class="chart-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="m-0 fw-bold text-primary">
+                                <i class="fas fa-newspaper me-2"></i>
+                                Recent Berita
+                            </h6>
+                            <small class="text-muted">Berita terbaru yang telah dipublikasikan</small>
+                        </div>
+                        <span class="badge bg-primary">{{ $recentBerita->count() }}</span>
+                    </div>
                 </div>
-                <div class="card-body scrollbar-custom" style="max-height: 300px; overflow-y: auto;">
+                <div class="card-body p-0 scrollbar-custom" style="max-height: 300px; overflow-y: auto;">
                     @if($recentBerita->count() > 0)
                         @foreach($recentBerita as $berita)
-                        <div class="d-flex align-items-center border-bottom py-2">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-newspaper text-primary"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-3 ml-3">
-                                <h6 class="mb-1">{{ Str::limit($berita->title, 35) }}</h6>
-                                <small class="text-muted">{{ $berita->created_at->diffForHumans() }} | Views: {{ $berita->count_views }}</small>
+                        <div class="activity-item">
+                            <div class="d-flex align-items-center">
+                                <div class="activity-icon bg-primary me-3">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-semibold">{{ Str::limit($berita->title, 35) }}</h6>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>
+                                            {{ $berita->created_at->diffForHumans() }}
+                                        </small>
+                                        <small class="text-muted">
+                                            <i class="fas fa-eye me-1"></i>
+                                            {{ $berita->count_views }} views
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         @endforeach
-                        <div class="text-center mt-3">
-                            <a href="{{ route('admin.berita.index') }}" class="btn btn-primary btn-sm">View All Berita</a>
+                        <div class="text-center p-3">
+                            <a href="{{ route('admin.berita.index') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-external-link-alt me-1"></i>
+                                View All Berita
+                            </a>
                         </div>
                     @else
-                        <div class="text-center py-4">
-                            <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">No recent berita found.</p>
-                            <a href="{{ route('admin.berita.create') }}" class="btn btn-primary btn-sm">Create First Berita</a>
+                        <div class="text-center py-5">
+                            <div class="activity-icon bg-muted mx-auto mb-3">
+                                <i class="fas fa-newspaper text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-3">Belum ada berita terbaru.</p>
+                            <a href="{{ route('admin.berita.create') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>
+                                Create First Berita
+                            </a>
                         </div>
                     @endif
                 </div>
@@ -230,27 +575,49 @@
 
         <!-- Popular Berita -->
         <div class="col-lg-4 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Most Popular Berita</h6>
+            <div class="activity-card">
+                <div class="chart-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="m-0 fw-bold text-primary">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Most Popular Berita
+                            </h6>
+                            <small class="text-muted">Berita dengan jumlah views tertinggi</small>
+                        </div>
+                        <span class="badge bg-success">{{ $popularBerita->count() }}</span>
+                    </div>
                 </div>
-                <div class="card-body scrollbar-custom" style="max-height: 300px; overflow-y: auto;">
+                <div class="card-body p-0 scrollbar-custom" style="max-height: 300px; overflow-y: auto;">
                     @if($popularBerita->count() > 0)
                         @foreach($popularBerita as $index => $berita)
-                        <div class="d-flex align-items-center border-bottom py-2">
-                            <div class="flex-shrink-0">
-                                <span class="badge badge-{{ $index < 3 ? 'success' : 'secondary' }}">#{{ $index + 1 }}</span>
-                            </div>
-                            <div class="flex-grow-1 ms-3 ml-3">
-                                <h6 class="mb-1">{{ Str::limit($berita->title, 35) }}</h6>
-                                <small class="text-muted">{{ $berita->count_views }} views • {{ $berita->created_at->format('d M Y') }}</small>
+                        <div class="activity-item">
+                            <div class="d-flex align-items-center">
+                                <div class="activity-icon bg-{{ $index < 3 ? 'success' : 'secondary' }} me-3">
+                                    <span class="fw-bold">#{{ $index + 1 }}</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-semibold">{{ Str::limit($berita->title, 35) }}</h6>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-eye me-1"></i>
+                                            {{ $berita->count_views }} views
+                                        </small>
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ $berita->created_at->format('d M Y') }}
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         @endforeach
                     @else
-                        <div class="text-center py-4">
-                            <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">No popular berita yet.</p>
+                        <div class="text-center py-5">
+                            <div class="activity-icon bg-muted mx-auto mb-3">
+                                <i class="fas fa-chart-line text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-3">Belum ada berita populer.</p>
                         </div>
                     @endif
                 </div>
@@ -259,36 +626,62 @@
 
         <!-- Recent Users -->
         <div class="col-lg-4 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Users</h6>
+            <div class="activity-card">
+                <div class="chart-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="m-0 fw-bold text-primary">
+                                <i class="fas fa-users me-2"></i>
+                                Recent Users
+                            </h6>
+                            <small class="text-muted">Pengguna yang baru saja bergabung</small>
+                        </div>
+                        <span class="badge bg-info">{{ $recentUsers->count() }}</span>
+                    </div>
                 </div>
-                <div class="card-body scrollbar-custom" style="max-height: 300px; overflow-y: auto;">
+                <div class="card-body p-0 scrollbar-custom" style="max-height: 300px; overflow-y: auto;">
                     @if($recentUsers->count() > 0)
                         @foreach($recentUsers as $user)
-                        <div class="d-flex align-items-center border-bottom py-2">
-                            <div class="flex-shrink-0">
-                                <img src="{{ asset('storage/' . ($user->profile_picture ?? 'default-profile.jpg')) }}" 
-                                     alt="Profile" class="rounded-circle" width="32" height="32">
-                            </div>
-                            <div class="flex-grow-1 ms-3 ml-3">
-                                <h6 class="mb-1">{{ $user->name }}</h6>
-                                <small class="text-muted">{{ $user->email }} • {{ $user->created_at->diffForHumans() }}</small>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <span class="badge badge-{{ $user->role == 'admin' ? 'primary' : 'secondary' }}">
-                                    {{ ucfirst($user->role ?? 'User') }}
-                                </span>
+                        <div class="activity-item">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <img src="{{ asset('storage/' . ($user->profile_picture ?? 'default-profile.jpg')) }}" 
+                                         alt="Profile" class="rounded-circle" width="40" height="40"
+                                         style="object-fit: cover;">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-semibold">{{ $user->name }}</h6>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-envelope me-1"></i>
+                                            {{ Str::limit($user->email, 20) }}
+                                        </small>
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>
+                                            {{ $user->created_at->diffForHumans() }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="badge bg-{{ $user->role == 'admin' ? 'primary' : 'secondary' }}">
+                                        {{ ucfirst($user->role ?? 'User') }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         @endforeach
-                        <div class="text-center mt-3">
-                            <a href="{{ route('admin.users') }}" class="btn btn-primary btn-sm">Manage Users</a>
+                        <div class="text-center p-3">
+                            <a href="{{ route('admin.users') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-cog me-1"></i>
+                                Manage Users
+                            </a>
                         </div>
                     @else
-                        <div class="text-center py-4">
-                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">No recent users found.</p>
+                        <div class="text-center py-5">
+                            <div class="activity-icon bg-muted mx-auto mb-3">
+                                <i class="fas fa-users text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-3">Belum ada pengguna terbaru.</p>
                         </div>
                     @endif
                 </div>
@@ -296,34 +689,48 @@
         </div>
     </div>
 
-    <!-- Quick Stats Row -->
+    <!-- Quick Stats and System Info Row -->
     <div class="row mb-4">
         <div class="col-lg-6">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Content Statistics</h6>
+            <div class="chart-card mb-4">
+                <div class="chart-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="m-0 fw-bold text-primary">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                Content Statistics
+                            </h6>
+                            <small class="text-muted">Statistik konten dalam periode waktu tertentu</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <div class="row text-center">
                         <div class="col-4">
                             <div class="p-3">
-                                <i class="fas fa-eye fa-2x text-primary mb-2"></i>
-                                <h4 class="font-weight-bold text-primary">{{ number_format(\App\Models\Berita::sum('count_views')) }}</h4>
-                                <p class="text-muted mb-0">Total Views</p>
+                                <div class="stat-icon mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.25rem;">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <h4 class="fw-bold text-primary mb-1">{{ number_format(\App\Models\Berita::sum('count_views')) }}</h4>
+                                <p class="text-muted mb-0 small">Total Views</p>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="p-3">
-                                <i class="fas fa-calendar fa-2x text-success mb-2"></i>
-                                <h4 class="font-weight-bold text-success">{{ number_format(\App\Models\Berita::whereDate('created_at', today())->count()) }}</h4>
-                                <p class="text-muted mb-0">Today's Posts</p>
+                                <div class="stat-icon mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.25rem; background: linear-gradient(135deg, #1cc88a, #36e9a6);">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <h4 class="fw-bold text-success mb-1">{{ number_format(\App\Models\Berita::whereDate('created_at', today())->count()) }}</h4>
+                                <p class="text-muted mb-0 small">Today's Posts</p>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="p-3">
-                                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
-                                <h4 class="font-weight-bold text-warning">{{ number_format(\App\Models\Berita::whereDate('created_at', '>=', now()->subDays(7))->count()) }}</h4>
-                                <p class="text-muted mb-0">This Week</p>
+                                <div class="stat-icon mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.25rem; background: linear-gradient(135deg, #f6c23e, #f8d674);">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <h4 class="fw-bold text-warning mb-1">{{ number_format(\App\Models\Berita::whereDate('created_at', '>=', now()->subDays(7))->count()) }}</h4>
+                                <p class="text-muted mb-0 small">This Week</p>
                             </div>
                         </div>
                     </div>
@@ -332,29 +739,41 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">System Information</h6>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
-                            <span><i class="fas fa-server text-primary mr-2"></i>Laravel Version</span>
-                            <span class="badge badge-primary">{{ app()->version() }}</span>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
-                            <span><i class="fas fa-code text-success mr-2"></i>PHP Version</span>
-                            <span class="badge badge-success">{{ PHP_VERSION }}</span>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
-                            <span><i class="fas fa-database text-info mr-2"></i>Database</span>
-                            <span class="badge badge-info">{{ config('database.default') }}</span>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
-                            <span><i class="fas fa-clock text-warning mr-2"></i>Server Time</span>
-                            <span class="badge badge-warning" id="server-time">{{ now()->format('H:i:s') }}</span>
-                        </div>
+            <div class="system-info-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-server fa-2x me-3"></i>
+                    <div>
+                        <h5 class="mb-1 fw-bold">System Information</h5>
+                        <small class="opacity-75">Informasi teknis sistem</small>
                     </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-code"></i>
+                        <span>Laravel Version</span>
+                    </div>
+                    <div class="info-value">{{ app()->version() }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-code"></i>
+                        <span>PHP Version</span>
+                    </div>
+                    <div class="info-value">{{ PHP_VERSION }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-database"></i>
+                        <span>Database</span>
+                    </div>
+                    <div class="info-value">{{ config('database.default') }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-clock"></i>
+                        <span>Server Time</span>
+                    </div>
+                    <div class="info-value" id="server-time">{{ now()->format('H:i:s') }}</div>
                 </div>
             </div>
         </div>
@@ -363,46 +782,60 @@
     <!-- Quick Actions Row -->
     <div class="row">
         <div class="col-12">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+            <div class="chart-card mb-4">
+                <div class="chart-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="m-0 fw-bold text-primary">
+                                <i class="fas fa-bolt me-2"></i>
+                                Quick Actions
+                            </h6>
+                            <small class="text-muted">Akses cepat ke fitur-fitur utama</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row quick-actions">
+                <div class="card-body p-4">
+                    <div class="row">
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
-                            <a href="{{ route('admin.homepage_banners.index') }}" class="btn btn-primary btn-sm w-100">
-                                <i class="fas fa-images mb-1"></i><br>
-                                <small>Manage Banners</small>
+                            <a href="{{ route('admin.homepage_banners.index') }}" class="quick-action-btn primary">
+                                <i class="fas fa-images fa-2x mb-2"></i>
+                                <div class="fw-semibold">Manage Banners</div>
+                                <small class="opacity-75">Kelola banner homepage</small>
                             </a>
                         </div>
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
-                            <a href="{{ route('admin.berita.index') }}" class="btn btn-success btn-sm w-100">
-                                <i class="fas fa-newspaper mb-1"></i><br>
-                                <small>Manage Berita</small>
+                            <a href="{{ route('admin.berita.index') }}" class="quick-action-btn success">
+                                <i class="fas fa-newspaper fa-2x mb-2"></i>
+                                <div class="fw-semibold">Manage Berita</div>
+                                <small class="opacity-75">Kelola berita dan artikel</small>
                             </a>
                         </div>
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
-                            <a href="{{ route('admin.pengumuman.index') }}" class="btn btn-info btn-sm w-100">
-                                <i class="fas fa-bullhorn mb-1"></i><br>
-                                <small>Manage Pengumuman</small>
+                            <a href="{{ route('admin.pengumuman.index') }}" class="quick-action-btn info">
+                                <i class="fas fa-bullhorn fa-2x mb-2"></i>
+                                <div class="fw-semibold">Manage Pengumuman</div>
+                                <small class="opacity-75">Kelola pengumuman</small>
                             </a>
                         </div>
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
-                            <a href="{{ route('admin.jurusan.index') }}" class="btn btn-warning btn-sm w-100">
-                                <i class="fas fa-graduation-cap mb-1"></i><br>
-                                <small>Manage Jurusan</small>
+                            <a href="{{ route('admin.jurusan.index') }}" class="quick-action-btn warning">
+                                <i class="fas fa-graduation-cap fa-2x mb-2"></i>
+                                <div class="fw-semibold">Manage Jurusan</div>
+                                <small class="opacity-75">Kelola data jurusan</small>
                             </a>
                         </div>
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
-                            <a href="{{ route('admin.newsletter.index') }}" class="btn btn-secondary btn-sm w-100">
-                                <i class="fas fa-envelope mb-1"></i><br>
-                                <small>Newsletter</small>
+                            <a href="{{ route('admin.newsletter.index') }}" class="quick-action-btn secondary">
+                                <i class="fas fa-envelope fa-2x mb-2"></i>
+                                <div class="fw-semibold">Newsletter</div>
+                                <small class="opacity-75">Kelola newsletter</small>
                             </a>
                         </div>
                         <div class="col-md-2 col-sm-4 col-6 mb-3">
-                            <a href="{{ route('admin.settings.index') }}" class="btn btn-dark btn-sm w-100">
-                                <i class="fas fa-cog mb-1"></i><br>
-                                <small>Settings</small>
+                            <a href="{{ route('admin.settings.index') }}" class="quick-action-btn dark">
+                                <i class="fas fa-cog fa-2x mb-2"></i>
+                                <div class="fw-semibold">Settings</div>
+                                <small class="opacity-75">Pengaturan sistem</small>
                             </a>
                         </div>
                     </div>
@@ -590,13 +1023,18 @@ const rolesChart = new Chart(rolesCtx, {
     }
 });
 
-// Animate numbers on page load
+// Enhanced number animation with easing
 function animateValue(obj, start, end, duration) {
     let startTimestamp = null;
+    const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+    
     const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+        const easedProgress = easeOutQuart(progress);
+        const currentValue = Math.floor(easedProgress * (end - start) + start);
+        obj.innerHTML = currentValue.toLocaleString();
+        
         if (progress < 1) {
             window.requestAnimationFrame(step);
         }
@@ -604,29 +1042,102 @@ function animateValue(obj, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
-// Animate all stat numbers
+// Animate all stat numbers with staggered timing
 document.addEventListener('DOMContentLoaded', function() {
-    const statNumbers = document.querySelectorAll('.h5.font-weight-bold');
-    statNumbers.forEach(function(element) {
-        const finalValue = parseInt(element.textContent.replace(/,/g, ''));
-        animateValue(element, 0, finalValue, 2000);
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(function(element, index) {
+        const finalValue = parseInt(element.getAttribute('data-value') || '0');
+        
+        // Stagger animation timing
+        setTimeout(() => {
+            animateValue(element, 0, finalValue, 1500);
+        }, index * 200);
     });
     
-    // Add welcome message
+    // Add welcome message with enhanced styling
     setTimeout(function() {
         if (typeof Swal !== 'undefined') {
             Swal.fire({
-                title: 'Welcome to Admin Dashboard!',
-                text: 'You have successfully logged in to the admin panel.',
+                title: '<i class="fas fa-tachometer-alt me-2"></i>Welcome to Admin Dashboard!',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-check-circle text-success fa-3x"></i>
+                        </div>
+                        <p class="mb-0">You have successfully logged in to the admin panel.</p>
+                        <small class="text-muted">Dashboard is ready for you to manage your content.</small>
+                    </div>
+                `,
                 icon: 'success',
-                timer: 3000,
+                timer: 4000,
                 showConfirmButton: false,
                 toast: true,
-                position: 'top-end'
+                position: 'top-end',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: 'white',
+                customClass: {
+                    popup: 'swal2-toast-custom'
+                }
             });
         }
-    }, 1000);
+    }, 1500);
+    
+    // Add hover effects to stat cards
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Add click effects to quick action buttons
+    const quickActionBtns = document.querySelectorAll('.quick-action-btn');
+    quickActionBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Add ripple effect
+            const ripple = document.createElement('div');
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255,255,255,0.3)';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple 0.6s linear';
+            ripple.style.left = '50%';
+            ripple.style.top = '50%';
+            ripple.style.width = '20px';
+            ripple.style.height = '20px';
+            ripple.style.marginLeft = '-10px';
+            ripple.style.marginTop = '-10px';
+            
+            this.style.position = 'relative';
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
 });
+
+// Add ripple animation CSS
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes ripple {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+    
+    .swal2-toast-custom {
+        border-radius: 15px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+    }
+`;
+document.head.appendChild(style);
 
 // Refresh charts every 5 minutes
 setInterval(function() {
