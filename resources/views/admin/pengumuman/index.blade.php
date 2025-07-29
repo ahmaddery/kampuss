@@ -1,75 +1,101 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Manage Pengumuman</h1>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pengumumanModal" onclick="openCreateModal()">
-                <i class="fas fa-plus"></i> Create New Pengumuman
+<div class="container py-4">
+    <div class="page-inner">
+        <!-- Page Header -->
+        <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+            <h3 class="page-title mb-0 fw-bold text-dark"><i class="fas fa-bullhorn me-2"></i> Manajemen Pengumuman</h3>
+            <button class="btn btn-primary btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#pengumumanModal" onclick="openCreateModal()">
+                <i class="fas fa-plus-circle me-1"></i> Tambah Pengumuman
             </button>
         </div>
 
-        <!-- Pengumuman Table -->
-        <div class="card">
-            <div class="card-body">
+        <!-- Main Card -->
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <!-- Alerts -->
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <!-- Table -->
                 <div class="table-responsive">
-                    <table class="table table-striped" id="pengumumanTable">
-                        <thead>
+                    <table class="table table-hover align-middle table-borderless">
+                        <thead class="table-light">
                             <tr>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Publish Date</th>
-                                <th>Tags</th>
-                                <th>Image</th>
-                                <th>Actions</th>
+                                <th scope="col" class="ps-4">#</th>
+                                <th scope="col">Judul</th>
+                                <th scope="col">Penulis</th>
+                                <th scope="col">Tanggal Publikasi</th>
+                                <th scope="col">Tags</th>
+                                <th scope="col">Gambar</th>
+                                <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($pengumuman as $item)
-                            <tr>
-                                <td>{{ $item->title }}</td>
-                                <td>{{ $item->author ?? 'N/A' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($item->publish_date)->format('d M Y') }}</td>
-                                <td>
-                                    @if($item->tags)
-                                        @foreach(explode(',', $item->tags) as $tag)
-                                            <span class="badge bg-secondary me-1">{{ trim($tag) }}</span>
-                                        @endforeach
-                                    @else
-                                        <span class="text-muted">No tags</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($item->image_path)
-                                        <img src="{{ asset('storage/' . $item->image_path) }}" alt="Image" width="50" height="50" class="rounded">
-                                    @else
-                                        <span class="text-muted">No image</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-warning me-1" 
-                                            onclick="openEditModal({{ $item->id }})" 
-                                            data-bs-toggle="modal" data-bs-target="#pengumumanModal">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $item->id }})">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                    
-                                    <!-- Hidden form for delete -->
-                                    <form id="delete-form-{{ $item->id }}" action="{{ route('admin.pengumuman.destroy', $item) }}" method="POST" style="display: none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
+                            @forelse ($pengumuman as $index => $item)
+                                <tr class="align-middle">
+                                    <td class="ps-4">{{ $index + 1 }}</td>
+                                    <td class="fw-medium">{{ $item->title }}</td>
+                                    <td class="text-muted">{{ $item->author ?? 'N/A' }}</td>
+                                    <td class="text-muted">{{ \Carbon\Carbon::parse($item->publish_date)->format('d M Y') }}</td>
+                                    <td>
+                                        @if($item->tags)
+                                            @foreach(explode(',', $item->tags) as $tag)
+                                                <span class="badge bg-secondary text-white fw-normal px-2 py-1 me-1">{{ trim($tag) }}</span>
+                                            @endforeach
+                                        @else
+                                            <span class="badge bg-light text-muted fw-normal px-2 py-1">Tidak ada tags</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($item->image_path)
+                                            <img src="{{ asset('storage/' . $item->image_path) }}" width="60" height="60" class="rounded-3 shadow-sm object-cover" alt="Gambar Pengumuman">
+                                        @else
+                                            <span class="badge bg-secondary text-white fw-normal px-2 py-1">Tidak ada gambar</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-warning" 
+                                                    onclick="openEditModal({{ $item->id }})" 
+                                                    data-bs-toggle="modal" data-bs-target="#pengumumanModal" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger" onclick="confirmDelete({{ $item->id }})" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Hidden form for delete -->
+                                        <form id="delete-form-{{ $item->id }}" action="{{ route('admin.pengumuman.destroy', $item) }}" method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4">Belum ada data pengumuman.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Pengumuman Modal -->
     <div class="modal fade" id="pengumumanModal" tabindex="-1" aria-labelledby="pengumumanModalLabel" aria-hidden="true">
