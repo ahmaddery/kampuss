@@ -161,133 +161,118 @@
 
 
     <!-- Pengumuman Section -->
-    <div class="py-16 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200">
+    <div class="py-14 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Section Header -->
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-blue-900 mb-4">Pengumuman</h2>
-                <div class="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-blue-900 mb-2 flex items-center justify-center gap-2">
+                    <i class="fas fa-bullhorn text-blue-600"></i> Pengumuman
+                </h2>
+                <div class="w-16 h-1 bg-blue-500 mx-auto rounded-full"></div>
             </div>
-            <div class="container">
-                <h1 class="text-3xl font-bold text-blue-900 mb-8">Pengumuman Terbaru</h1>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                    @foreach($pengumuman as $item)
-                        <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow duration-300">
-                            <div class="relative shine-image-wrapper">
-                                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover rounded-t-lg">
-                                <div class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-bold">
-                                    <div class="text-center">
-                                        <div class="text-lg">{{ \Carbon\Carbon::parse($item->publish_date)->format('d') }}</div>
-                                        <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('M') }}</div>
-                                        <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('Y') }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-6">
-                                <h3 class="font-bold text-xl text-blue-900 mb-2">{{ $item->title }}</h3>
-                                <p class="text-blue-600 text-sm mb-4">Pengumuman • By {{ $item->author }}</p>
-                                <p class="text-gray-600 text-sm mb-4">
-                                    {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 100) !!}
-                                </p>
-                                <a href="{{ route('pengumuman.show', $item->slug) }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm mt-4">
-                                    Lihat Pengumuman <i class="fas fa-chevron-right ml-2"></i>
-                                </a>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="flex justify-center mt-6">
-                    <a href="{{ route('pengumuman.index') }}" class="bg-blue-600 text-white py-2 px-6 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-blue-700 transform hover:scale-105">
-                        Lihat Semua Pengumuman
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-<!-- Berita Section -->
-<div class="py-16 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Section Header -->
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Berita</h2>
-            <div class="w-24 h-1 bg-yellow-500 mx-auto rounded-full"></div>
-        </div>
-
-        <div class="container">
-            <h1 class="text-3xl font-bold text-gray-900 mb-8">Berita Terbaru</h1>
-
-            <!-- Pengumuman Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                @foreach($berita as $item)
-                    <!-- Pengumuman Item -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-shadow duration-300">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                @foreach($pengumuman as $item)
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 hover:shadow-xl transition-all duration-300 relative animate-fadeInUp">
                         <div class="relative shine-image-wrapper">
-                            <!-- Displaying Image -->
-                            <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover rounded-t-lg">
-                            <div class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-bold">
-                                <div class="text-center">
-                                    <div class="text-lg">{{ \Carbon\Carbon::parse($item->publish_date)->format('d') }}</div>
-                                    <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('M') }}</div>
-                                    <div class="text-xs">{{ \Carbon\Carbon::parse($item->publish_date)->format('Y') }}</div>
-                                </div>
+                            <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-40 object-cover">
+                            <div class="absolute top-3 right-3">
+                                <span class="bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs font-bold shadow">
+                                    {{ \Carbon\Carbon::parse($item->publish_date)->format('d M') }}
+                                </span>
+                                @if($loop->first)
+                                    <span class="absolute -top-3 -right-3 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-bold shadow animate-bounce">Baru</span>
+                                @endif
                             </div>
                         </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-xl text-gray-900 mb-2">{{ $item->title }}</h3>
-                            <p class="text-gray-600 text-sm mb-4">Berita • By {{ $item->author }}</p>
-                            <p class="text-gray-600 text-sm mb-4">
-                                <!-- Limiting the description to 100 characters while preserving HTML tags -->
-                                {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 100) !!}
+                        <div class="p-4">
+                            <h3 class="font-bold text-base text-blue-900 mb-1 line-clamp-2">{{ $item->title }}</h3>
+                            <p class="text-gray-500 text-sm mb-2 italic line-clamp-3">
+                                {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 60) !!}
                             </p>
-
-                            <!-- Link to show all berita -->
-                            <a href="{{ route('berita.show', $item->slug) }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm mt-4">
-                                lihat Berita <i class="fas fa-chevron-right ml-2"></i>
+                            <a href="{{ route('pengumuman.show', $item->slug) }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold text-xs mt-1 transition">
+                                Detail <i class="fas fa-chevron-right ml-1"></i>
                             </a>
                         </div>
                     </div>
-
-    <style>
-    /* Shine/Sweep hover effect for announcement images */
-    .shine-image-wrapper {
-        position: relative;
-        overflow: hidden;
-    }
-    .shine-image-wrapper::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -75%;
-        width: 50%;
-        height: 100%;
-        background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-        transform: skewX(-25deg);
-        transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
-        pointer-events: none;
-        z-index: 20;
-    }
-    .shine-image-wrapper:hover::before {
-        left: 120%;
-        transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
-    }
-    </style>
                 @endforeach
             </div>
-
-            <!-- Button to see more announcements -->
-            <div class="flex justify-center mt-6">
-                <a href="{{ route('berita.index') }}" class="bg-blue-600 text-white py-2 px-6 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-blue-700 transform hover:scale-105">
-                    Lihat Semua Berita
+            <div class="flex justify-center mt-2">
+                <a href="{{ route('pengumuman.index') }}" class="bg-blue-600 text-white py-2 px-6 rounded-full text-sm font-bold shadow transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+                    Semua Pengumuman
                 </a>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Berita Section -->
+    <div class="py-14 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2 flex items-center justify-center gap-2">
+                    <i class="fas fa-newspaper text-yellow-500"></i> Berita
+                </h2>
+                <div class="w-16 h-1 bg-yellow-500 mx-auto rounded-full"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                @foreach($berita as $item)
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 hover:shadow-xl transition-all duration-300 relative animate-fadeInUp">
+                        <div class="relative shine-image-wrapper">
+                            <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-40 object-cover">
+                            <div class="absolute top-3 right-3">
+                                <span class="bg-yellow-500 text-white px-2 py-0.5 rounded-full text-xs font-bold shadow">
+                                    {{ \Carbon\Carbon::parse($item->publish_date)->format('d M') }}
+                                </span>
+                                @if(isset($item->count_views) && $item->count_views > 100)
+                                    <span class="absolute -top-3 -right-3 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-bold shadow animate-pulse">Populer</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-base text-gray-900 mb-1 line-clamp-2">{{ $item->title }}</h3>
+                            <p class="text-gray-500 text-sm mb-2 italic line-clamp-3">
+                                {!! \Illuminate\Support\Str::limit(strip_tags($item->description), 60) !!}
+                            </p>
+                            <a href="{{ route('berita.show', $item->slug) }}" class="inline-flex items-center text-yellow-600 hover:text-yellow-700 font-semibold text-xs mt-1 transition">
+                                Detail <i class="fas fa-chevron-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="flex justify-center mt-2">
+                <a href="{{ route('berita.index') }}" class="bg-yellow-500 text-white py-2 px-6 rounded-full text-sm font-bold shadow transition-all duration-300 hover:bg-yellow-600 hover:scale-105">
+                    Semua Berita
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translate3d(0, 30px, 0);}
+        to { opacity: 1; transform: none;}
+    }
+    .animate-fadeInUp {
+        animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .line-clamp-1 {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    </style>
 
      <!-- Dosen & Staff Section -->
     <div class="py-20 bg-gradient-to-r from-purple-900 via-blue-900 to-purple-900 relative overflow-hidden">
