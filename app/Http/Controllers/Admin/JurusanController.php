@@ -34,21 +34,33 @@ class JurusanController extends Controller
     {
         // Validasi input
         $request->validate([
-            'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'jurusan' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:jurusan,slug',
             'deskripsi' => 'required|string',
+            'deskripsi_lengkap' => 'nullable|string',
+            'seo_title' => 'nullable|string|max:255',
+            'seo_description' => 'nullable|string',
         ]);
 
+        $imagePath = null;
         // Upload gambar ke storage dan simpan path-nya
         if ($request->hasFile('icon')) {
             $imagePath = $request->file('icon')->store('images/jurusan', 'public');
         }
 
+        // Generate slug if not provided
+        $slug = $request->slug ?: \Illuminate\Support\Str::slug($request->jurusan);
+
         // Simpan data jurusan dengan path gambar
         Jurusan::create([
             'icon' => $imagePath,
             'jurusan' => $request->jurusan,
+            'slug' => $slug,
             'deskripsi' => $request->deskripsi,
+            'deskripsi_lengkap' => $request->deskripsi_lengkap,
+            'seo_title' => $request->seo_title ?: $request->jurusan,
+            'seo_description' => $request->seo_description ?: $request->deskripsi,
         ]);
 
         return redirect()->route('admin.jurusan.index')->with('toast_success', 'Jurusan berhasil dibuat!');
@@ -68,7 +80,11 @@ class JurusanController extends Controller
         $request->validate([
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'jurusan' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:jurusan,slug,' . $id,
             'deskripsi' => 'required|string',
+            'deskripsi_lengkap' => 'nullable|string',
+            'seo_title' => 'nullable|string|max:255',
+            'seo_description' => 'nullable|string',
         ]);
 
         $jurusan = Jurusan::findOrFail($id);
@@ -84,10 +100,20 @@ class JurusanController extends Controller
             $jurusan->icon = $imagePath; // Simpan path gambar baru
         }
 
+        // Generate slug if not provided or if jurusan name changed
+        $slug = $request->slug;
+        if (!$slug || $request->jurusan !== $jurusan->jurusan) {
+            $slug = \Illuminate\Support\Str::slug($request->jurusan);
+        }
+
         // Update data jurusan
         $jurusan->update([
             'jurusan' => $request->jurusan,
+            'slug' => $slug,
             'deskripsi' => $request->deskripsi,
+            'deskripsi_lengkap' => $request->deskripsi_lengkap,
+            'seo_title' => $request->seo_title ?: $request->jurusan,
+            'seo_description' => $request->seo_description ?: $request->deskripsi,
         ]);
 
         return redirect()->route('admin.jurusan.index')->with('toast_success', 'Jurusan berhasil diperbarui!');

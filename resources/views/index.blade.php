@@ -62,7 +62,7 @@
                     <div class="p-6">
                         <h3 class="font-bold text-xl text-gray-900 mb-2">{{ $jurusan->jurusan }}</h3>
                         <p class="text-gray-600 mb-4">{{ $jurusan->deskripsi }}</p>
-                        <a href="" class="text-blue-700 hover:text-blue-900 font-medium inline-flex items-center transition-all">
+                        <a href="{{ route('jurusan.show', $jurusan->slug) }}" class="text-blue-700 hover:text-blue-900 font-medium inline-flex items-center transition-all">
                             Selengkapnya <i class="fas fa-arrow-right ml-2"></i>
                         </a>
                     </div>
@@ -119,7 +119,7 @@
         </div>
         
         <div class="text-center mt-12">
-            <a href="" class="btn-primary text-white font-medium px-8 py-3 rounded-full inline-flex items-center">
+            <a href="{{ route('jurusan.index') }}" class="btn-primary text-white font-medium px-8 py-3 rounded-full inline-flex items-center">
                 Lihat Semua Program <i class="fas fa-arrow-right ml-2"></i>
             </a>
         </div>

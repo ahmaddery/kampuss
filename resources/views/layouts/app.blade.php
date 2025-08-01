@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universitas Mercu Buana Yogyakarta</title>
+    <title>@yield('title', 'Universitas Mercu Buana Yogyakarta')</title>
+    
+    <!-- SEO Meta Tags -->
+    @yield('meta')
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -104,15 +108,29 @@
                             </div>
                         </div>
                         <div class="group relative px-1">
-                            <a href="#" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
-                                Fakultas <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                            <a href="{{ route('jurusan.index') }}" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
+                                Program Studi <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
                             </a>
                             <div class="dropdown-menu absolute z-10 mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <div class="py-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Ekonomi</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Teknik</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Psikologi</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Agroindustri</a>
+                                    <a href="{{ route('jurusan.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium border-b border-gray-100">
+                                        <i class="fas fa-list mr-2"></i>Lihat Semua Program Studi
+                                    </a>
+                                    @php
+                                        $jurusans = \App\Models\Jurusan::limit(6)->get();
+                                    @endphp
+                                    @foreach($jurusans as $jurusan)
+                                        <a href="{{ route('jurusan.show', $jurusan->slug) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">
+                                            {{ $jurusan->jurusan }}
+                                        </a>
+                                    @endforeach
+                                    @if($jurusans->count() >= 6)
+                                        <div class="border-t border-gray-100 mt-1 pt-1">
+                                            <a href="{{ route('jurusan.index') }}" class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 font-medium">
+                                                <i class="fas fa-arrow-right mr-2"></i>Lihat Semua
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -200,7 +218,7 @@
                     <a href="#" class="bg-white text-gray-800 hover:text-blue-600 px-4 py-1 font-medium transition-all">En</a>
                 </div>
             </div>
-            <a href="index.html" class="text-gray-700 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium transition-all">Home</a>
+            <a href="/" class="text-gray-700 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium transition-all">Home</a>
             <div class="mobile-dropdown">
                 <button class="w-full text-left flex justify-between items-center text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-base font-medium transition-all">
                     Profil
@@ -215,14 +233,21 @@
             </div>
             <div class="mobile-dropdown">
                 <button class="w-full text-left flex justify-between items-center text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-base font-medium transition-all">
-                    Fakultas
+                    Program Studi
                     <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div class="hidden pl-4 py-2 space-y-1">
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Ekonomi</a>
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Teknik</a>
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Psikologi</a>
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Agroindustri</a>
+                    <a href="{{ route('jurusan.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md font-medium">
+                        <i class="fas fa-list mr-2"></i>Lihat Semua Program Studi
+                    </a>
+                    @php
+                        $jurusans = \App\Models\Jurusan::limit(6)->get();
+                    @endphp
+                    @foreach($jurusans as $jurusan)
+                        <a href="{{ route('jurusan.show', $jurusan->slug) }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">
+                            {{ $jurusan->jurusan }}
+                        </a>
+                    @endforeach
                 </div>
             </div>
             <div class="mobile-dropdown">
@@ -284,7 +309,7 @@
     <!-- Scripts -->
     @stack('scripts')
     
-    <!-- Basic dropdown functionality -->
+    <!-- Basic dropdown functionality 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Handle mobile menu toggle
@@ -331,6 +356,8 @@
                 });
             });
         });
-    </script>
+    </script>  -->
+
+    
 </body>
 </html>

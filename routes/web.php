@@ -18,6 +18,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\OrganizationStructureController;
 use App\Http\Controllers\Admin\OrganizationStructureController as AdminOrganizationStructureController;
+use App\Http\Controllers\Admin\InformasiProgramController;
 
 Route::get('/', [UtamaController::class, 'index']);
 
@@ -32,6 +33,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::middleware('auth')->group(function () {
+
+
     // Homepage Banner Routes - Semua menggunakan prefix 'admin'
     Route::get('homepage_banners', [HomepageBannerController::class, 'index'])->name('admin.homepage_banners.index');
     Route::get('homepage_banners/create', [HomepageBannerController::class, 'create'])->name('admin.homepage_banners.create');
@@ -39,7 +42,54 @@ Route::middleware('auth')->group(function () {
     Route::get('homepage_banners/{id}/edit', [HomepageBannerController::class, 'edit'])->name('admin.homepage_banners.edit');
     Route::put('homepage_banners/{id}', [HomepageBannerController::class, 'update'])->name('admin.homepage_banners.update');
     Route::delete('homepage_banners/{id}', [HomepageBannerController::class, 'destroy'])->name('admin.homepage_banners.destroy');
-    
+
+    Route::get('admin/berita', [BeritaController::class, 'index'])->name('admin.berita.index');
+    Route::get('admin/berita/create', [BeritaController::class, 'create'])->name('admin.berita.create');
+    Route::post('admin/berita', [BeritaController::class, 'store'])->name('admin.berita.store');
+    Route::get('admin/berita/{berita}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');
+    Route::put('admin/berita/{berita}', [BeritaController::class, 'update'])->name('admin.berita.update');
+    Route::delete('admin/berita/{berita}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
+
+
+    Route::get('admin/pengumuman', [PengumumanController::class, 'index'])->name('admin.pengumuman.index');
+    Route::get('admin/pengumuman/create', [PengumumanController::class, 'create'])->name('admin.pengumuman.create');
+    Route::post('admin/pengumuman', [PengumumanController::class, 'store'])->name('admin.pengumuman.store');
+    Route::get('admin/pengumuman/{pengumuman}/edit', [PengumumanController::class, 'edit'])->name('admin.pengumuman.edit');
+    Route::put('admin/pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('admin.pengumuman.update');
+    Route::delete('admin/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])->name('admin.pengumuman.destroy');
+
+        // Menampilkan daftar jurusan
+    Route::get('admin/jurusan', [JurusanController::class, 'index'])->name('admin.jurusan.index');
+    Route::get('admin/jurusan/create', [JurusanController::class, 'create'])->name('admin.jurusan.create');
+    Route::post('admin/jurusan', [JurusanController::class, 'store'])->name('admin.jurusan.store');
+    Route::get('admin/jurusan/{id}/edit', [JurusanController::class, 'edit'])->name('admin.jurusan.edit');
+    Route::put('admin/jurusan/{id}', [JurusanController::class, 'update'])->name('admin.jurusan.update');
+    Route::delete('admin/jurusan/{id}', [JurusanController::class, 'destroy'])->name('admin.jurusan.destroy');
+    Route::get('admin/jurusan/{id}', [JurusanController::class, 'show'])->name('admin.jurusan.show');
+
+        // Informasi Program Admin Routes
+    Route::get('admin/informasi-program', [InformasiProgramController::class, 'index'])->name('admin.informasi-program.index');
+    Route::get('admin/informasi-program/create', [InformasiProgramController::class, 'create'])->name('admin.informasi-program.create');
+    Route::post('admin/informasi-program', [InformasiProgramController::class, 'store'])->name('admin.informasi-program.store');
+    Route::get('admin/informasi-program/{informasiProgram}', [InformasiProgramController::class, 'show'])->name('admin.informasi-program.show');
+    Route::get('admin/informasi-program/{informasiProgram}/edit', [InformasiProgramController::class, 'edit'])->name('admin.informasi-program.edit');
+    Route::put('admin/informasi-program/{informasiProgram}', [InformasiProgramController::class, 'update'])->name('admin.informasi-program.update');
+    Route::delete('admin/informasi-program/{informasiProgram}', [InformasiProgramController::class, 'destroy'])->name('admin.informasi-program.destroy');
+
+    Route::get('admin/sambutan_rektor', [SambutanRektorController::class, 'index'])->name('admin.sambutan_rektor.index');
+    Route::get('admin/sambutan_rektor/create', [SambutanRektorController::class, 'create'])->name('admin.sambutan_rektor.create');
+    Route::post('admin/sambutan_rektor', [SambutanRektorController::class, 'store'])->name('admin.sambutan_rektor.store');
+    Route::get('admin/sambutan_rektor/{id}/edit', [SambutanRektorController::class, 'edit'])->name('admin.sambutan_rektor.edit');
+    Route::put('admin/sambutan_rektor/{id}', [SambutanRektorController::class, 'update'])->name('admin.sambutan_rektor.update');
+    Route::delete('admin/sambutan_rektor/{id}', [SambutanRektorController::class, 'destroy'])->name('admin.sambutan_rektor.destroy');
+
+    Route::get('admin/sejarah', [SejarahController::class, 'index'])->name('admin.sejarah.index');
+    Route::get('admin/sejarah/create', [SejarahController::class, 'create'])->name('admin.sejarah.create');
+    Route::post('admin/sejarah', [SejarahController::class, 'store'])->name('admin.sejarah.store');
+    Route::get('admin/sejarah/{id}/edit', [SejarahController::class, 'edit'])->name('admin.sejarah.edit');
+    Route::put('admin/sejarah/{id}', [SejarahController::class, 'update'])->name('admin.sejarah.update');
+    Route::delete('admin/sejarah/{id}', [SejarahController::class, 'destroy'])->name('admin.sejarah.destroy');
+        
     // Newsletter Routes
     Route::get('admin/newsletter', [AdminNewsletterController::class, 'index'])->name('admin.newsletter.index');
     Route::get('admin/newsletter/create', [AdminNewsletterController::class, 'create'])->name('admin.newsletter.create');
@@ -49,36 +99,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('admin/newsletter/{id}', [AdminNewsletterController::class, 'destroy'])->name('admin.newsletter.destroy');
     Route::patch('admin/newsletter/{id}/toggle-active', [AdminNewsletterController::class, 'toggleActive'])->name('admin.newsletter.toggle-active');
 
+    // Visi Misi Routes
+    Route::get('admin/visi-misi', [VisiMisiController::class, 'index'])->name('admin.visi-misi.index');
+    Route::get('admin/visi-misi/create', [VisiMisiController::class, 'create'])->name('admin.visi-misi.create');
+    Route::post('admin/visi-misi', [VisiMisiController::class, 'store'])->name('admin.visi-misi.store');
+    Route::get('admin/visi-misi/{visionMission}/edit', [VisiMisiController::class, 'edit'])->name('admin.visi-misi.edit');
+    Route::put('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'update'])->name('admin.visi-misi.update');
+    Route::delete('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'destroy'])->name('admin.visi-misi.destroy');
+    Route::get('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'show'])->name('admin.visi-misi.show');
+    Route::get('admin/visi-misi/type/{type}', [VisiMisiController::class, 'getByType'])->name('admin.visi-misi.by-type');
+    Route::post('admin/visi-misi/reorder-missions', [VisiMisiController::class, 'reorderMissions'])->name('admin.visi-misi.reorder-missions');
 
-
-
-Route::get('admin/sambutan_rektor', [SambutanRektorController::class, 'index'])->name('admin.sambutan_rektor.index');
-Route::get('admin/sambutan_rektor/create', [SambutanRektorController::class, 'create'])->name('admin.sambutan_rektor.create');
-Route::post('admin/sambutan_rektor', [SambutanRektorController::class, 'store'])->name('admin.sambutan_rektor.store');
-Route::get('admin/sambutan_rektor/{id}/edit', [SambutanRektorController::class, 'edit'])->name('admin.sambutan_rektor.edit');
-Route::put('admin/sambutan_rektor/{id}', [SambutanRektorController::class, 'update'])->name('admin.sambutan_rektor.update');
-Route::delete('admin/sambutan_rektor/{id}', [SambutanRektorController::class, 'destroy'])->name('admin.sambutan_rektor.destroy');
-
-
-
-
-Route::get('admin/sejarah', [SejarahController::class, 'index'])->name('admin.sejarah.index');
-Route::get('admin/sejarah/create', [SejarahController::class, 'create'])->name('admin.sejarah.create');
-Route::post('admin/sejarah', [SejarahController::class, 'store'])->name('admin.sejarah.store');
-Route::get('admin/sejarah/{id}/edit', [SejarahController::class, 'edit'])->name('admin.sejarah.edit');
-Route::put('admin/sejarah/{id}', [SejarahController::class, 'update'])->name('admin.sejarah.update');
-Route::delete('admin/sejarah/{id}', [SejarahController::class, 'destroy'])->name('admin.sejarah.destroy');
-
-// Visi Misi Routes
-Route::get('admin/visi-misi', [VisiMisiController::class, 'index'])->name('admin.visi-misi.index');
-Route::get('admin/visi-misi/create', [VisiMisiController::class, 'create'])->name('admin.visi-misi.create');
-Route::post('admin/visi-misi', [VisiMisiController::class, 'store'])->name('admin.visi-misi.store');
-Route::get('admin/visi-misi/{visionMission}/edit', [VisiMisiController::class, 'edit'])->name('admin.visi-misi.edit');
-Route::put('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'update'])->name('admin.visi-misi.update');
-Route::delete('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'destroy'])->name('admin.visi-misi.destroy');
-Route::get('admin/visi-misi/{visionMission}', [VisiMisiController::class, 'show'])->name('admin.visi-misi.show');
-Route::get('admin/visi-misi/type/{type}', [VisiMisiController::class, 'getByType'])->name('admin.visi-misi.by-type');
-Route::post('admin/visi-misi/reorder-missions', [VisiMisiController::class, 'reorderMissions'])->name('admin.visi-misi.reorder-missions');
+    // Organization Structure Admin Routes
+    Route::get('admin/organization-structure', [AdminOrganizationStructureController::class, 'index'])->name('admin.organization-structure.index');
+    Route::get('admin/organization-structure/create', [AdminOrganizationStructureController::class, 'create'])->name('admin.organization-structure.create');
+    Route::post('admin/organization-structure', [AdminOrganizationStructureController::class, 'store'])->name('admin.organization-structure.store');
+    Route::get('admin/organization-structure/{organizationStructure}/edit', [AdminOrganizationStructureController::class, 'edit'])->name('admin.organization-structure.edit');
+    Route::put('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'update'])->name('admin.organization-structure.update');
+    Route::delete('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'destroy'])->name('admin.organization-structure.destroy');
+    Route::get('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'show'])->name('admin.organization-structure.show');
+    Route::post('admin/organization-structure/update-order', [AdminOrganizationStructureController::class, 'updateOrder'])->name('admin.organization-structure.update-order');
 
 
 
@@ -101,40 +141,12 @@ Route::post('/admin/profile/password', [AdminController::class, 'updatePassword'
 
 
 
-Route::get('admin/berita', [BeritaController::class, 'index'])->name('admin.berita.index');
-Route::get('admin/berita/create', [BeritaController::class, 'create'])->name('admin.berita.create');
-Route::post('admin/berita', [BeritaController::class, 'store'])->name('admin.berita.store');
-Route::get('admin/berita/{berita}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');
-Route::put('admin/berita/{berita}', [BeritaController::class, 'update'])->name('admin.berita.update');
-Route::delete('admin/berita/{berita}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
 
 
-Route::get('admin/pengumuman', [PengumumanController::class, 'index'])->name('admin.pengumuman.index');
-Route::get('admin/pengumuman/create', [PengumumanController::class, 'create'])->name('admin.pengumuman.create');
-Route::post('admin/pengumuman', [PengumumanController::class, 'store'])->name('admin.pengumuman.store');
-Route::get('admin/pengumuman/{pengumuman}/edit', [PengumumanController::class, 'edit'])->name('admin.pengumuman.edit');
-Route::put('admin/pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('admin.pengumuman.update');
-Route::delete('admin/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])->name('admin.pengumuman.destroy');
 
 
-// Menampilkan daftar jurusan
-Route::get('admin/jurusan', [JurusanController::class, 'index'])->name('admin.jurusan.index');
-Route::get('admin/jurusan/create', [JurusanController::class, 'create'])->name('admin.jurusan.create');
-Route::post('admin/jurusan', [JurusanController::class, 'store'])->name('admin.jurusan.store');
-Route::get('admin/jurusan/{id}/edit', [JurusanController::class, 'edit'])->name('admin.jurusan.edit');
-Route::put('admin/jurusan/{id}', [JurusanController::class, 'update'])->name('admin.jurusan.update');
-Route::delete('admin/jurusan/{id}', [JurusanController::class, 'destroy'])->name('admin.jurusan.destroy');
-Route::get('admin/jurusan/{id}', [JurusanController::class, 'show'])->name('admin.jurusan.show');
 
-// Organization Structure Admin Routes
-Route::get('admin/organization-structure', [AdminOrganizationStructureController::class, 'index'])->name('admin.organization-structure.index');
-Route::get('admin/organization-structure/create', [AdminOrganizationStructureController::class, 'create'])->name('admin.organization-structure.create');
-Route::post('admin/organization-structure', [AdminOrganizationStructureController::class, 'store'])->name('admin.organization-structure.store');
-Route::get('admin/organization-structure/{organizationStructure}/edit', [AdminOrganizationStructureController::class, 'edit'])->name('admin.organization-structure.edit');
-Route::put('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'update'])->name('admin.organization-structure.update');
-Route::delete('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'destroy'])->name('admin.organization-structure.destroy');
-Route::get('admin/organization-structure/{organizationStructure}', [AdminOrganizationStructureController::class, 'show'])->name('admin.organization-structure.show');
-Route::post('admin/organization-structure/update-order', [AdminOrganizationStructureController::class, 'updateOrder'])->name('admin.organization-structure.update-order');
+
 
 
 
@@ -149,6 +161,10 @@ Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('berita.show
 
 Route::get('/pengumuman', [AnnouncementController::class, 'index'])->name('pengumuman.index');
 Route::get('/pengumuman/{slug}', [AnnouncementController::class, 'show'])->name('pengumuman.show');
+
+// Route for jurusan detail page
+Route::get('/jurusan', [App\Http\Controllers\JurusanController::class, 'index'])->name('jurusan.index');
+Route::get('/jurusan/{slug}', [App\Http\Controllers\JurusanController::class, 'show'])->name('jurusan.show');
 
 
 // Route untuk halaman index (menampilkan view sambutan-rektor)

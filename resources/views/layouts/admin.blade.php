@@ -72,6 +72,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('admin.informasi-program.index') }}">
+                                <i class="fas fa-book-open"></i>
+                                <p>Program</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('admin.sambutan_rektor.index') }}">
                                 <i class="fas fa-chalkboard-teacher"></i>
                                 <p>Sambutan Rektor</p>
@@ -87,6 +93,20 @@
                             <a href="{{ route('admin.newsletter.index') }}">
                                 <i class="fas fa-envelope-open-text"></i>
                                 <p>Management Subscribe</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.visi-misi.index') }}">
+                                <i class="fas fa-envelope-open-text"></i>
+                                <p>Visi-misi</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.organization-structure.index') }}">
+                                <i class="fas fa-envelope-open-text"></i>
+                                <p>Struktur Organisasi</p>
                             </a>
                         </li>
 

@@ -35,6 +35,7 @@
                             <tr>
                                 <th scope="col" class="ps-4">#</th>
                                 <th scope="col">Jurusan</th>
+                                <th scope="col">Slug</th>
                                 <th scope="col">Deskripsi</th>
                                 <th scope="col">Icon</th>
                                 <th scope="col">Aksi</th>
@@ -45,6 +46,7 @@
                                 <tr class="align-middle">
                                     <td class="ps-4">{{ $index + 1 }}</td>
                                     <td class="fw-medium">{{ $jurusan->jurusan }}</td>
+                                    <td class="text-muted"><code>{{ $jurusan->slug }}</code></td>
                                     <td class="text-muted">{!! Str::limit($jurusan->deskripsi, 50) !!}</td>
                                     <td>
                                         @if($jurusan->icon)
@@ -88,8 +90,26 @@
                                         <h3 class="text-xl font-semibold">Nama Jurusan:</h3>
                                         <p>{{ $jurusan->jurusan }}</p>
 
+                                        <h3 class="text-xl font-semibold mt-2">Slug:</h3>
+                                        <p><code>{{ $jurusan->slug }}</code></p>
+
                                         <h3 class="text-xl font-semibold mt-2">Deskripsi:</h3>
                                         <p>{{ $jurusan->deskripsi }}</p>
+
+                                        @if($jurusan->deskripsi_lengkap)
+                                        <h3 class="text-xl font-semibold mt-2">Deskripsi Lengkap:</h3>
+                                        <p>{{ $jurusan->deskripsi_lengkap }}</p>
+                                        @endif
+
+                                        @if($jurusan->seo_title)
+                                        <h3 class="text-xl font-semibold mt-2">SEO Title:</h3>
+                                        <p>{{ $jurusan->seo_title }}</p>
+                                        @endif
+
+                                        @if($jurusan->seo_description)
+                                        <h3 class="text-xl font-semibold mt-2">SEO Description:</h3>
+                                        <p>{{ $jurusan->seo_description }}</p>
+                                        @endif
 
                                         <h3 class="text-xl font-semibold mt-2">Icon:</h3>
                                         @if($jurusan->icon)
@@ -122,7 +142,7 @@
 
                                             <!-- Input untuk Icon (Upload Gambar) -->
                                             <div class="form-group">
-                                                <label for="edit_icon{{ $jurusan->id }}">Icon (Upload Gambar)</label>
+                                                <label for="edit_icon{{ $jurusan->id }}">Icon (Upload Gambar) <span class="text-muted">(Opsional)</span></label>
                                                 <input type="file" name="icon" id="edit_icon{{ $jurusan->id }}" class="form-control" accept="image/*" onchange="previewEditImage({{ $jurusan->id }}, this)">
                                                 
                                                 <!-- Menampilkan gambar lama jika ada -->
@@ -144,10 +164,38 @@
                                                 <input type="text" name="jurusan" id="edit_jurusan{{ $jurusan->id }}" class="form-control" value="{{ old('jurusan', $jurusan->jurusan) }}" required>
                                             </div>
 
+                                            <!-- Input untuk Slug -->
+                                            <div class="form-group">
+                                                <label for="edit_slug{{ $jurusan->id }}">Slug <span class="text-muted">(Opsional)</span></label>
+                                                <input type="text" name="slug" id="edit_slug{{ $jurusan->id }}" class="form-control" value="{{ old('slug', $jurusan->slug) }}" placeholder="Contoh: teknik-informatika">
+                                                <small class="form-text text-muted">URL friendly untuk routing. Biarkan kosong untuk generate otomatis.</small>
+                                            </div>
+
                                             <!-- Input untuk Deskripsi -->
                                             <div class="form-group">
-                                                <label for="edit_deskripsi{{ $jurusan->id }}">Deskripsi</label>
-                                                <textarea name="deskripsi" id="edit_deskripsi{{ $jurusan->id }}" class="form-control" required>{{ old('deskripsi', $jurusan->deskripsi) }}</textarea>
+                                                <label for="edit_deskripsi{{ $jurusan->id }}">Deskripsi Singkat</label>
+                                                <textarea name="deskripsi" id="edit_deskripsi{{ $jurusan->id }}" class="form-control" rows="3" required>{{ old('deskripsi', $jurusan->deskripsi) }}</textarea>
+                                            </div>
+
+                                            <!-- Input untuk Deskripsi Lengkap -->
+                                            <div class="form-group">
+                                                <label for="edit_deskripsi_lengkap{{ $jurusan->id }}">Deskripsi Lengkap <span class="text-muted">(Opsional)</span></label>
+                                                <textarea name="deskripsi_lengkap" id="edit_deskripsi_lengkap{{ $jurusan->id }}" class="form-control" rows="5">{{ old('deskripsi_lengkap', $jurusan->deskripsi_lengkap) }}</textarea>
+                                                <small class="form-text text-muted">Detail lengkap untuk halaman jurusan.</small>
+                                            </div>
+
+                                            <!-- Input untuk SEO Title -->
+                                            <div class="form-group">
+                                                <label for="edit_seo_title{{ $jurusan->id }}">SEO Title <span class="text-muted">(Opsional)</span></label>
+                                                <input type="text" name="seo_title" id="edit_seo_title{{ $jurusan->id }}" class="form-control" value="{{ old('seo_title', $jurusan->seo_title) }}" placeholder="Judul untuk SEO">
+                                                <small class="form-text text-muted">Akan menggunakan nama jurusan jika kosong.</small>
+                                            </div>
+
+                                            <!-- Input untuk SEO Description -->
+                                            <div class="form-group">
+                                                <label for="edit_seo_description{{ $jurusan->id }}">SEO Description <span class="text-muted">(Opsional)</span></label>
+                                                <textarea name="seo_description" id="edit_seo_description{{ $jurusan->id }}" class="form-control" rows="2">{{ old('seo_description', $jurusan->seo_description) }}</textarea>
+                                                <small class="form-text text-muted">Meta deskripsi untuk SEO. Akan menggunakan deskripsi singkat jika kosong.</small>
                                             </div>
 
                                             <button type="button" class="btn btn-primary mt-3" onclick="confirmUpdate({{ $jurusan->id }})">
@@ -161,7 +209,7 @@
 
                                                 @empty
                                 <tr>
-                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data jurusan.</td>
+                                    <td colspan="6" class="text-center text-muted py-4">Belum ada data jurusan.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -187,8 +235,8 @@
                         @csrf
                         <!-- Input untuk Icon (Upload Gambar) -->
                         <div class="form-group">
-                            <label for="add_icon">Icon (Upload Gambar)</label>
-                            <input type="file" name="icon" id="add_icon" class="form-control" accept="image/*" onchange="previewAddImage(this)" required>
+                            <label for="add_icon">Icon (Upload Gambar) <span class="text-muted">(Opsional)</span></label>
+                            <input type="file" name="icon" id="add_icon" class="form-control" accept="image/*" onchange="previewAddImage(this)">
                             
                             <!-- Preview gambar -->
                             <div id="add_imagePreview" style="display: none;" class="mt-2">
@@ -203,10 +251,38 @@
                             <input type="text" name="jurusan" id="add_jurusan" class="form-control" value="{{ old('jurusan') }}" required>
                         </div>
 
+                        <!-- Input untuk Slug -->
+                        <div class="form-group">
+                            <label for="add_slug">Slug <span class="text-muted">(Opsional - akan dibuat otomatis jika kosong)</span></label>
+                            <input type="text" name="slug" id="add_slug" class="form-control" value="{{ old('slug') }}" placeholder="Contoh: teknik-informatika">
+                            <small class="form-text text-muted">URL friendly untuk routing. Biarkan kosong untuk generate otomatis.</small>
+                        </div>
+
                         <!-- Input untuk Deskripsi -->
                         <div class="form-group">
-                            <label for="add_deskripsi">Deskripsi</label>
-                            <textarea name="deskripsi" id="add_deskripsi" class="form-control" required>{{ old('deskripsi') }}</textarea>
+                            <label for="add_deskripsi">Deskripsi Singkat</label>
+                            <textarea name="deskripsi" id="add_deskripsi" class="form-control" rows="3" required>{{ old('deskripsi') }}</textarea>
+                        </div>
+
+                        <!-- Input untuk Deskripsi Lengkap -->
+                        <div class="form-group">
+                            <label for="add_deskripsi_lengkap">Deskripsi Lengkap <span class="text-muted">(Opsional)</span></label>
+                            <textarea name="deskripsi_lengkap" id="add_deskripsi_lengkap" class="form-control" rows="5">{{ old('deskripsi_lengkap') }}</textarea>
+                            <small class="form-text text-muted">Detail lengkap untuk halaman jurusan.</small>
+                        </div>
+
+                        <!-- Input untuk SEO Title -->
+                        <div class="form-group">
+                            <label for="add_seo_title">SEO Title <span class="text-muted">(Opsional)</span></label>
+                            <input type="text" name="seo_title" id="add_seo_title" class="form-control" value="{{ old('seo_title') }}" placeholder="Judul untuk SEO">
+                            <small class="form-text text-muted">Akan menggunakan nama jurusan jika kosong.</small>
+                        </div>
+
+                        <!-- Input untuk SEO Description -->
+                        <div class="form-group">
+                            <label for="add_seo_description">SEO Description <span class="text-muted">(Opsional)</span></label>
+                            <textarea name="seo_description" id="add_seo_description" class="form-control" rows="2">{{ old('seo_description') }}</textarea>
+                            <small class="form-text text-muted">Meta deskripsi untuk SEO. Akan menggunakan deskripsi singkat jika kosong.</small>
                         </div>
 
                         <button type="button" class="btn btn-success mt-3" onclick="confirmStore()">
@@ -280,17 +356,17 @@
         const jurusan = document.getElementById('add_jurusan').value.trim();
         const deskripsi = document.getElementById('add_deskripsi').value.trim();
 
-        if (!icon || !jurusan || !deskripsi) {
+        if (!jurusan || !deskripsi) {
             Swal.fire({
                 icon: 'error',
                 title: 'Validation Error',
-                text: 'Semua field harus diisi!'
+                text: 'Nama jurusan dan deskripsi harus diisi!'
             });
             return;
         }
 
-        // Validate file size (2MB)
-        if (icon.size > 2048 * 1024) {
+        // Validate file size (2MB) if file is selected
+        if (icon && icon.size > 2048 * 1024) {
             Swal.fire({
                 icon: 'error',
                 title: 'File terlalu besar!',
