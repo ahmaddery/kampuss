@@ -300,6 +300,70 @@
     </div>
 </nav>
 
+<!-- Flash Messages 
+@if(session('info'))
+    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mx-auto max-w-7xl mt-4">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm">{{ session('info') }}</p>
+            </div>
+            <div class="ml-auto pl-3">
+                <div class="-mx-1.5 -my-1.5">
+                    <button type="button" class="inline-flex bg-blue-100 rounded-md p-1.5 text-blue-500 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-100 focus:ring-blue-500" onclick="this.parentElement.parentElement.parentElement.parentElement.style.display='none'">
+                        <span class="sr-only">Dismiss</span>
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+@if(session('success'))
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mx-auto max-w-7xl mt-4">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm">{{ session('success') }}</p>
+            </div>
+            <div class="ml-auto pl-3">
+                <div class="-mx-1.5 -my-1.5">
+                    <button type="button" class="inline-flex bg-green-100 rounded-md p-1.5 text-green-500 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-100 focus:ring-green-500" onclick="this.parentElement.parentElement.parentElement.parentElement.style.display='none'">
+                        <span class="sr-only">Dismiss</span>
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mx-auto max-w-7xl mt-4">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm">{{ session('error') }}</p>
+            </div>
+            <div class="ml-auto pl-3">
+                <div class="-mx-1.5 -my-1.5">
+                    <button type="button" class="inline-flex bg-red-100 rounded-md p-1.5 text-red-500 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-100 focus:ring-red-500" onclick="this.parentElement.parentElement.parentElement.parentElement.style.display='none'">
+                        <span class="sr-only">Dismiss</span>
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif   -->
+
  @yield('content')
 
     <footer>

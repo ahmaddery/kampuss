@@ -105,8 +105,15 @@
 
                         <li class="nav-item">
                             <a href="{{ route('admin.organization-structure.index') }}">
-                                <i class="fas fa-envelope-open-text"></i>
+                                <i class="fas fa-sitemap"></i>
                                 <p>Struktur Organisasi</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.settings.index') }}">
+                                <i class="fas fa-cogs"></i>
+                                <p>Pengaturan Halaman</p>
                             </a>
                         </li>
 
@@ -179,7 +186,7 @@
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="{{ route('admin.profile') }}">My Profile</a>
                                             <a class="dropdown-item" href="{{ route('admin.users') }}">Manage Admin</a>
-                                            <a class="dropdown-item" href="{{ route('admin.settings.pmb') }}">Pengaturan</a>
+                                            <a class="dropdown-item" href="{{ route('admin.settings.index') }}">Pengaturan</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">Account Setting</a>
                                             <div class="dropdown-divider"></div>

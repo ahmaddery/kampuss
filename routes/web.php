@@ -8,6 +8,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\GeneralSettingController;
 use App\Http\Controllers\Admin\SambutanRektorController;
 use App\Http\Controllers\SambutanController;
 use App\Http\Controllers\Admin\SejarahController;
@@ -125,6 +126,16 @@ Route::middleware('auth')->group(function () {
 Route::get('/admin/settings/pmb', [SettingController::class, 'showPMBSettings'])->name('admin.settings.pmb')->middleware('auth');
 Route::post('/admin/settings/toggle-pmb-status', [SettingController::class, 'togglePMBStatus'])->name('admin.settings.toggle.pmb.status')->middleware('auth');
 Route::get('/admin/settings', [SettingController::class, 'index'])->name('admin.settings.index')->middleware('auth');
+Route::get('/admin/settings/pages', [SettingController::class, 'pages'])->name('admin.settings.pages')->middleware('auth');
+Route::patch('/admin/settings/toggle-page-status/{pageName}', [SettingController::class, 'togglePageStatus'])->name('admin.settings.toggle-page-status')->middleware('auth');
+Route::post('/admin/settings/bulk-activate', [SettingController::class, 'bulkActivate'])->name('admin.settings.bulk-activate')->middleware('auth');
+Route::post('/admin/settings/bulk-deactivate', [SettingController::class, 'bulkDeactivate'])->name('admin.settings.bulk-deactivate')->middleware('auth');
+
+// General Settings Routes
+Route::get('/admin/settings/general', [App\Http\Controllers\Admin\GeneralSettingController::class, 'index'])->name('admin.settings.general')->middleware('auth');
+Route::put('/admin/settings/general/update', [App\Http\Controllers\Admin\GeneralSettingController::class, 'updateGeneral'])->name('admin.settings.general.update')->middleware('auth');
+Route::put('/admin/settings/social/update', [App\Http\Controllers\Admin\GeneralSettingController::class, 'updateSocial'])->name('admin.settings.social.update')->middleware('auth');
+Route::put('/admin/settings/system/update', [App\Http\Controllers\Admin\GeneralSettingController::class, 'updateSystem'])->name('admin.settings.system.update')->middleware('auth');
 
 Route::get('/admin', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
 Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile')->middleware('auth');
@@ -156,26 +167,26 @@ Route::post('/admin/profile/password', [AdminController::class, 'updatePassword'
 });
 
 // Route to display berita on the homepage
-Route::get('/berita', [NewsController::class, 'index'])->name('berita.index');
-Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('berita.show');
+Route::get('/berita', [NewsController::class, 'index'])->name('berita.index')->middleware('check.page.status:berita');
+Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('berita.show')->middleware('check.page.status:berita');
 
-Route::get('/pengumuman', [AnnouncementController::class, 'index'])->name('pengumuman.index');
-Route::get('/pengumuman/{slug}', [AnnouncementController::class, 'show'])->name('pengumuman.show');
+Route::get('/pengumuman', [AnnouncementController::class, 'index'])->name('pengumuman.index')->middleware('check.page.status:pengumuman');
+Route::get('/pengumuman/{slug}', [AnnouncementController::class, 'show'])->name('pengumuman.show')->middleware('check.page.status:pengumuman');
 
 // Route for jurusan detail page
-Route::get('/jurusan', [App\Http\Controllers\JurusanController::class, 'index'])->name('jurusan.index');
-Route::get('/jurusan/{slug}', [App\Http\Controllers\JurusanController::class, 'show'])->name('jurusan.show');
+Route::get('/jurusan', [App\Http\Controllers\JurusanController::class, 'index'])->name('jurusan.index')->middleware('check.page.status:jurusan');
+Route::get('/jurusan/{slug}', [App\Http\Controllers\JurusanController::class, 'show'])->name('jurusan.show')->middleware('check.page.status:jurusan');
 
 
 // Route untuk halaman index (menampilkan view sambutan-rektor)
-Route::get('/sambutan-rektor', [SambutanController::class, 'index'])->name('sambutan-rektor.index');
-Route::get('/sejarah', [SambutanController::class, 'sejarah'])->name('sejarah.index');
-Route::get('/visi-misi', [App\Http\Controllers\VisiMisiController::class, 'index'])->name('visi-misi.index');
+Route::get('/sambutan-rektor', [SambutanController::class, 'index'])->name('sambutan-rektor.index')->middleware('check.page.status:sambutan-rektor');
+Route::get('/sejarah', [SambutanController::class, 'sejarah'])->name('sejarah.index')->middleware('check.page.status:sejarah');
+Route::get('/visi-misi', [App\Http\Controllers\VisiMisiController::class, 'index'])->name('visi-misi.index')->middleware('check.page.status:visi-misi');
 
 // Organization Structure Public Routes
-Route::get('/struktur-organisasi', [OrganizationStructureController::class, 'index'])->name('organization-structure.index');
-Route::get('/struktur-organisasi/{id}', [OrganizationStructureController::class, 'show'])->name('organization-structure.show');
-Route::get('/struktur-organisasi/tree/data', [OrganizationStructureController::class, 'tree'])->name('organization-structure.tree');
+Route::get('/struktur-organisasi', [OrganizationStructureController::class, 'index'])->name('organization-structure.index')->middleware('check.page.status:struktur-organisasi');
+Route::get('/struktur-organisasi/{id}', [OrganizationStructureController::class, 'show'])->name('organization-structure.show')->middleware('check.page.status:struktur-organisasi');
+Route::get('/struktur-organisasi/tree/data', [OrganizationStructureController::class, 'tree'])->name('organization-structure.tree')->middleware('check.page.status:struktur-organisasi');
 
 
 //Route::get('/berita/{id}', [NewsController::class, 'show'])->name('berita.show');
