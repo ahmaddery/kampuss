@@ -281,7 +281,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Navigation Buttons -->
                 <button id="staffPrevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 text-gray-800 w-12 h-12 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10">

@@ -6,7 +6,7 @@
                     <div class="mb-6">
                         <img class="h-12" src="https://www.claudeusercontent.com/api/placeholder/300/200" alt="Mercu Buana Yogyakarta">
                     </div>
-                    <p class="text-gray-400 mb-6">Universitas Mercu Buana Yogyakarta adalah institusi pendidikan tinggi yang berkomitmen pada kualitas dan inovasi.</p>
+                    <p class="text-gray-400 mb-6">{{ $contactInfo['deskripsi']}}</p>
                     <div class="flex space-x-4">
                         <a href="#" class="bg-blue-800 hover:bg-blue-700 h-10 w-10 rounded-full flex items-center justify-center transition-all" aria-label="Instagram">
                             <i class="fab fa-instagram"></i>
@@ -51,19 +51,19 @@
                     <ul class="space-y-4">
                         <li class="flex">
                             <i class="fas fa-map-marker-alt mt-1 mr-3 text-blue-400"></i>
-                            <span class="text-gray-400">Jl. Wates Km. 10, Yogyakarta 55753, Indonesia</span>
+                            <span class="text-gray-400">{{ $contactInfo['address']}}</span>
                         </li>
                         <li class="flex">
                             <i class="fas fa-phone-alt mt-1 mr-3 text-blue-400"></i>
-                            <span class="text-gray-400">(0274) 123456</span>
+                            <span class="text-gray-400">{{ $contactInfo['phone']}}</span>
                         </li>
                         <li class="flex">
                             <i class="fas fa-envelope mt-1 mr-3 text-blue-400"></i>
-                            <span class="text-gray-400">info@mercubuana-yogya.ac.id</span>
+                            <span class="text-gray-400">{{ $contactInfo['email']}}</span>
                         </li>
                         <li class="flex">
                             <i class="fas fa-clock mt-1 mr-3 text-blue-400"></i>
-                            <span class="text-gray-400">Senin - Jumat: 08.00 - 16.00 WIB</span>
+                            <span class="text-gray-400">{{ $contactInfo['operasional']}}</span>
                         </li>
                     </ul>
                 </div>

@@ -24,29 +24,19 @@
             <div class="flex items-center space-x-4">
                 <div class="flex items-center">
                     <i class="fas fa-envelope mr-2 text-blue-200"></i>
-                    <span class="text-sm">info@mercubuana-yogya.ac.id</span>
+                    <span class="text-sm">{{ $contactInfo['email'] ?? 'info@mercubuana-yogya.ac.id' }}</span>
                 </div>
                 <div class="flex items-center">
                     <i class="fas fa-phone-alt mr-2 text-blue-200"></i>
-                    <span class="text-sm">(0274) 123456</span>
+                    <span class="text-sm">{{ $contactInfo['phone'] ?? '(0274) 123456' }}</span>
                 </div>
             </div>
             <div class="flex space-x-5">
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
+                @foreach($socialMedia as $social)
+                <a href="{{ $social['url'] }}" target="_blank" class="text-white hover:text-blue-200 transition-all" aria-label="{{ $social['name'] }}">
+                    <i class="{{ $social['icon_class'] }}"></i>
                 </a>
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="Twitter">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="Facebook">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="Youtube">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="TikTok">
-                    <i class="fab fa-tiktok"></i>
-                </a>
+                @endforeach
             </div>
         </div>
         
@@ -56,27 +46,17 @@
             <div class="flex justify-center items-center mb-2">
                 <div class="flex items-center">
                     <i class="fas fa-envelope mr-2 text-blue-200"></i>
-                    <span class="text-sm">info@mercubuana-yogya.ac.id</span>
+                    <span class="text-sm">{{ $contactInfo['email'] ?? 'info@mercubuana-yogya.ac.id' }}</span>
                 </div>
             </div>
             
             <!-- Social media row -->
             <div class="flex justify-center space-x-6">
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
+                @foreach($socialMedia as $social)
+                <a href="{{ $social['url'] }}" target="_blank" class="text-white hover:text-blue-200 transition-all" aria-label="{{ $social['name'] }}">
+                    <i class="{{ $social['icon_class'] }}"></i>
                 </a>
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="Twitter">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="Facebook">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="Youtube">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="#" class="text-white hover:text-blue-200 transition-all" aria-label="TikTok">
-                    <i class="fab fa-tiktok"></i>
-                </a>
+                @endforeach
             </div>
         </div>
     </div>
@@ -94,19 +74,35 @@
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-1 items-center h-full ml-10">
                         <a href="/" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all">Home</a>
+                        @php
+                            $hasActiveProfilePages = (isset($pageSettings['sambutan-rektor']) && $pageSettings['sambutan-rektor']) ||
+                                                   (isset($pageSettings['sejarah']) && $pageSettings['sejarah']) ||
+                                                   (isset($pageSettings['visi-misi']) && $pageSettings['visi-misi']) ||
+                                                   (isset($pageSettings['struktur-organisasi']) && $pageSettings['struktur-organisasi']);
+                        @endphp
+                        @if($hasActiveProfilePages)
                         <div class="group relative px-1">
                             <a href="#" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
                                 Profil <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
                             </a>
                             <div class="dropdown-menu absolute z-10 mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <div class="py-1">
-                                     <a href="{{ route('sambutan-rektor.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sambutan Rektor</a>
-                                    <a href="{{ route('sejarah.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sejarah</a>
-                                    <a href="{{ route('visi-misi.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Visi & Misi</a>
-                                    <a href="{{ route('organization-structure.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Struktur Organisasi</a>
+                                    @if(isset($pageSettings['sambutan-rektor']) && $pageSettings['sambutan-rektor'])
+                                        <a href="{{ route('sambutan-rektor.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sambutan Rektor</a>
+                                    @endif
+                                    @if(isset($pageSettings['sejarah']) && $pageSettings['sejarah'])
+                                        <a href="{{ route('sejarah.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sejarah</a>
+                                    @endif
+                                    @if(isset($pageSettings['visi-misi']) && $pageSettings['visi-misi'])
+                                        <a href="{{ route('visi-misi.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Visi & Misi</a>
+                                    @endif
+                                    @if(isset($pageSettings['struktur-organisasi']) && $pageSettings['struktur-organisasi'])
+                                        <a href="{{ route('organization-structure.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Struktur Organisasi</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
+                        @endif
                         <div class="group relative px-1">
                             <a href="{{ route('jurusan.index') }}" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
                                 Program Studi <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
@@ -219,18 +215,34 @@
                 </div>
             </div>
             <a href="/" class="text-gray-700 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium transition-all">Home</a>
+            @php
+                $hasActiveProfilePages = (isset($pageSettings['sambutan-rektor']) && $pageSettings['sambutan-rektor']) ||
+                                       (isset($pageSettings['sejarah']) && $pageSettings['sejarah']) ||
+                                       (isset($pageSettings['visi-misi']) && $pageSettings['visi-misi']) ||
+                                       (isset($pageSettings['struktur-organisasi']) && $pageSettings['struktur-organisasi']);
+            @endphp
+            @if($hasActiveProfilePages)
             <div class="mobile-dropdown">
                 <button class="w-full text-left flex justify-between items-center text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-base font-medium transition-all">
                     Profil
                     <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div class="hidden pl-4 py-2 space-y-1">
-                    <a href="{{ route('sambutan-rektor.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sambutan Rektor</a>
-                    <a href="{{ route('sejarah.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sejarah</a>
-                    <a href="{{ route('visi-misi.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Visi & Misi</a>
-                    <a href="{{ route('organization-structure.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Struktur Organisasi</a>
+                    @if(isset($pageSettings['sambutan-rektor']) && $pageSettings['sambutan-rektor'])
+                        <a href="{{ route('sambutan-rektor.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sambutan Rektor</a>
+                    @endif
+                    @if(isset($pageSettings['sejarah']) && $pageSettings['sejarah'])
+                        <a href="{{ route('sejarah.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Sejarah</a>
+                    @endif
+                    @if(isset($pageSettings['visi-misi']) && $pageSettings['visi-misi'])
+                        <a href="{{ route('visi-misi.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Visi & Misi</a>
+                    @endif
+                    @if(isset($pageSettings['struktur-organisasi']) && $pageSettings['struktur-organisasi'])
+                        <a href="{{ route('organization-structure.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Struktur Organisasi</a>
+                    @endif
                 </div>
             </div>
+            @endif
             <div class="mobile-dropdown">
                 <button class="w-full text-left flex justify-between items-center text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-base font-medium transition-all">
                     Program Studi

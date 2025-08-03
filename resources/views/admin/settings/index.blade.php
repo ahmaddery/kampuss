@@ -38,15 +38,15 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h5 class="card-title">
-                                <i class="fas fa-cogs text-success"></i> Pengaturan Umum
+                                <i class="fas fa-address-book text-success"></i> Kontak & Media Sosial
                             </h5>
-                            <p class="card-text text-muted">Konfigurasi informasi website dan sistem</p>
+                            <p class="card-text text-muted">Kelola informasi kontak dan media sosial website</p>
                             <a href="{{ route('admin.settings.general') }}" class="btn btn-success btn-sm">
-                                <i class="fas fa-edit"></i> Konfigurasi
+                                <i class="fas fa-edit"></i> Kelola Kontak
                             </a>
                         </div>
                         <div class="text-right">
-                            <i class="fas fa-cog fa-2x text-success opacity-25"></i>
+                            <i class="fas fa-share-alt fa-2x text-success opacity-25"></i>
                         </div>
                     </div>
                 </div>

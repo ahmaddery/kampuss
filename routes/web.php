@@ -20,8 +20,14 @@ use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController
 use App\Http\Controllers\OrganizationStructureController;
 use App\Http\Controllers\Admin\OrganizationStructureController as AdminOrganizationStructureController;
 use App\Http\Controllers\Admin\InformasiProgramController;
+use App\Http\Controllers\Admin\ContactController;
 
 Route::get('/', [UtamaController::class, 'index']);
+
+// Test route to check ViewServiceProvider
+Route::get('/test-page-settings', function () {
+    return view('test-page-settings');
+});
 
 // Newsletter Routes
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
