@@ -28,6 +28,70 @@
                     </div>
                 @endif
 
+                <!-- Search and Filter Form -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card bg-light border-0">
+                            <div class="card-body">
+                                <form method="GET" action="{{ route('admin.berita.index') }}" class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="search" class="form-label">Pencarian</label>
+                                        <input type="text" 
+                                               name="search" 
+                                               id="search" 
+                                               class="form-control" 
+                                               placeholder="Cari berdasarkan judul, penulis, deskripsi, atau tags..."
+                                               value="{{ request('search') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="date_from" class="form-label">Tanggal Dari</label>
+                                        <input type="date" 
+                                               name="date_from" 
+                                               id="date_from" 
+                                               class="form-control"
+                                               value="{{ request('date_from') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="date_to" class="form-label">Tanggal Sampai</label>
+                                        <input type="date" 
+                                               name="date_to" 
+                                               id="date_to" 
+                                               class="form-control"
+                                               value="{{ request('date_to') }}">
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <div class="btn-group w-100" role="group">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-search me-1"></i> Cari
+                                            </button>
+                                            <a href="{{ route('admin.berita.index') }}" class="btn btn-outline-secondary">
+                                                <i class="fas fa-times me-1"></i> Reset
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Summary -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted">
+                                Menampilkan {{ $berita->firstItem() ?? 0 }} - {{ $berita->lastItem() ?? 0 }} dari {{ $berita->total() }} data berita
+                                @if(request('search'))
+                                    untuk pencarian "<strong>{{ request('search') }}</strong>"
+                                @endif
+                            </div>
+                            <div class="text-muted">
+                                Halaman {{ $berita->currentPage() }} dari {{ $berita->lastPage() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Table -->
                 <div class="table-responsive">
                     <table class="table table-hover align-middle table-borderless">
@@ -45,7 +109,7 @@
                         <tbody>
                             @forelse ($berita as $index => $item)
                                 <tr class="align-middle">
-                                    <td class="ps-4">{{ $index + 1 }}</td>
+                                    <td class="ps-4">{{ ($berita->currentPage() - 1) * $berita->perPage() + $loop->iteration }}</td>
                                     <td class="fw-medium">{{ $item->title }}</td>
                                     <td class="text-muted">{{ $item->author ?? 'N/A' }}</td>
                                     <td class="text-muted">{{ \Carbon\Carbon::parse($item->publish_date)->format('d M Y') }}</td>
@@ -86,12 +150,30 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center text-muted py-4">Belum ada data berita.</td>
+                                    <td colspan="7" class="text-center text-muted py-4">
+                                        @if(request()->hasAny(['search', 'date_from', 'date_to']))
+                                            Tidak ada data berita yang sesuai dengan pencarian Anda.
+                                        @else
+                                            Belum ada data berita.
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination -->
+                @if($berita->hasPages())
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="text-muted">
+                            Menampilkan {{ $berita->firstItem() }} - {{ $berita->lastItem() }} dari {{ $berita->total() }} hasil
+                        </div>
+                        <div class="pagination-wrapper">
+                            {{ $berita->links('pagination::bootstrap-4') }}
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -188,6 +270,33 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+<style>
+    .pagination-wrapper .page-link {
+        border-radius: 0.375rem;
+        margin: 0 2px;
+        border: 1px solid #dee2e6;
+        color: #6c757d;
+    }
+    
+    .pagination-wrapper .page-link:hover {
+        background-color: #e9ecef;
+        border-color: #adb5bd;
+    }
+    
+    .pagination-wrapper .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    
+    .search-highlight {
+        background-color: #fff3cd;
+        padding: 2px 4px;
+        border-radius: 3px;
+    }
+</style>
+@endpush
 
 @push('scripts')
 <!-- CKEditor Script -->
@@ -311,6 +420,31 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('beritaModal').addEventListener('hidden.bs.modal', function () {
         resetForm();
     });
+
+    // Auto-submit search form after typing delay
+    let searchTimeout;
+    const searchInput = document.getElementById('search');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                // Only auto-submit if there's more than 2 characters or if it's empty (to clear search)
+                if (this.value.length >= 3 || this.value.length === 0) {
+                    this.form.submit();
+                }
+            }, 500); // 500ms delay
+        });
+    }
+
+    // Clear search when clicking reset
+    const resetBtn = document.querySelector('a[href*="admin.berita.index"]');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = this.href;
+        });
+    }
 });
 
 // Open Create Modal

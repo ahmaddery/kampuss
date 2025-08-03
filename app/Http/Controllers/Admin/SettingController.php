@@ -28,7 +28,14 @@ class SettingController extends Controller
     public function showPMBSettings()
     {
         // Ambil pengaturan status aktif/non-aktif dari tabel settings
-        $setting = Setting::first(); // Ambil pengaturan pertama
+        // Jika tidak ada setting, buat yang default dengan is_active = true
+        $setting = Setting::first();
+        
+        if (!$setting) {
+            $setting = Setting::create([
+                'is_active' => true
+            ]);
+        }
 
         // Kirim data pengaturan ke view 'admin.settings.pmb'
         return view('admin.settings.pmb', compact('setting'));
@@ -42,8 +49,14 @@ class SettingController extends Controller
      */
     public function togglePMBStatus()
     {
-        // Ambil pengaturan yang ada
+        // Ambil pengaturan yang ada atau buat yang baru jika tidak ada
         $setting = Setting::first();
+        
+        if (!$setting) {
+            $setting = Setting::create([
+                'is_active' => true
+            ]);
+        }
 
         // Toggle nilai 'is_active' (aktif jika non-aktif, non-aktif jika aktif)
         $setting->is_active = !$setting->is_active;

@@ -38,12 +38,40 @@ class BeritaController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $berita = Berita::all(); // Fetch all records
-        return view('admin.berita.index', compact('berita')); // Pass data to the view
+        $query = Berita::query();
+        
+        // Handle search
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('author', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('description', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('tags', 'like', '%' . $searchTerm . '%');
+            });
+        }
+        
+        // Handle date filter
+        if ($request->filled('date_from')) {
+            $query->whereDate('publish_date', '>=', $request->date_from);
+        }
+        
+        if ($request->filled('date_to')) {
+            $query->whereDate('publish_date', '<=', $request->date_to);
+        }
+        
+        // Order by latest first
+        $query->orderBy('created_at', 'desc');
+        
+        // Paginate results
+        $berita = $query->paginate(10)->withQueryString();
+        
+        return view('admin.berita.index', compact('berita'));
     }
 
     /**
