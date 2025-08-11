@@ -168,7 +168,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all">Kontak</a>
+                        <a href="{{ route('contact.index') }}" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all">Kontak</a>
                         <div class="group relative px-1">
                             <a href="#" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
                                 Tracer Study <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
@@ -297,7 +297,7 @@
                     <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Beasiswa</a>
                 </div>
             </div>
-            <a href="#" class="text-gray-700 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium transition-all">Kontak</a>
+            <a href="{{ route('contact.index') }}" class="text-gray-700 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium transition-all">Kontak</a>
             <div class="mobile-dropdown">
                 <button class="w-full text-left flex justify-between items-center text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-base font-medium transition-all">
                     Tracer Study

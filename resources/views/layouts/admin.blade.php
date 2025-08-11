@@ -97,6 +97,21 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{ route('admin.contact-messages.index') }}">
+                                <i class="fas fa-inbox"></i>
+                                <p>
+                                    Pesan Kontak
+                                    @php
+                                        $unreadCount = \App\Models\ContactMessage::unread()->count();
+                                    @endphp
+                                    @if($unreadCount > 0)
+                                        <span class="badge badge-danger ml-2">{{ $unreadCount }}</span>
+                                    @endif
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('admin.visi-misi.index') }}">
                                 <i class="fas fa-envelope-open-text"></i>
                                 <p>Visi-misi</p>

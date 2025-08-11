@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'check.page.status' => \App\Http\Middleware\CheckPageStatus::class,
+            'contact.rate.limit' => \App\Http\Middleware\ContactRateLimitMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

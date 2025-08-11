@@ -21,6 +21,8 @@ use App\Http\Controllers\OrganizationStructureController;
 use App\Http\Controllers\Admin\OrganizationStructureController as AdminOrganizationStructureController;
 use App\Http\Controllers\Admin\InformasiProgramController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\ContactController as PublicContactController;
+use App\Http\Controllers\Admin\ContactMessageController;
 
 Route::get('/', [UtamaController::class, 'index']);
 
@@ -154,6 +156,15 @@ Route::post('/admin/users/deactivate/{id}', [AdminController::class, 'deactivate
 Route::post('/admin/users/reactivate/{id}', [AdminController::class, 'reactivateUser'])->name('admin.users.reactivate')->middleware('auth');
 Route::post('/admin/profile/password', [AdminController::class, 'updatePassword'])->name('admin.profile.updatePassword')->middleware('auth');
 
+    // Contact Messages Routes
+    Route::get('admin/contact-messages', [ContactMessageController::class, 'index'])->name('admin.contact-messages.index');
+    Route::get('admin/contact-messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('admin.contact-messages.show');
+    Route::post('admin/contact-messages/{contactMessage}/reply', [ContactMessageController::class, 'reply'])->name('admin.contact-messages.reply');
+    Route::patch('admin/contact-messages/{contactMessage}/toggle-read', [ContactMessageController::class, 'toggleRead'])->name('admin.contact-messages.toggle-read');
+    Route::patch('admin/contact-messages/{contactMessage}/status', [ContactMessageController::class, 'updateStatus'])->name('admin.contact-messages.update-status');
+    Route::delete('admin/contact-messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('admin.contact-messages.destroy');
+    Route::post('admin/contact-messages/bulk-action', [ContactMessageController::class, 'bulkAction'])->name('admin.contact-messages.bulk-action');
+
 
 
 
@@ -193,6 +204,10 @@ Route::get('/visi-misi', [App\Http\Controllers\VisiMisiController::class, 'index
 Route::get('/struktur-organisasi', [OrganizationStructureController::class, 'index'])->name('organization-structure.index')->middleware('check.page.status:struktur-organisasi');
 Route::get('/struktur-organisasi/{id}', [OrganizationStructureController::class, 'show'])->name('organization-structure.show')->middleware('check.page.status:struktur-organisasi');
 Route::get('/struktur-organisasi/tree/data', [OrganizationStructureController::class, 'tree'])->name('organization-structure.tree')->middleware('check.page.status:struktur-organisasi');
+
+// Contact Public Route
+Route::get('/contact', [PublicContactController::class, 'index'])->name('contact.index')->middleware('check.page.status:contact');
+Route::post('/contact', [PublicContactController::class, 'store'])->name('contact.store')->middleware('contact.rate.limit');
 
 
 //Route::get('/berita/{id}', [NewsController::class, 'show'])->name('berita.show');
