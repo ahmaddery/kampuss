@@ -247,7 +247,7 @@
                             <i class="fas fa-exclamation-triangle mr-3 text-red-500"></i>
                             <div>
                                 <p class="font-medium">Hotline Darurat</p>
-                                <p class="text-sm">{{ $contactData['emergency_phone'] ?? '0274-911' }}</p>
+                                <p class="text-sm">{{ $contactData['phone']}}</p>
                             </div>
                         </div>
                     </div>
@@ -274,7 +274,7 @@
             </div>
         </div>
 
-        <!-- FAQ Section -->
+        <!-- FAQ Section 
         <div class="animate-fade-in mb-16" style="animation-delay: 0.9s;">
             <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Pertanyaan yang Sering Diajukan</h2>
             <div class="max-w-4xl mx-auto space-y-4">
@@ -298,8 +298,8 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </div>     -->
+</div>  
 
 @push('scripts')
 <script>

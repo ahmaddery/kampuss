@@ -165,13 +165,9 @@
             </p>
             
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors inline-flex items-center justify-center">
+                <a href="{{ route('contact.index') }}" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors inline-flex items-center justify-center">
                     <i class="fas fa-phone mr-2"></i>
                     Hubungi Konselor
-                </a>
-                <a href="#" class="bg-blue-800 bg-opacity-50 text-white px-8 py-3 rounded-full font-semibold hover:bg-opacity-70 transition-colors inline-flex items-center justify-center">
-                    <i class="fas fa-calendar mr-2"></i>
-                    Jadwalkan Konsultasi
                 </a>
             </div>
         </div>
