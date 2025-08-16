@@ -131,27 +131,56 @@
                             </div>
                         </div>
                         <div class="group relative px-1">
-                            <a href="#" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
+                            <a href="{{ route('fasilitas.index') }}" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
                                 Fasilitas <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
                             </a>
                             <div class="dropdown-menu absolute z-10 mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <div class="py-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Perpustakaan</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Laboratorium</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Asrama</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Sport Center</a>
+                                    <a href="{{ route('fasilitas.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium border-b border-gray-100">
+                                        <i class="fas fa-list mr-2"></i>Lihat Semua Fasilitas
+                                    </a>
+                                    @php
+                                        $topFasilitas = \App\Models\Fasilitas::aktif()->limit(5)->get();
+                                    @endphp
+                                    @foreach($topFasilitas as $fasilitas)
+                                        <a href="{{ route('fasilitas.show', $fasilitas->slug) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">
+                                            {{ $fasilitas->nama_fasilitas }}
+                                        </a>
+                                    @endforeach
+                                    @if($topFasilitas->count() >= 5)
+                                        <div class="border-t border-gray-100 mt-1 pt-1">
+                                            <a href="{{ route('fasilitas.index') }}" class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 font-medium">
+                                                <i class="fas fa-arrow-right mr-2"></i>Lihat Semua
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="group relative px-1">
-                            <a href="#" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
+                            <a href="{{ route('biro.index') }}" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
                                 Biro <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
                             </a>
                             <div class="dropdown-menu absolute z-10 mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <div class="py-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Akademik</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Kemahasiswaan</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Keuangan</a>
+                                    <a href="{{ route('biro.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-medium border-b border-gray-100">
+                                        <i class="fas fa-list mr-2"></i>Lihat Semua Biro
+                                    </a>
+                                    @php
+                                        $topBiros = \App\Models\Biro::aktif()->limit(5)->get();
+                                    @endphp
+                                    @foreach($topBiros as $biro)
+                                        <a href="{{ route('biro.show', $biro->slug) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">
+                                            {{ $biro->nama_biro }}
+                                        </a>
+                                    @endforeach
+                                    @if($topBiros->count() >= 5)
+                                        <div class="border-t border-gray-100">
+                                            <a href="{{ route('biro.index') }}" class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 font-medium">
+                                                <i class="fas fa-arrow-right mr-2"></i>Lihat Semua
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -280,9 +309,17 @@
                     <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div class="hidden pl-4 py-2 space-y-1">
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Akademik</a>
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Kemahasiswaan</a>
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Keuangan</a>
+                    <a href="{{ route('biro.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md font-medium">
+                        <i class="fas fa-list mr-2"></i>Lihat Semua Biro
+                    </a>
+                    @php
+                        $mobileBiros = \App\Models\Biro::aktif()->limit(5)->get();
+                    @endphp
+                    @foreach($mobileBiros as $biro)
+                        <a href="{{ route('biro.show', $biro->slug) }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">
+                            {{ $biro->nama_biro }}
+                        </a>
+                    @endforeach
                 </div>
             </div>
             <div class="mobile-dropdown">

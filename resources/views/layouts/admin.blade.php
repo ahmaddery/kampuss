@@ -78,6 +78,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('admin.fasilitas.index') }}">
+                                <i class="fas fa-building"></i>
+                                <p>Fasilitas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.biro.index') }}">
+                                <i class="fas fa-briefcase"></i>
+                                <p>Biro</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('admin.sambutan_rektor.index') }}">
                                 <i class="fas fa-chalkboard-teacher"></i>
                                 <p>Sambutan Rektor</p>

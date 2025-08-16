@@ -34,6 +34,9 @@ class SettingController extends Controller
             'berita' => 'Berita',
             'pengumuman' => 'Pengumuman',
             'jurusan' => 'Program Studi',
+            'fasilitas' => 'Fasilitas',
+            'biro' => 'Biro',
+            'contact' => 'Kontak'
         ];
 
         // Ambil atau buat settings untuk setiap halaman

@@ -23,6 +23,8 @@ use App\Http\Controllers\Admin\InformasiProgramController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\ContactController as PublicContactController;
 use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\FasilitasController as AdminFasilitasController;
+use App\Http\Controllers\FasilitasController;
 
 Route::get('/', [UtamaController::class, 'index']);
 
@@ -165,6 +167,25 @@ Route::post('/admin/profile/password', [AdminController::class, 'updatePassword'
     Route::delete('admin/contact-messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('admin.contact-messages.destroy');
     Route::post('admin/contact-messages/bulk-action', [ContactMessageController::class, 'bulkAction'])->name('admin.contact-messages.bulk-action');
 
+    // Fasilitas Admin Routes
+    Route::get('admin/fasilitas', [AdminFasilitasController::class, 'index'])->name('admin.fasilitas.index');
+    Route::get('admin/fasilitas/create', [AdminFasilitasController::class, 'create'])->name('admin.fasilitas.create');
+    Route::post('admin/fasilitas', [AdminFasilitasController::class, 'store'])->name('admin.fasilitas.store');
+    Route::get('admin/fasilitas/{fasilitas}', [AdminFasilitasController::class, 'show'])->name('admin.fasilitas.show');
+    Route::get('admin/fasilitas/{fasilitas}/edit', [AdminFasilitasController::class, 'edit'])->name('admin.fasilitas.edit');
+    Route::put('admin/fasilitas/{fasilitas}', [AdminFasilitasController::class, 'update'])->name('admin.fasilitas.update');
+    Route::delete('admin/fasilitas/{fasilitas}', [AdminFasilitasController::class, 'destroy'])->name('admin.fasilitas.destroy');
+    Route::patch('admin/fasilitas/{fasilitas}/toggle-status', [AdminFasilitasController::class, 'toggleStatus'])->name('admin.fasilitas.toggle-status');
+
+    // Biro Admin Routes
+    Route::get('admin/biro', [App\Http\Controllers\Admin\BiroController::class, 'index'])->name('admin.biro.index');
+    Route::get('admin/biro/create', [App\Http\Controllers\Admin\BiroController::class, 'create'])->name('admin.biro.create');
+    Route::post('admin/biro', [App\Http\Controllers\Admin\BiroController::class, 'store'])->name('admin.biro.store');
+    Route::get('admin/biro/{biro}', [App\Http\Controllers\Admin\BiroController::class, 'show'])->name('admin.biro.show');
+    Route::get('admin/biro/{biro}/edit', [App\Http\Controllers\Admin\BiroController::class, 'edit'])->name('admin.biro.edit');
+    Route::put('admin/biro/{biro}', [App\Http\Controllers\Admin\BiroController::class, 'update'])->name('admin.biro.update');
+    Route::delete('admin/biro/{biro}', [App\Http\Controllers\Admin\BiroController::class, 'destroy'])->name('admin.biro.destroy');
+
 
 
 
@@ -208,6 +229,14 @@ Route::get('/struktur-organisasi/tree/data', [OrganizationStructureController::c
 // Contact Public Route
 Route::get('/contact', [PublicContactController::class, 'index'])->name('contact.index')->middleware('check.page.status:contact');
 Route::post('/contact', [PublicContactController::class, 'store'])->name('contact.store')->middleware('contact.rate.limit');
+
+// Fasilitas Public Routes
+Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('fasilitas.index')->middleware('check.page.status:fasilitas');
+Route::get('/fasilitas/{slug}', [FasilitasController::class, 'show'])->name('fasilitas.show')->middleware('check.page.status:fasilitas');
+
+// Biro Public Routes
+Route::get('/biro', [App\Http\Controllers\BiroController::class, 'index'])->name('biro.index')->middleware('check.page.status:biro');
+Route::get('/biro/{biro}', [App\Http\Controllers\BiroController::class, 'show'])->name('biro.show')->middleware('check.page.status:biro');
 
 
 //Route::get('/berita/{id}', [NewsController::class, 'show'])->name('berita.show');

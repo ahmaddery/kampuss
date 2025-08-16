@@ -20,6 +20,8 @@
 
     @include('partials.homepage.news')
 
+    @include('partials.homepage.fasilitas')
+
 
 
 
