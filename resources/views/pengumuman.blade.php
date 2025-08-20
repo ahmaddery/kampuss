@@ -234,14 +234,8 @@
                 @endforeach
             </div>
 
-            <!-- Pagination dengan styling yang lebih menarik -->
-            <div class="mt-16">
-                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100">
-                    {{ $pengumumans->links('vendor.pagination.tailwind') }}
-                </div>
-                <div class="text-center mt-4 text-sm text-gray-500">
-                    Menampilkan {{ $pengumumans->firstItem() ?? 0 }} - {{ $pengumumans->lastItem() ?? 0 }} dari {{ $pengumumans->total() ?? 0 }} pengumuman
-                </div>
+            <div class="mt-12">
+                {{ $pengumumans->links() }}
             </div>
         @else
             <div class="mt-8">

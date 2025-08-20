@@ -37,10 +37,10 @@ class AnnouncementController extends Controller
             }
         }
 
-        // Get pengumuman with pagination, exclude soft deleted records
-        $pengumumans = $query->latest('publish_date')
-                            ->paginate(6)
-                            ->appends($request->query()); // Maintain search parameters in pagination links
+        // Default sorting: upload terbaru -> terlama (created_at DESC)
+        $pengumumans = $query->orderByDesc('created_at')
+                             ->paginate(6)
+                             ->appends($request->query()); // Maintain search parameters in pagination links
 
         return view('pengumuman', compact('pengumumans', 'search'));
     }
@@ -59,9 +59,9 @@ class AnnouncementController extends Controller
         // Increment view count
         $pengumuman->increment('count_views');
 
-        // Get recent posts
+        // Get recent posts (berdasarkan upload terbaru)
         $recentPosts = Pengumuman::where('id', '!=', $pengumuman->id)
-                                ->latest('publish_date')
+                                ->orderByDesc('created_at')
                                 ->take(5)
                                 ->get();
 
