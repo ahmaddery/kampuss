@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use App\Models\NewsletterSubscription;
 use App\Mail\NewsletterMail;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -125,6 +126,13 @@ class BeritaController extends Controller
                 'tags' => $request->tags,
             ]);
             
+            // Log activity
+            ActivityLogger::logCrud('created', $berita, [
+                'title' => $berita->title,
+                'author' => $berita->author,
+                'publish_date' => $berita->publish_date,
+            ]);
+            
             // Send newsletter to subscribers
             $this->sendNewsletterToSubscribers($berita);
 
@@ -217,6 +225,8 @@ class BeritaController extends Controller
                 $slug = ''; // Let the model handle auto-generation
             }
 
+            $oldData = $berita->toArray();
+            
             $berita->update([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -225,6 +235,13 @@ class BeritaController extends Controller
                 'author' => $request->author,
                 'slug' => $slug,
                 'tags' => $request->tags,
+            ]);
+
+            // Log activity
+            ActivityLogger::logCrud('updated', $berita, [
+                'old_title' => $oldData['title'],
+                'new_title' => $berita->title,
+                'changes' => $berita->getChanges(),
             ]);
 
             // Return JSON response for AJAX requests
@@ -270,12 +287,22 @@ class BeritaController extends Controller
     public function destroy(Berita $berita)
     {
         try {
+            // Store berita data for logging
+            $beritaData = [
+                'title' => $berita->title,
+                'author' => $berita->author,
+                'id' => $berita->id,
+            ];
+            
             // Delete image file if exists
             if ($berita->image_path) {
                 Storage::disk('public')->delete($berita->image_path);
             }
 
             $berita->delete(); // Soft delete the record
+
+            // Log activity
+            ActivityLogger::logCrud('deleted', $berita, $beritaData);
 
             return redirect()->route('admin.berita.index')->with('success', 'Berita deleted successfully.');
 

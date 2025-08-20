@@ -14,6 +14,53 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}">
+    
+    <!-- Custom Activity Pulse Animation -->
+    <style>
+    .activity-pulse {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: #1572e8;
+        border-radius: 50%;
+        position: relative;
+        animation: pulse 2s infinite;
+    }
+    
+    .activity-pulse::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: 12px;
+        height: 12px;
+        background-color: rgba(21, 114, 232, 0.3);
+        border-radius: 50%;
+        animation: pulse-ring 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.7;
+            transform: scale(1.1);
+        }
+    }
+    
+    @keyframes pulse-ring {
+        0% {
+            transform: scale(0.8);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+    </style>
 </head>
 <body>
     <div class="wrapper">
@@ -141,6 +188,19 @@
                             <a href="{{ route('admin.settings.index') }}">
                                 <i class="fas fa-cogs"></i>
                                 <p>Pengaturan Halaman</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.activity-logs.index') }}">
+                                <i class="fas fa-clipboard-list"></i>
+                                <p>Log Aktivitas</p>
+                                @php
+                                    $todayLogsCount = \App\Models\ActivityLog::whereDate('created_at', today())->count();
+                                @endphp
+                                @if($todayLogsCount > 0)
+                                    <span class="activity-pulse ml-2"></span>
+                                @endif
                             </a>
                         </li>
 

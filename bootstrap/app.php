@@ -14,6 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'check.page.status' => \App\Http\Middleware\CheckPageStatus::class,
             'contact.rate.limit' => \App\Http\Middleware\ContactRateLimitMiddleware::class,
+            'log.activity' => \App\Http\Middleware\LogActivity::class,
+        ]);
+        
+        // Add LogActivity middleware to web middleware group
+        $middleware->web(append: [
+            \App\Http\Middleware\LogActivity::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

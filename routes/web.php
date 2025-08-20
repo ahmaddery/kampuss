@@ -186,6 +186,13 @@ Route::post('/admin/profile/password', [AdminController::class, 'updatePassword'
     Route::put('admin/biro/{biro}', [App\Http\Controllers\Admin\BiroController::class, 'update'])->name('admin.biro.update');
     Route::delete('admin/biro/{biro}', [App\Http\Controllers\Admin\BiroController::class, 'destroy'])->name('admin.biro.destroy');
 
+    // Activity Logs Routes
+    Route::get('admin/activity-logs', [App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('admin.activity-logs.index');
+    Route::get('admin/activity-logs/{activityLog}', [App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('admin.activity-logs.show');
+    Route::get('admin/activity-logs/export/csv', [App\Http\Controllers\Admin\ActivityLogController::class, 'export'])->name('admin.activity-logs.export');
+    Route::post('admin/activity-logs/clear', [App\Http\Controllers\Admin\ActivityLogController::class, 'clear'])->name('admin.activity-logs.clear');
+    Route::get('admin/activity-logs/chart/data', [App\Http\Controllers\Admin\ActivityLogController::class, 'chartData'])->name('admin.activity-logs.chart-data');
+
 
 
 

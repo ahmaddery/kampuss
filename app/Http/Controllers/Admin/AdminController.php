@@ -4,14 +4,81 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\ActivityLog;
+use App\Models\Berita;
+use App\Models\Pengumuman;
+use App\Models\ContactMessage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
+    /**
+     * Tampilkan dashboard admin dengan statistik.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showDashboard()
+    {
+        $user = Auth::user();
+        
+        // Statistik umum
+        $stats = [
+            'total_users' => User::count(),
+            'total_berita' => Berita::count(),
+            'total_pengumuman' => Pengumuman::count(),
+            'unread_messages' => ContactMessage::unread()->count(),
+        ];
+        
+        // Statistik aktivitas
+        $today = Carbon::today();
+        $thisWeek = Carbon::now()->startOfWeek();
+        $thisMonth = Carbon::now()->startOfMonth();
+        
+        $activityStats = [
+            'today' => ActivityLog::whereDate('created_at', $today)->count(),
+            'this_week' => ActivityLog::where('created_at', '>=', $thisWeek)->count(),
+            'this_month' => ActivityLog::where('created_at', '>=', $thisMonth)->count(),
+            'total' => ActivityLog::count(),
+        ];
+        
+        // Aktivitas terbaru
+        $recentActivities = ActivityLog::with('user')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+        
+        // Top aktivitas berdasarkan kategori
+        $topCategories = ActivityLog::selectRaw('log_name, count(*) as count')
+            ->groupBy('log_name')
+            ->orderBy('count', 'desc')
+            ->limit(5)
+            ->get();
+        
+        // Pengguna paling aktif hari ini
+        $activeUsers = ActivityLog::with('user')
+            ->whereDate('created_at', $today)
+            ->whereNotNull('causer_id')
+            ->selectRaw('causer_id, count(*) as activity_count')
+            ->groupBy('causer_id')
+            ->orderBy('activity_count', 'desc')
+            ->limit(5)
+            ->get();
+        
+        return view('admin.dashboard', compact(
+            'user', 
+            'stats', 
+            'activityStats', 
+            'recentActivities', 
+            'topCategories', 
+            'activeUsers'
+        ));
+    }
+
     /**
      * Tampilkan halaman dashboard admin dengan data pengguna yang login.
      *
