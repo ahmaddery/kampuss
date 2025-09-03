@@ -200,12 +200,12 @@
                         <a href="{{ route('contact.index') }}" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all">Kontak</a>
                         <div class="group relative px-1">
                             <a href="#" class="nav-link text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center">
-                                Tracer Study <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                                Informasi <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
                             </a>
                             <div class="dropdown-menu absolute z-10 mt-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <div class="py-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Alumni</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Pengguna Lulusan</a>
+                                    <a href="{{ route('pengumuman.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Pengumuman</a>
+                                    <a href="{{ route('berita.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Berita</a>
                                 </div>
                             </div>
                         </div>
@@ -337,12 +337,12 @@
             <a href="{{ route('contact.index') }}" class="text-gray-700 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium transition-all">Kontak</a>
             <div class="mobile-dropdown">
                 <button class="w-full text-left flex justify-between items-center text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-base font-medium transition-all">
-                    Tracer Study
+                    Informasi
                     <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div class="hidden pl-4 py-2 space-y-1">
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Alumni</a>
-                    <a href="#" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Pengguna Lulusan</a>
+                    <a href="{{ route('pengumuman.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Pengumuman</a>
+                    <a href="{{ route('berita.index') }}" class="block px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-md">Berita</a>
                 </div>
             </div>
         </div>

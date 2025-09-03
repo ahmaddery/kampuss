@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('last_login_ip')->nullable()->after('last_login_at');
+            // Kolom last_login_ip sudah ditambahkan di migrasi sebelumnya
+            if (!Schema::hasColumn('users', 'last_login_ip')) {
+                $table->string('last_login_ip')->nullable()->after('last_login_at');
+            }
         });
     }
 
@@ -22,7 +25,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('last_login_ip');
+            if (Schema::hasColumn('users', 'last_login_ip')) {
+                $table->dropColumn('last_login_ip');
+            }
         });
     }
 };
