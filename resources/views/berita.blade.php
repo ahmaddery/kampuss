@@ -1,19 +1,13 @@
 @extends('layouts.app')
 
-@section('content')
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Kampus</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
+@section('title', 'Berita Kampus')
+
+@push('styles')
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    body {
+        font-family: 'Inter', sans-serif;
         }
 
         .gradient-text {
@@ -113,9 +107,10 @@
             transform: scaleX(1);
             transform-origin: left;
         }
-    </style>
-</head>
-<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+</style>
+@endpush
+
+@section('content')
     <!-- Elemen dekoratif di background -->
     <div class="fixed top-0 right-0 w-1/3 h-screen bg-blue-50 opacity-30 -z-10 transform -skew-x-12"></div>
     <div class="fixed bottom-0 left-0 w-1/4 h-screen bg-purple-50 opacity-30 -z-10 transform skew-x-12"></div>
@@ -284,6 +279,4 @@
         @endif
 
     </div>
-</body>
-</html>
 @endsection

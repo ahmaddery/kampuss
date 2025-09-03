@@ -85,10 +85,4 @@
     <i class="fas fa-arrow-up"></i>
 </button>
 
-<!-- Pastikan untuk memuat Font Awesome -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
-<!-- Pastikan untuk memuat Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
-
 <script src="{{ asset('js/app.js') }}"></script>

@@ -28,7 +28,7 @@
     <!-- Dots Indicator -->
     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
         @foreach($banners as $index => $banner)
-            <button class="dot w-3 h-3 rounded-full bg-white opacity-60 hover:opacity-100 transition-opacity duration-300" data-slide="{{ $index }}"></button>
+            <button class="dot w-3 h-3 rounded-full bg-white opacity-60 hover:opacity-100 transition-all duration-300" data-slide="{{ $index }}"></button>
         @endforeach
     </div>
 </div>
